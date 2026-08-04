@@ -1155,4 +1155,211 @@
             },
             {
                 q: "Qual acorde é formado pelas notas Dó – Mi – Sol?",
-                options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó dimin
+                options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó diminuto"],
+                correct: 2,
+                explanation: "Dó–Mi (terça maior) + Mi–Sol (terça menor) = tríade maior."
+            },
+            {
+                q: "O que significa o símbolo 'm7' em um acorde (ex: Am7)?",
+                options: ["Maior com sétima", "Menor com sétima menor", "Menor com sétima maior", "Diminuto"],
+                correct: 1,
+                explanation: "m7 = acorde menor + sétima menor (ex: Lá–Dó–Mi–Sol)."
+            },
+            {
+                q: "Qual é a relativa menor da tonalidade de Dó maior?",
+                options: ["Ré menor", "Mi menor", "Lá menor", "Sol menor"],
+                correct: 2,
+                explanation: "A relativa menor de Dó maior é Lá menor (mesmas notas, começa no 6º grau)."
+            },
+            {
+                q: "Em uma progressão I – V – vi – IV em Dó maior, quais são os acordes?",
+                options: ["Dó – Sol – Lá menor – Fá", "Dó – Fá – Lá menor – Sol", "Dó – Sol – Ré – Fá", "Dó – Mi menor – Lá menor – Fá"],
+                correct: 0,
+                explanation: "I=Dó, V=Sol, vi=Lá menor, IV=Fá. Progressão clássica do pop."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const quizFeedback = document.getElementById('quizFeedback');
+        const quizProgress = document.getElementById('quizProgress');
+        const nextBtn = document.getElementById('nextBtn');
+        const quizBody = document.getElementById('quizBody');
+        const quizResult = document.getElementById('quizResult');
+        const finalScore = document.getElementById('finalScore');
+        const resultMessage = document.getElementById('resultMessage');
+
+        function loadQuestion() {
+            answered = false;
+            const q = questions[currentQuestion];
+            questionText.textContent = q.q;
+            quizProgress.textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+            optionsContainer.innerHTML = '';
+            quizFeedback.className = 'quiz-feedback';
+            quizFeedback.textContent = '';
+            nextBtn.style.display = 'none';
+
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.addEventListener('click', () => selectOption(i, btn));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index, btn) {
+            if (answered) return;
+            answered = true;
+            const q = questions[currentQuestion];
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+            buttons.forEach(b => b.disabled = true);
+
+            if (index === q.correct) {
+                btn.classList.add('correct');
+                score++;
+                quizFeedback.textContent = '✓ Correto! ' + q.explanation;
+                quizFeedback.className = 'quiz-feedback show correct';
+            } else {
+                btn.classList.add('wrong');
+                buttons[q.correct].classList.add('correct');
+                quizFeedback.textContent = '✗ Incorreto. ' + q.explanation;
+                quizFeedback.className = 'quiz-feedback show wrong';
+            }
+
+            nextBtn.style.display = 'inline-flex';
+            nextBtn.textContent = currentQuestion < questions.length - 1 ? 'Próxima →' : 'Ver Resultado';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        });
+
+        function showResult() {
+            quizBody.style.display = 'none';
+            quizResult.classList.add('show');
+            finalScore.textContent = `${score}/${questions.length}`;
+            const pct = Math.round((score / questions.length) * 100);
+            if (pct === 100) resultMessage.textContent = 'Perfeito! Você domina esses conceitos de teoria.';
+            else if (pct >= 70) resultMessage.textContent = 'Muito bem! Continue praticando para solidificar o conhecimento.';
+            else if (pct >= 40) resultMessage.textContent = 'Bom começo. Revise os conceitos e tente novamente.';
+            else resultMessage.textContent = 'Continue estudando! A teoria se constrói com prática constante.';
+        }
+
+        document.getElementById('restartQuiz').addEventListener('click', () => {
+            currentQuestion = 0;
+            score = 0;
+            quizResult.classList.remove('show');
+            quizBody.style.display = 'block';
+            loadQuestion();
+        });
+
+        loadQuestion();
+
+        // ========== METRONOME ==========
+        let bpm = 100;
+        let isPlaying = false;
+        let intervalId = null;
+        let audioCtx = null;
+
+        const bpmDisplay = document.getElementById('bpmDisplay');
+        const toggleBtn = document.getElementById('metronomeToggle');
+        const beatIndicator = document.getElementById('beatIndicator');
+
+        document.getElementById('bpmUp').addEventListener('click', () => {
+            if (bpm < 240) { bpm += 5; bpmDisplay.textContent = bpm; if (isPlaying) restartMetronome(); }
+        });
+        document.getElementById('bpmDown').addEventListener('click', () => {
+            if (bpm > 40) { bpm -= 5; bpmDisplay.textContent = bpm; if (isPlaying) restartMetronome(); }
+        });
+
+        function playClick() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 1000;
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
+            beatIndicator.classList.add('pulse');
+            setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
+        }
+
+        function startMetronome() {
+            playClick();
+            intervalId = setInterval(playClick, 60000 / bpm);
+            isPlaying = true;
+            toggleBtn.textContent = 'Parar';
+            toggleBtn.classList.add('active');
+        }
+        function stopMetronome() {
+            clearInterval(intervalId);
+            isPlaying = false;
+            toggleBtn.textContent = 'Iniciar';
+            toggleBtn.classList.remove('active');
+            beatIndicator.classList.remove('pulse');
+        }
+        function restartMetronome() { stopMetronome(); startMetronome(); }
+
+        toggleBtn.addEventListener('click', () => isPlaying ? stopMetronome() : startMetronome());
+
+        // ========== FORMULÁRIO DE INSCRIÇÃO ==========
+        const enrollForm = document.getElementById('enrollForm');
+        const formSuccess = document.getElementById('formSuccess');
+
+        enrollForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let valid = true;
+
+            // Reset errors
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+
+            const nome = document.getElementById('nome');
+            const email = document.getElementById('email');
+            const instrumento = document.getElementById('instrumento');
+            const nivel = document.getElementById('nivel');
+
+            if (!nome.value.trim() || nome.value.trim().length < 3) {
+                document.getElementById('errorNome').classList.add('show');
+                valid = false;
+            }
+            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                document.getElementById('errorEmail').classList.add('show');
+                valid = false;
+            }
+            if (!instrumento.value) {
+                document.getElementById('errorInstrumento').classList.add('show');
+                valid = false;
+            }
+            if (!nivel.value) {
+                document.getElementById('errorNivel').classList.add('show');
+                valid = false;
+            }
+
+            if (valid) {
+                enrollForm.style.display = 'none';
+                formSuccess.classList.add('show');
+            }
+        });
+
+        document.getElementById('resetForm').addEventListener('click', () => {
+            formSuccess.classList.remove('show');
+            enrollForm.style.display = 'block';
+            enrollForm.reset();
+        });
+    </script>
+</body>
+</html>
