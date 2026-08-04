@@ -38,7 +38,6 @@
             font-weight: 600;
         }
 
-        /* ========== NAV ========== */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -98,7 +97,6 @@
             cursor: pointer;
         }
 
-        /* ========== HERO ========== */
         .hero {
             min-height: 100vh;
             background: 
@@ -193,8 +191,19 @@
             border-color: var(--primary);
             background: rgba(59, 7, 100, 0.05);
         }
+        .btn-audio {
+            background: rgba(59, 7, 100, 0.1);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+        .btn-audio:hover {
+            background: var(--primary);
+            color: white;
+        }
 
-        /* ========== SECTIONS ========== */
         section { padding: 5rem 2rem; }
         .container { max-width: 1100px; margin: 0 auto; }
         .section-header {
@@ -220,7 +229,6 @@
             border-radius: 2px;
         }
 
-        /* ========== FEATURES ========== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -257,7 +265,6 @@
         }
         .feature-card p { color: var(--muted); font-size: 0.95rem; }
 
-        /* ========== COURSES ========== */
         .courses { background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%); }
         .courses-grid {
             display: grid;
@@ -317,16 +324,14 @@
             margin-bottom: 1.2rem;
         }
 
-        /* ========== THEORY / EXERCISES ========== */
         .theory {
             background: linear-gradient(180deg, var(--cream) 0%, #f0ebe3 100%);
         }
 
-        /* Menu de escolha */
         .exercise-menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.4rem;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.3rem;
             margin-bottom: 1rem;
         }
 
@@ -334,7 +339,7 @@
             background: var(--white);
             border: 2px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.8rem 1.5rem;
+            padding: 1.6rem 1.3rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -346,38 +351,33 @@
             box-shadow: 0 14px 40px rgba(59, 7, 100, 0.12);
         }
         .exercise-card .icon {
-            font-size: 2.4rem;
-            margin-bottom: 0.8rem;
+            font-size: 2.2rem;
+            margin-bottom: 0.7rem;
         }
         .exercise-card h3 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--primary);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.35rem;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
         }
         .exercise-card p {
             color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 0.8rem;
+            font-size: 0.88rem;
+            margin-bottom: 0.7rem;
         }
         .exercise-card .count {
             display: inline-block;
             background: rgba(59, 7, 100, 0.08);
             color: var(--primary);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
-            padding: 0.25rem 0.7rem;
+            padding: 0.25rem 0.65rem;
             border-radius: 50px;
         }
 
-        /* Quiz container */
-        .quiz-wrapper {
-            display: none;
-        }
-        .quiz-wrapper.active {
-            display: block;
-        }
+        .quiz-wrapper { display: none; }
+        .quiz-wrapper.active { display: block; }
 
         .quiz-container {
             background: var(--white);
@@ -417,7 +417,7 @@
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 1.6rem;
+            margin-bottom: 1rem;
             line-height: 1.5;
         }
 
@@ -497,11 +497,8 @@
         }
         .quiz-result p { color: var(--muted); margin-bottom: 1.5rem; }
 
-        .back-to-menu {
-            margin-bottom: 1.5rem;
-        }
+        .back-to-menu { margin-bottom: 1.5rem; }
 
-        /* ========== PRACTICE / METRONOME ========== */
         .practice { background: var(--primary); color: white; }
         .practice .section-header h2 { color: white; }
         .practice .section-header p { color: #c4b5fd; }
@@ -578,7 +575,6 @@
             transform: scale(1.3);
         }
 
-        /* ========== TESTIMONIALS ========== */
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -625,7 +621,6 @@
         .author-info strong { display: block; color: var(--primary); font-size: 0.95rem; }
         .author-info span { font-size: 0.8rem; color: var(--muted); }
 
-        /* ========== ENROLLMENT FORM ========== */
         .enroll { background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%); }
         .form-container {
             background: var(--white);
@@ -692,7 +687,6 @@
         }
         .form-success p { color: var(--muted); }
 
-        /* ========== CTA ========== */
         .cta {
             background: linear-gradient(135deg, var(--primary) 0%, #4c1d95 100%);
             text-align: center;
@@ -702,7 +696,6 @@
         .cta h2 { font-size: 2.5rem; margin-bottom: 1rem; }
         .cta p { color: #c4b5fd; margin-bottom: 2rem; font-size: 1.15rem; }
 
-        /* ========== FOOTER ========== */
         footer {
             background: #1c0a2e;
             color: #a8a29e;
@@ -752,7 +745,6 @@
             font-size: 0.9rem;
         }
 
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 900px) {
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .form-row { grid-template-columns: 1fr; }
@@ -778,7 +770,6 @@
 </head>
 <body>
 
-    <!-- NAV -->
     <nav id="navbar">
         <a href="#" class="logo">Harmonia <span>Academy</span></a>
         <ul class="nav-links" id="navLinks">
@@ -792,7 +783,6 @@
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
     </nav>
 
-    <!-- HERO -->
     <section class="hero" id="inicio">
         <div class="hero-content">
             <div class="hero-badge">PLATAFORMA DE EDUCAÇÃO MUSICAL</div>
@@ -805,7 +795,6 @@
         </div>
     </section>
 
-    <!-- FEATURES -->
     <section id="recursos">
         <div class="container">
             <div class="section-header">
@@ -817,28 +806,27 @@
                 <div class="feature-card">
                     <div class="feature-icon">🎼</div>
                     <h3>Teoria Aplicada</h3>
-                    <p>Aprenda harmonia, escalas e progressões de forma prática e conectada ao instrumento.</p>
+                    <p>Aprenda harmonia, escalas, ritmos e progressões de forma prática.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎹</div>
                     <h3>Prática Guiada</h3>
-                    <p>Exercícios progressivos com feedback e métricas de evolução em tempo real.</p>
+                    <p>Exercícios progressivos com feedback sonoro e visual.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🎧</div>
-                    <h3>Audição Ativa</h3>
-                    <p>Treine o ouvido musical com ditados, reconhecimento de intervalos e progressões.</p>
+                    <div class="feature-icon">🥁</div>
+                    <h3>Ritmo & Compassos</h3>
+                    <p>Compassos simples, compostos e ritmos sincopados com áudio.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📜</div>
                     <h3>Leitura & Partitura</h3>
-                    <p>Do solfejo básico à leitura avançada de partituras e tablaturas.</p>
+                    <p>Do solfejo básico à leitura avançada de figuras e síncopes.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- COURSES -->
     <section class="courses" id="cursos">
         <div class="container">
             <div class="section-header">
@@ -896,16 +884,15 @@
         </div>
     </section>
 
-    <!-- THEORY / EXERCISES -->
+    <!-- THEORY -->
     <section class="theory" id="teoria">
         <div class="container">
             <div class="section-header">
                 <h2>Teoria Musical na Prática</h2>
-                <p>Escolha o tipo de exercício e treine no seu ritmo. Feedback imediato com explicações.</p>
+                <p>Escolha o exercício. Agora com áudio de feedback e exemplos rítmicos.</p>
                 <div class="line"></div>
             </div>
 
-            <!-- MENU DE ESCOLHA -->
             <div id="exerciseMenu">
                 <div class="exercise-menu">
                     <div class="exercise-card" data-category="figuras">
@@ -914,16 +901,22 @@
                         <p>Valores de notas, pausas e relações rítmicas</p>
                         <span class="count">8 perguntas</span>
                     </div>
+                    <div class="exercise-card" data-category="ritmos">
+                        <div class="icon">🥁</div>
+                        <h3>Ritmos & Compassos</h3>
+                        <p>Simples, compostos e ritmos sincopados</p>
+                        <span class="count">10 perguntas</span>
+                    </div>
                     <div class="exercise-card" data-category="intervalos">
                         <div class="icon">📐</div>
                         <h3>Intervalos</h3>
-                        <p>Reconhecimento de intervalos melódicos e harmônicos</p>
+                        <p>Reconhecimento de intervalos</p>
                         <span class="count">7 perguntas</span>
                     </div>
                     <div class="exercise-card" data-category="escalas">
                         <div class="icon">🎹</div>
                         <h3>Escalas & Tonalidades</h3>
-                        <p>Escalas maiores, menores e armaduras de clave</p>
+                        <p>Escalas e armaduras de clave</p>
                         <span class="count">7 perguntas</span>
                     </div>
                     <div class="exercise-card" data-category="acordes">
@@ -935,19 +928,18 @@
                     <div class="exercise-card" data-category="progressoes">
                         <div class="icon">🔁</div>
                         <h3>Progressões</h3>
-                        <p>Sequências harmônicas e funções tonais</p>
+                        <p>Sequências harmônicas e funções</p>
                         <span class="count">6 perguntas</span>
                     </div>
                     <div class="exercise-card" data-category="misto">
                         <div class="icon">🎯</div>
                         <h3>Desafio Misto</h3>
                         <p>Perguntas variadas de todos os temas</p>
-                        <span class="count">10 perguntas</span>
+                        <span class="count">12 perguntas</span>
                     </div>
                 </div>
             </div>
 
-            <!-- QUIZ -->
             <div class="quiz-wrapper" id="quizWrapper">
                 <div class="back-to-menu">
                     <button class="btn btn-ghost" id="backToMenu">← Voltar ao menu</button>
@@ -959,10 +951,11 @@
                     </div>
                     <div class="quiz-body" id="quizBody">
                         <div class="question-text" id="questionText"></div>
+                        <button class="btn btn-audio" id="playExampleBtn" style="display:none;">▶ Ouvir exemplo rítmico</button>
                         <div class="options" id="optionsContainer"></div>
                         <div class="quiz-feedback" id="quizFeedback"></div>
                         <div class="quiz-actions">
-                            <button class="btn btn-ghost" id="backToMenu2" style="display:none;">← Menu</button>
+                            <span></span>
                             <button class="btn btn-secondary" id="nextBtn" style="display:none;">Próxima →</button>
                         </div>
                     </div>
@@ -980,7 +973,6 @@
         </div>
     </section>
 
-    <!-- PRACTICE / METRONOME -->
     <section class="practice" id="pratica">
         <div class="container">
             <div class="section-header">
@@ -993,9 +985,9 @@
                 <p style="color:#c4b5fd; margin-bottom:0.5rem;">Ajuste o BPM e pratique no tempo</p>
                 <div class="bpm-display" id="bpmDisplay">100</div>
                 <div class="bpm-controls">
-                    <button class="bpm-btn" id="bpmDown" aria-label="Diminuir BPM">−</button>
+                    <button class="bpm-btn" id="bpmDown">−</button>
                     <span style="font-size:0.9rem;color:#c4b5fd;">BPM</span>
-                    <button class="bpm-btn" id="bpmUp" aria-label="Aumentar BPM">+</button>
+                    <button class="bpm-btn" id="bpmUp">+</button>
                 </div>
                 <button class="metronome-btn" id="metronomeToggle">Iniciar</button>
                 <div class="beat-indicator" id="beatIndicator"></div>
@@ -1003,7 +995,6 @@
         </div>
     </section>
 
-    <!-- TESTIMONIALS -->
     <section id="depoimentos">
         <div class="container">
             <div class="section-header">
@@ -1013,7 +1004,7 @@
             </div>
             <div class="testimonials-grid">
                 <div class="testimonial">
-                    <p>A metodologia da Harmonia transformou minha forma de estudar. Em seis meses avancei mais do que em anos de aulas convencionais.</p>
+                    <p>A metodologia da Harmonia transformou minha forma de estudar. Os exercícios de ritmo com áudio fizeram toda a diferença.</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">M</div>
                         <div class="author-info">
@@ -1023,7 +1014,7 @@
                     </div>
                 </div>
                 <div class="testimonial">
-                    <p>O metrônomo e os exercícios de teoria são excepcionais. Finalmente consegui internalizar o tempo e as figuras rítmicas.</p>
+                    <p>Finalmente entendi compassos compostos e síncopes. O feedback sonoro ajuda muito a fixar.</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">R</div>
                         <div class="author-info">
@@ -1033,7 +1024,7 @@
                     </div>
                 </div>
                 <div class="testimonial">
-                    <p>Plataforma elegante, conteúdo profundo e professores que realmente entendem o processo de aprendizado musical.</p>
+                    <p>Plataforma elegante, conteúdo profundo e exercícios interativos de verdade.</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">A</div>
                         <div class="author-info">
@@ -1046,7 +1037,6 @@
         </div>
     </section>
 
-    <!-- ENROLLMENT FORM -->
     <section class="enroll" id="inscricao">
         <div class="container">
             <div class="section-header">
@@ -1078,7 +1068,7 @@
                                 <option value="canto">Canto</option>
                                 <option value="baixo">Baixo</option>
                                 <option value="bateria">Bateria</option>
-                                <option value="cordas">Cordas (Violino, Cello...)</option>
+                                <option value="cordas">Cordas</option>
                                 <option value="sopro">Sopro</option>
                                 <option value="outro">Outro</option>
                             </select>
@@ -1117,21 +1107,19 @@
                 <div class="form-success" id="formSuccess">
                     <div class="icon">✅</div>
                     <h3>Inscrição enviada com sucesso!</h3>
-                    <p>Recebemos seus dados. Nossa equipe entrará em contato em breve pelo e-mail informado.</p>
+                    <p>Recebemos seus dados. Nossa equipe entrará em contato em breve.</p>
                     <button class="btn btn-secondary" id="resetForm" style="margin-top:1.5rem;">Nova inscrição</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta">
         <h2>Pronto para elevar sua música?</h2>
         <p>Junte-se a milhares de músicos que já transformaram sua prática.</p>
         <a href="#inscricao" class="btn btn-primary">Começar minha jornada</a>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-grid">
             <div class="footer-brand">
@@ -1168,6 +1156,56 @@
     </footer>
 
     <script>
+        // ========== ÁUDIO (Web Audio API) ==========
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playTone(freq, duration, type = 'sine', volume = 0.25) {
+            const ctx = getAudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(volume, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + duration);
+        }
+
+        function playSuccess() {
+            playTone(523.25, 0.12, 'sine', 0.2); // C5
+            setTimeout(() => playTone(659.25, 0.12, 'sine', 0.2), 100); // E5
+            setTimeout(() => playTone(783.99, 0.2, 'sine', 0.22), 200); // G5
+        }
+
+        function playError() {
+            playTone(200, 0.15, 'square', 0.12);
+            setTimeout(() => playTone(150, 0.25, 'square', 0.12), 120);
+        }
+
+        function playClick(freq = 900, vol = 0.2) {
+            playTone(freq, 0.06, 'square', vol);
+        }
+
+        // Toca um padrão rítmico: array de delays em ms e se é beat forte
+        function playRhythmPattern(pattern, tempoMs = 400) {
+            const ctx = getAudioCtx();
+            pattern.forEach((isStrong, i) => {
+                setTimeout(() => {
+                    playClick(isStrong ? 1000 : 700, isStrong ? 0.25 : 0.15);
+                }, i * tempoMs);
+            });
+        }
+
         // ========== NAV ==========
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -1196,260 +1234,158 @@
             figuras: {
                 title: "Figuras Musicais",
                 questions: [
+                    { q: "Qual figura musical vale 4 tempos (em 4/4)?", options: ["Semínima", "Mínima", "Semibreve", "Colcheia"], correct: 2, explanation: "A semibreve vale 4 tempos." },
+                    { q: "Quantas colcheias cabem em uma semínima?", options: ["1", "2", "4", "8"], correct: 1, explanation: "Uma semínima = 2 colcheias." },
+                    { q: "A mínima equivale a quantas semínimas?", options: ["1", "2", "4", "8"], correct: 1, explanation: "A mínima vale 2 tempos = 2 semínimas." },
+                    { q: "Qual é a pausa correspondente à colcheia?", options: ["Pausa de semínima", "Pausa de colcheia", "Pausa de mínima", "Pausa de semibreve"], correct: 1, explanation: "Cada figura tem sua pausa com o mesmo valor." },
+                    { q: "Em um compasso 4/4, quantas semínimas cabem?", options: ["2", "3", "4", "8"], correct: 2, explanation: "4/4 = 4 semínimas por compasso." },
+                    { q: "A semicolcheia vale quantos tempos (em 4/4)?", options: ["1/2", "1/4", "1/8", "1 tempo"], correct: 1, explanation: "Semicolcheia = 1/4 de tempo." },
+                    { q: "Qual figura vale 1/2 tempo em 4/4?", options: ["Semínima", "Colcheia", "Mínima", "Semicolcheia"], correct: 1, explanation: "A colcheia vale meio tempo." },
+                    { q: "Uma mínima pontuada vale quantos tempos?", options: ["2", "3", "4", "1,5"], correct: 1, explanation: "Mínima (2) + ponto (1) = 3 tempos." }
+                ]
+            },
+            ritmos: {
+                title: "Ritmos & Compassos",
+                questions: [
                     {
-                        q: "Qual figura musical vale 4 tempos (em compassos de 4/4)?",
-                        options: ["Semínima", "Mínima", "Semibreve", "Colcheia"],
+                        q: "Qual destes é um compasso simples?",
+                        options: ["6/8", "9/8", "4/4", "12/8"],
                         correct: 2,
-                        explanation: "A semibreve vale 4 tempos — é a figura de maior duração comum."
+                        explanation: "4/4 é compasso simples (unidade de tempo divisível por 2). 6/8, 9/8 e 12/8 são compostos.",
+                        rhythm: null
                     },
                     {
-                        q: "Quantas colcheias cabem em uma semínima?",
-                        options: ["1", "2", "4", "8"],
-                        correct: 1,
-                        explanation: "Uma semínima = 2 colcheias. A colcheia vale metade da semínima."
-                    },
-                    {
-                        q: "A mínima equivale a quantas semínimas?",
-                        options: ["1", "2", "4", "8"],
-                        correct: 1,
-                        explanation: "A mínima vale 2 tempos, ou seja, 2 semínimas."
-                    },
-                    {
-                        q: "Qual é a pausa correspondente à colcheia?",
-                        options: ["Pausa de semínima", "Pausa de colcheia", "Pausa de mínima", "Pausa de semibreve"],
-                        correct: 1,
-                        explanation: "Cada figura tem sua pausa correspondente com o mesmo valor de duração."
-                    },
-                    {
-                        q: "Em um compasso 4/4, quantas semínimas cabem no total?",
-                        options: ["2", "3", "4", "8"],
+                        q: "Em um compasso composto, a unidade de tempo é normalmente uma:",
+                        options: ["Semínima", "Mínima", "Tercina de colcheias (valor pontuado)", "Semicolcheia"],
                         correct: 2,
-                        explanation: "O denominador 4 indica a semínima como unidade de tempo. 4/4 = 4 semínimas."
+                        explanation: "Nos compostos, a unidade de tempo é uma figura pontuada (ex: mínima pontuada no 6/8), equivalente a 3 colcheias.",
+                        rhythm: null
                     },
                     {
-                        q: "A semicolcheia vale quantos tempos (em 4/4)?",
-                        options: ["1/2", "1/4", "1/8", "1 tempo"],
+                        q: "O compasso 6/8 é classificado como:",
+                        options: ["Simples binário", "Composto binário", "Simples ternário", "Composto ternário"],
                         correct: 1,
-                        explanation: "A semicolcheia vale 1/4 de tempo (metade da colcheia)."
+                        explanation: "6/8 = 2 tempos compostos (cada tempo = 3 colcheias) → composto binário.",
+                        rhythm: [1,0,0, 1,0,0] // dois grupos de 3
                     },
                     {
-                        q: "Qual figura tem o valor de 1/2 tempo em compasso 4/4?",
-                        options: ["Semínima", "Colcheia", "Mínima", "Semicolcheia"],
+                        q: "O que caracteriza um ritmo sincopado?",
+                        options: ["Acentos apenas nos tempos fortes", "Deslocamento do acento para tempos fracos ou entre tempos", "Uso exclusivo de semibreves", "Compasso sempre em 3/4"],
                         correct: 1,
-                        explanation: "A colcheia vale meio tempo (metade da semínima)."
+                        explanation: "Síncope ocorre quando o acento rítmico cai em tempo fraco ou na parte fraca do tempo, criando deslocamento.",
+                        rhythm: [1, 0, 1, 0, 1] // exemplo de síncope simples
                     },
                     {
-                        q: "Uma mínima pontuada vale quantos tempos?",
-                        options: ["2", "3", "4", "1,5"],
+                        q: "No compasso 3/4 (simples ternário), quantos tempos há por compasso?",
+                        options: ["2", "3", "4", "6"],
                         correct: 1,
-                        explanation: "O ponto de aumento acrescenta metade do valor da figura. Mínima (2) + 1 = 3 tempos."
+                        explanation: "3/4 tem 3 tempos, cada um valendo uma semínima.",
+                        rhythm: [1, 0, 0]
+                    },
+                    {
+                        q: "Qual compasso é composto ternário?",
+                        options: ["6/8", "9/8", "12/8", "3/4"],
+                        correct: 1,
+                        explanation: "9/8 = 3 tempos compostos (cada um = 3 colcheias) → composto ternário.",
+                        rhythm: [1,0,0, 1,0,0, 1,0,0]
+                    },
+                    {
+                        q: "Uma síncope clássica em 4/4 pode ser representada por:",
+                        options: ["4 semínimas iguais", "Colcheia – Semínima – Colcheia (acento no meio)", "Apenas mínimas", "Semibreve única"],
+                        correct: 1,
+                        explanation: "Colcheia + Semínima + Colcheia desloca o acento para o tempo fraco (síncope).",
+                        rhythm: [1, 0, 1, 0] // simplificado
+                    },
+                    {
+                        q: "No 12/8, quantos tempos compostos existem?",
+                        options: ["2", "3", "4", "6"],
+                        correct: 2,
+                        explanation: "12/8 = 4 tempos compostos (quaternário composto).",
+                        rhythm: null
+                    },
+                    {
+                        q: "Compassos simples têm a subdivisão do tempo em:",
+                        options: ["2 partes iguais", "3 partes iguais", "4 partes sempre", "5 partes"],
+                        correct: 0,
+                        explanation: "No compasso simples, cada tempo divide-se em 2 (binário). No composto, em 3 (ternário).",
+                        rhythm: null
+                    },
+                    {
+                        q: "Qual alternativa descreve melhor a síncope?",
+                        options: ["Acento no 1º tempo de cada compasso", "Prolongamento de nota de tempo fraco para tempo forte", "Uso só de pausas", "Compasso sem barra de compasso"],
+                        correct: 1,
+                        explanation: "A síncope clássica liga (ou acentua) uma nota em tempo fraco que se prolonga sobre o tempo forte seguinte.",
+                        rhythm: [0, 1, 0, 1]
                     }
                 ]
             },
             intervalos: {
                 title: "Intervalos",
                 questions: [
-                    {
-                        q: "Qual é o intervalo entre as notas Dó e Mi?",
-                        options: ["Segunda maior", "Terça maior", "Quarta justa", "Quinta justa"],
-                        correct: 1,
-                        explanation: "De Dó para Mi há 2 tons → Terça maior."
-                    },
-                    {
-                        q: "O intervalo de 5ª justa a partir de Fá é:",
-                        options: ["Lá", "Si♭", "Dó", "Sol"],
-                        correct: 2,
-                        explanation: "Fá – Dó = 5ª justa (3,5 tons)."
-                    },
-                    {
-                        q: "Qual intervalo existe entre Mi e Fá?",
-                        options: ["Segunda menor", "Segunda maior", "Terça menor", "Uníssono"],
-                        correct: 0,
-                        explanation: "Mi–Fá é um semitom → Segunda menor."
-                    },
-                    {
-                        q: "A oitava justa contém quantos semitons?",
-                        options: ["10", "11", "12", "13"],
-                        correct: 2,
-                        explanation: "Uma oitava justa tem 12 semitons."
-                    },
-                    {
-                        q: "Qual é a inversão da 3ª maior?",
-                        options: ["3ª menor", "6ª menor", "6ª maior", "5ª justa"],
-                        correct: 1,
-                        explanation: "A inversão de uma 3ª maior é uma 6ª menor (ex: Dó–Mi → Mi–Dó)."
-                    },
-                    {
-                        q: "O intervalo entre Sol e Ré é:",
-                        options: ["4ª justa", "5ª justa", "6ª maior", "3ª maior"],
-                        correct: 1,
-                        explanation: "Sol–Ré = 5ª justa."
-                    },
-                    {
-                        q: "Uma 7ª menor a partir de Dó chega em:",
-                        options: ["Si", "Si♭", "Lá", "Lá♭"],
-                        correct: 1,
-                        explanation: "Dó–Si♭ = 7ª menor (10 semitons)."
-                    }
+                    { q: "Qual é o intervalo entre Dó e Mi?", options: ["Segunda maior", "Terça maior", "Quarta justa", "Quinta justa"], correct: 1, explanation: "Dó–Mi = 2 tons = Terça maior." },
+                    { q: "O intervalo de 5ª justa a partir de Fá é:", options: ["Lá", "Si♭", "Dó", "Sol"], correct: 2, explanation: "Fá–Dó = 5ª justa." },
+                    { q: "Qual intervalo existe entre Mi e Fá?", options: ["Segunda menor", "Segunda maior", "Terça menor", "Uníssono"], correct: 0, explanation: "Mi–Fá = semitom = Segunda menor." },
+                    { q: "A oitava justa contém quantos semitons?", options: ["10", "11", "12", "13"], correct: 2, explanation: "Oitava justa = 12 semitons." },
+                    { q: "Qual é a inversão da 3ª maior?", options: ["3ª menor", "6ª menor", "6ª maior", "5ª justa"], correct: 1, explanation: "Inversão da 3ª maior = 6ª menor." },
+                    { q: "O intervalo entre Sol e Ré é:", options: ["4ª justa", "5ª justa", "6ª maior", "3ª maior"], correct: 1, explanation: "Sol–Ré = 5ª justa." },
+                    { q: "Uma 7ª menor a partir de Dó chega em:", options: ["Si", "Si♭", "Lá", "Lá♭"], correct: 1, explanation: "Dó–Si♭ = 7ª menor." }
                 ]
             },
             escalas: {
                 title: "Escalas & Tonalidades",
                 questions: [
-                    {
-                        q: "A escala maior de Sol (G) possui quantos sustenidos?",
-                        options: ["Nenhum", "1 (Fá#)", "2 (Fá# e Dó#)", "3"],
-                        correct: 1,
-                        explanation: "Sol maior tem 1 sustenido: Fá#."
-                    },
-                    {
-                        q: "Qual é a relativa menor de Dó maior?",
-                        options: ["Ré menor", "Mi menor", "Lá menor", "Sol menor"],
-                        correct: 2,
-                        explanation: "A relativa menor de Dó maior é Lá menor."
-                    },
-                    {
-                        q: "A escala de Fá maior possui:",
-                        options: ["1 sustenido", "1 bemol (Si♭)", "2 bemóis", "Nenhuma alteração"],
-                        correct: 1,
-                        explanation: "Fá maior tem 1 bemol: Si♭."
-                    },
-                    {
-                        q: "Quantas notas tem uma escala maior diatônica?",
-                        options: ["5", "6", "7", "8"],
-                        correct: 2,
-                        explanation: "A escala maior tem 7 notas diferentes (a 8ª é a oitava)."
-                    },
-                    {
-                        q: "A escala menor natural de Lá começa e termina em:",
-                        options: ["Lá – Lá", "Dó – Dó", "Mi – Mi", "Sol – Sol"],
-                        correct: 0,
-                        explanation: "A escala menor natural de Lá: Lá Si Dó Ré Mi Fá Sol Lá."
-                    },
-                    {
-                        q: "Qual tonalidade tem 3 sustenidos (Fá#, Dó#, Sol#)?",
-                        options: ["Ré maior", "Lá maior", "Mi maior", "Si maior"],
-                        correct: 1,
-                        explanation: "Lá maior possui 3 sustenidos."
-                    },
-                    {
-                        q: "O 6º grau da escala de Dó maior é:",
-                        options: ["Fá", "Sol", "Lá", "Si"],
-                        correct: 2,
-                        explanation: "Graus de Dó maior: 1Dó 2Ré 3Mi 4Fá 5Sol 6Lá 7Si."
-                    }
+                    { q: "A escala de Sol maior possui quantos sustenidos?", options: ["Nenhum", "1 (Fá#)", "2", "3"], correct: 1, explanation: "Sol maior = 1 sustenido (Fá#)." },
+                    { q: "Qual é a relativa menor de Dó maior?", options: ["Ré menor", "Mi menor", "Lá menor", "Sol menor"], correct: 2, explanation: "Relativa menor de Dó = Lá menor." },
+                    { q: "A escala de Fá maior possui:", options: ["1 sustenido", "1 bemol (Si♭)", "2 bemóis", "Nenhuma"], correct: 1, explanation: "Fá maior = Si♭." },
+                    { q: "Quantas notas tem uma escala maior diatônica?", options: ["5", "6", "7", "8"], correct: 2, explanation: "7 notas diferentes (a 8ª é a oitava)." },
+                    { q: "A escala menor natural de Lá começa e termina em:", options: ["Lá – Lá", "Dó – Dó", "Mi – Mi", "Sol – Sol"], correct: 0, explanation: "Lá menor natural: Lá Si Dó Ré Mi Fá Sol Lá." },
+                    { q: "Qual tonalidade tem 3 sustenidos?", options: ["Ré maior", "Lá maior", "Mi maior", "Si maior"], correct: 1, explanation: "Lá maior = Fá#, Dó#, Sol#." },
+                    { q: "O 6º grau da escala de Dó maior é:", options: ["Fá", "Sol", "Lá", "Si"], correct: 2, explanation: "1Dó 2Ré 3Mi 4Fá 5Sol 6Lá 7Si." }
                 ]
             },
             acordes: {
                 title: "Acordes & Harmonia",
                 questions: [
-                    {
-                        q: "Qual acorde é formado pelas notas Dó – Mi – Sol?",
-                        options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó diminuto"],
-                        correct: 2,
-                        explanation: "Dó–Mi (3ª maior) + Mi–Sol (3ª menor) = tríade maior."
-                    },
-                    {
-                        q: "O que significa o símbolo 'm7' (ex: Am7)?",
-                        options: ["Maior com 7ª", "Menor com 7ª menor", "Menor com 7ª maior", "Diminuto"],
-                        correct: 1,
-                        explanation: "m7 = acorde menor + sétima menor."
-                    },
-                    {
-                        q: "Um acorde diminuto é formado por:",
-                        options: ["Duas terças maiores", "Duas terças menores", "Terça maior + terça menor", "Quarta + quinta"],
-                        correct: 1,
-                        explanation: "Tríade diminuta = 3ª menor + 3ª menor (ex: Dó–Mi♭–Sol♭)."
-                    },
-                    {
-                        q: "A cifra 'Cmaj7' representa:",
-                        options: ["Dó menor com 7ª", "Dó maior com 7ª maior", "Dó com 7ª menor", "Dó aumentado"],
-                        correct: 1,
-                        explanation: "maj7 = acorde maior + sétima maior (Dó–Mi–Sol–Si)."
-                    },
-                    {
-                        q: "Qual é a tríade de Ré menor?",
-                        options: ["Ré–Fá#–Lá", "Ré–Fá–Lá", "Ré–Fá–Lá♭", "Ré–Fá#–Lá#"],
-                        correct: 1,
-                        explanation: "Ré menor = Ré–Fá–Lá (3ª menor + 3ª maior)."
-                    },
-                    {
-                        q: "O acorde de quinta (power chord) contém:",
-                        options: ["Tônica, terça e quinta", "Tônica e quinta", "Tônica e sétima", "Terça e sétima"],
-                        correct: 1,
-                        explanation: "O power chord usa apenas tônica e quinta (sem a terça)."
-                    },
-                    {
-                        q: "Em um acorde de sétima dominante (ex: G7), a 7ª é:",
-                        options: ["Maior", "Menor", "Diminuta", "Aumentada"],
-                        correct: 1,
-                        explanation: "A 7ª dominante é uma sétima menor sobre um acorde maior."
-                    }
+                    { q: "Qual acorde é formado por Dó – Mi – Sol?", options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó diminuto"], correct: 2, explanation: "Tríade maior." },
+                    { q: "O que significa 'm7' (ex: Am7)?", options: ["Maior com 7ª", "Menor com 7ª menor", "Menor com 7ª maior", "Diminuto"], correct: 1, explanation: "m7 = menor + 7ª menor." },
+                    { q: "Um acorde diminuto é formado por:", options: ["Duas terças maiores", "Duas terças menores", "Terça maior + menor", "Quarta + quinta"], correct: 1, explanation: "Duas terças menores." },
+                    { q: "A cifra 'Cmaj7' representa:", options: ["Dó menor com 7ª", "Dó maior com 7ª maior", "Dó com 7ª menor", "Dó aumentado"], correct: 1, explanation: "maj7 = maior + 7ª maior." },
+                    { q: "Qual é a tríade de Ré menor?", options: ["Ré–Fá#–Lá", "Ré–Fá–Lá", "Ré–Fá–Lá♭", "Ré–Fá#–Lá#"], correct: 1, explanation: "Ré–Fá–Lá." },
+                    { q: "O power chord contém:", options: ["Tônica, terça e quinta", "Tônica e quinta", "Tônica e sétima", "Terça e sétima"], correct: 1, explanation: "Apenas tônica e quinta." },
+                    { q: "Em um acorde de 7ª dominante (G7), a 7ª é:", options: ["Maior", "Menor", "Diminuta", "Aumentada"], correct: 1, explanation: "7ª dominante = 7ª menor." }
                 ]
             },
             progressoes: {
                 title: "Progressões",
                 questions: [
-                    {
-                        q: "Em Dó maior, a progressão I – V – vi – IV é:",
-                        options: ["Dó – Sol – Lá menor – Fá", "Dó – Fá – Lá menor – Sol", "Dó – Sol – Ré – Fá", "Dó – Mi menor – Lá menor – Fá"],
-                        correct: 0,
-                        explanation: "I=Dó, V=Sol, vi=Lám, IV=Fá. Clássica do pop."
-                    },
-                    {
-                        q: "A progressão II – V – I é típica de qual estilo?",
-                        options: ["Blues", "Jazz", "Heavy Metal", "Folk"],
-                        correct: 1,
-                        explanation: "II–V–I é a progressão fundamental do jazz."
-                    },
-                    {
-                        q: "Em uma tonalidade maior, o acorde do V grau é:",
-                        options: ["Menor", "Maior (dominante)", "Diminuto", "Aumentado"],
-                        correct: 1,
-                        explanation: "O V grau forma um acorde maior (dominante), que resolve no I."
-                    },
-                    {
-                        q: "A progressão I – IV – V – I em Sol maior é:",
-                        options: ["Sol – Dó – Ré – Sol", "Sol – Ré – Dó – Sol", "Sol – Lá – Ré – Sol", "Sol – Mi – Ré – Sol"],
-                        correct: 0,
-                        explanation: "I=Sol, IV=Dó, V=Ré."
-                    },
-                    {
-                        q: "O acorde vi (sexto grau) em uma tonalidade maior é:",
-                        options: ["Maior", "Menor", "Diminuto", "Aumentado"],
-                        correct: 1,
-                        explanation: "O vi grau forma um acorde menor (relativa menor)."
-                    },
-                    {
-                        q: "Qual progressão é conhecida como 'cadência plagal'?",
-                        options: ["V – I", "IV – I", "II – V", "vi – IV"],
-                        correct: 1,
-                        explanation: "A cadência plagal é IV–I (o famoso 'Amém')."
-                    }
+                    { q: "Em Dó maior, I – V – vi – IV é:", options: ["Dó – Sol – Lám – Fá", "Dó – Fá – Lám – Sol", "Dó – Sol – Ré – Fá", "Dó – Mim – Lám – Fá"], correct: 0, explanation: "Progressão clássica do pop." },
+                    { q: "A progressão II – V – I é típica de:", options: ["Blues", "Jazz", "Heavy Metal", "Folk"], correct: 1, explanation: "Fundamento do jazz." },
+                    { q: "Em tonalidade maior, o V grau é:", options: ["Menor", "Maior (dominante)", "Diminuto", "Aumentado"], correct: 1, explanation: "V = dominante maior." },
+                    { q: "I – IV – V – I em Sol maior é:", options: ["Sol – Dó – Ré – Sol", "Sol – Ré – Dó – Sol", "Sol – Lá – Ré – Sol", "Sol – Mi – Ré – Sol"], correct: 0, explanation: "I=Sol, IV=Dó, V=Ré." },
+                    { q: "O acorde vi em tonalidade maior é:", options: ["Maior", "Menor", "Diminuto", "Aumentado"], correct: 1, explanation: "vi = menor (relativa)." },
+                    { q: "A cadência plagal é:", options: ["V – I", "IV – I", "II – V", "vi – IV"], correct: 1, explanation: "IV–I = cadência plagal ('Amém')." }
                 ]
             },
             misto: {
                 title: "Desafio Misto",
-                questions: [] // preenchido dinamicamente
+                questions: []
             }
         };
 
-        // Monta o desafio misto com perguntas de várias categorias
         function buildMixedQuiz() {
             const all = [];
-            ['figuras', 'intervalos', 'escalas', 'acordes', 'progressoes'].forEach(cat => {
+            ['figuras', 'ritmos', 'intervalos', 'escalas', 'acordes', 'progressoes'].forEach(cat => {
                 all.push(...exerciseBank[cat].questions);
             });
-            // Embaralha e pega 10
             for (let i = all.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [all[i], all[j]] = [all[j], all[i]];
             }
-            exerciseBank.misto.questions = all.slice(0, 10);
+            exerciseBank.misto.questions = all.slice(0, 12);
         }
         buildMixedQuiz();
 
-        // ========== LÓGICA DO QUIZ ==========
+        // ========== QUIZ LOGIC ==========
         let currentQuestions = [];
         let currentQuestion = 0;
         let score = 0;
@@ -1468,23 +1404,19 @@
         const quizResult = document.getElementById('quizResult');
         const finalScore = document.getElementById('finalScore');
         const resultMessage = document.getElementById('resultMessage');
+        const playExampleBtn = document.getElementById('playExampleBtn');
 
-        // Clique nos cards do menu
         document.querySelectorAll('.exercise-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const cat = card.dataset.category;
-                startExercise(cat);
-            });
+            card.addEventListener('click', () => startExercise(card.dataset.category));
         });
 
         function startExercise(category) {
             currentCategory = category;
-            if (category === 'misto') buildMixedQuiz(); // re-embaralha
+            if (category === 'misto') buildMixedQuiz();
             currentQuestions = exerciseBank[category].questions;
             currentQuestion = 0;
             score = 0;
             answered = false;
-
             quizTitle.textContent = exerciseBank[category].title;
             exerciseMenu.style.display = 'none';
             quizWrapper.classList.add('active');
@@ -1502,6 +1434,14 @@
             quizFeedback.className = 'quiz-feedback';
             quizFeedback.textContent = '';
             nextBtn.style.display = 'none';
+
+            // Botão de áudio rítmico (quando houver pattern)
+            if (q.rhythm && q.rhythm.length) {
+                playExampleBtn.style.display = 'inline-flex';
+                playExampleBtn.onclick = () => playRhythmPattern(q.rhythm, 350);
+            } else {
+                playExampleBtn.style.display = 'none';
+            }
 
             q.options.forEach((opt, i) => {
                 const btn = document.createElement('button');
@@ -1522,11 +1462,13 @@
             if (index === q.correct) {
                 btn.classList.add('correct');
                 score++;
+                playSuccess();
                 quizFeedback.textContent = '✓ Correto! ' + q.explanation;
                 quizFeedback.className = 'quiz-feedback show correct';
             } else {
                 btn.classList.add('wrong');
                 buttons[q.correct].classList.add('correct');
+                playError();
                 quizFeedback.textContent = '✗ Incorreto. ' + q.explanation;
                 quizFeedback.className = 'quiz-feedback show wrong';
             }
@@ -1536,11 +1478,8 @@
 
         nextBtn.addEventListener('click', () => {
             currentQuestion++;
-            if (currentQuestion < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                showResult();
-            }
+            if (currentQuestion < currentQuestions.length) loadQuestion();
+            else showResult();
         });
 
         function showResult() {
@@ -1548,8 +1487,10 @@
             quizResult.classList.add('show');
             finalScore.textContent = `${score}/${currentQuestions.length}`;
             const pct = Math.round((score / currentQuestions.length) * 100);
-            if (pct === 100) resultMessage.textContent = 'Perfeito! Domínio completo deste tema.';
-            else if (pct >= 70) resultMessage.textContent = 'Muito bem! Continue praticando para solidificar.';
+            if (pct === 100) {
+                resultMessage.textContent = 'Perfeito! Domínio completo deste tema.';
+                playSuccess();
+            } else if (pct >= 70) resultMessage.textContent = 'Muito bem! Continue praticando para solidificar.';
             else if (pct >= 40) resultMessage.textContent = 'Bom começo. Revise os conceitos e tente de novo.';
             else resultMessage.textContent = 'Continue estudando! A teoria se constrói com prática.';
         }
@@ -1563,15 +1504,12 @@
 
         document.getElementById('backToMenu').addEventListener('click', backToMenu);
         document.getElementById('backToMenu3').addEventListener('click', backToMenu);
-        document.getElementById('restartQuiz').addEventListener('click', () => {
-            startExercise(currentCategory);
-        });
+        document.getElementById('restartQuiz').addEventListener('click', () => startExercise(currentCategory));
 
         // ========== METRONOME ==========
         let bpm = 100;
         let isPlaying = false;
         let intervalId = null;
-        let audioCtx = null;
         const bpmDisplay = document.getElementById('bpmDisplay');
         const toggleBtn = document.getElementById('metronomeToggle');
         const beatIndicator = document.getElementById('beatIndicator');
@@ -1583,23 +1521,14 @@
             if (bpm > 40) { bpm -= 5; bpmDisplay.textContent = bpm; if (isPlaying) restartMetronome(); }
         });
 
-        function playClick() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = 1000;
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 0.08);
+        function playMetroClick() {
+            playClick(1000, 0.22);
             beatIndicator.classList.add('pulse');
             setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
         }
         function startMetronome() {
-            playClick();
-            intervalId = setInterval(playClick, 60000 / bpm);
+            playMetroClick();
+            intervalId = setInterval(playMetroClick, 60000 / bpm);
             isPlaying = true;
             toggleBtn.textContent = 'Parar';
             toggleBtn.classList.add('active');
@@ -1621,25 +1550,22 @@
             e.preventDefault();
             let valid = true;
             document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
-            const nome = document.getElementById('nome');
-            const email = document.getElementById('email');
-            const instrumento = document.getElementById('instrumento');
-            const nivel = document.getElementById('nivel');
-            if (!nome.value.trim() || nome.value.trim().length < 3) {
+            if (!document.getElementById('nome').value.trim() || document.getElementById('nome').value.trim().length < 3) {
                 document.getElementById('errorNome').classList.add('show'); valid = false;
             }
-            if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) {
                 document.getElementById('errorEmail').classList.add('show'); valid = false;
             }
-            if (!instrumento.value) {
+            if (!document.getElementById('instrumento').value) {
                 document.getElementById('errorInstrumento').classList.add('show'); valid = false;
             }
-            if (!nivel.value) {
+            if (!document.getElementById('nivel').value) {
                 document.getElementById('errorNivel').classList.add('show'); valid = false;
             }
             if (valid) {
                 enrollForm.style.display = 'none';
                 formSuccess.classList.add('show');
+                playSuccess();
             }
         });
         document.getElementById('resetForm').addEventListener('click', () => {
