@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonia Academy | Plataforma de Educação Musical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b0764;
+            --primary-light: #5b21b6;
+            --gold: #c9a227;
+            --gold-light: #e8c547;
+            --cream: #faf8f5;
+            --white: #ffffff;
+            --text: #1c1917;
+            --muted: #78716c;
+            --border: #e7e5e4;
+            --shadow: 0 10px 40px rgba(59, 7, 100, 0.08);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 600;
+        }
+
+        /* ========== NAV ========== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(59, 7, 100, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 0.9rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.6rem 2rem;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e9e5ff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.25s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            background: 
+                linear-gradient(135deg, rgba(59, 7, 100, 0.92) 0%, rgba(30, 5, 60, 0.95) 100%),
+                url('data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M40 0L50 30H80L55 50L65 80L40 60L15 80L25 50L0 30H30Z"/%3E%3C/g%3E%3C/svg%3E');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(201, 162, 39, 0.2);
+            color: var(--gold-light);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(201, 162, 39, 0.4);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 4.2rem);
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #d4d0e8;
+            max-width: 580px;
+            margin: 0 auto 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.95rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, #b8921f 100%);
+            color: #1c1917;
+            box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* ========== SECTIONS ========== */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.6rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-header p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .section-header .line {
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* ========== FEATURES ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 50px rgba(59, 7, 100, 0.12);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.4rem;
+            font-size: 1.6rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.6rem;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* ========== COURSES ========== */
+        .courses {
+            background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.35s ease;
+            border: 1px solid var(--border);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(59, 7, 100, 0.15);
+        }
+
+        .course-image {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: rgba(255,255,255,0.9);
+            position: relative;
+        }
+
+        .course-level {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--gold);
+            color: #1c1917;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .course-body {
+            padding: 1.6rem;
+        }
+
+        .course-body h3 {
+            font-size: 1.35rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-body p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .course-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* ========== PRACTICE TOOL ========== */
+        .practice {
+            background: var(--primary);
+            color: white;
+        }
+
+        .practice .section-header h2 {
+            color: white;
+        }
+
+        .practice .section-header p {
+            color: #c4b5fd;
+        }
+
+        .practice .line {
+            background: var(--gold);
+        }
+
+        .practice-box {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 520px;
+            margin: 0 auto;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .practice-box h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .bpm-display {
+            font-size: 4rem;
+            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            color: white;
+            margin: 1rem 0;
+            letter-spacing: 2px;
+        }
+
+        .bpm-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .bpm-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bpm-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 162, 39, 0.15);
+        }
+
+        .metronome-btn {
+            background: var(--gold);
+            color: #1c1917;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        .metronome-btn:hover {
+            background: var(--gold-light);
+            transform: scale(1.03);
+        }
+
+        .metronome-btn.active {
+            background: #ef4444;
+            color: white;
+        }
+
+        .beat-indicator {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 1.5rem auto 0;
+            transition: all 0.1s;
+        }
+
+        .beat-indicator.pulse {
+            background: var(--gold);
+            box-shadow: 0 0 20px var(--gold);
+            transform: scale(1.3);
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .testimonial {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            color: rgba(59, 7, 100, 0.08);
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            line-height: 1;
+        }
+
+        .testimonial p {
+            color: var(--muted);
+            font-style: italic;
+            margin-bottom: 1.4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .author-info strong {
+            display: block;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .author-info span {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        /* ========== CTA ========== */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, #4c1d95 100%);
+            text-align: center;
+            color: white;
+            padding: 5rem 2rem;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: #c4b5fd;
+            margin-bottom: 2rem;
+            font-size: 1.15rem;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #1c0a2e;
+            color: #a8a29e;
+            padding: 3.5rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-brand .logo {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .footer-brand p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col a {
+            color: #a8a29e;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.6rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-top: 1.8rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1rem;
+                border-bottom: 2px solid var(--gold);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <a href="#" class="logo">Harmonia <span>Academy</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#inicio" class="active">Início</a></li>
+            <li><a href="#recursos">Recursos</a></li>
+            <li><a href="#cursos">Cursos</a></li>
+            <li><a href="#pratica">Prática</a></li>
+            <li><a href="#depoimentos">Depoimentos</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="hero-badge">PLATAFORMA DE EDUCAÇÃO MUSICAL</div>
+            <h1>Domine a música com<br><span>excelência e método</span></h1>
+            <p>Uma plataforma sofisticada para músicos que buscam evolução real — teoria, prática e performance em um só lugar.</p>
+            <div class="hero-buttons">
+                <a href="#cursos" class="btn btn-primary">Explorar Cursos</a>
+                <a href="#pratica" class="btn btn-outline">Experimentar Metrônomo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="recursos">
+        <div class="container">
+            <div class="section-header">
+                <h2>Por que escolher a Harmonia</h2>
+                <p>Ferramentas e metodologia pensadas para o músico contemporâneo.</p>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎼</div>
+                    <h3>Teoria Aplicada</h3>
+                    <p>Aprenda harmonia, escalas e progressões de forma prática e conectada ao instrumento.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎹</div>
+                    <h3>Prática Guiada</h3>
+                    <p>Exercícios progressivos com feedback e métricas de evolução em tempo real.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Audição Ativa</h3>
+                    <p>Treine o ouvido musical com ditados, reconhecimento de intervalos e progressões.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📜</div>
+                    <h3>Leitura & Partitura</h3>
+                    <p>Do solfejo básico à leitura avançada de partituras e tablaturas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COURSES -->
+    <section class="courses" id="cursos">
+        <div class="container">
+            <div class="section-header">
+                <h2>Cursos em Destaque</h2>
+                <p>Programas estruturados para todos os níveis e instrumentos.</p>
+                <div class="line"></div>
+            </div>
+            <div class="courses-grid">
+                <article class="course-card">
+                    <div class="course-image">
+                        <span>🎸</span>
+                        <span class="course-level">Iniciante</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Fundamentos da Guitarra</h3>
+                        <p>Postura, acordes, ritmos e primeiras músicas. Base sólida para qualquer estilo.</p>
+                        <div class="course-meta">
+                            <span>⏱ 12 semanas</span>
+                            <span>📚 24 aulas</span>
+                        </div>
+                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">
+                        <span>🎹</span>
+                        <span class="course-level">Intermediário</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Harmonia no Piano</h3>
+                        <p>Voicings, progressões jazzísticas e acompanhamento contemporâneo.</p>
+                        <div class="course-meta">
+                            <span>⏱ 16 semanas</span>
+                            <span>📚 32 aulas</span>
+                        </div>
+                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <div class="course-image" style="background: linear-gradient(135deg, #1e3a5f, #3b82f6);">
+                        <span>🎤</span>
+                        <span class="course-level">Avançado</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>Performance Vocal</h3>
+                        <p>Técnica, interpretação, presença de palco e preparação para gravação.</p>
+                        <div class="course-meta">
+                            <span>⏱ 10 semanas</span>
+                            <span>📚 20 aulas</span>
+                        </div>
+                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRACTICE / METRONOME -->
+    <section class="practice" id="pratica">
+        <div class="container">
+            <div class="section-header">
+                <h2>Ferramenta de Prática</h2>
+                <p>Metrônomo integrado para treinos precisos e consistentes.</p>
+                <div class="line"></div>
+            </div>
+            <div class="practice-box">
+                <h3>Metrônomo Online</h3>
+                <p style="color:#c4b5fd; margin-bottom:0.5rem;">Ajuste o BPM e pratique no tempo</p>
+                <div class="bpm-display" id="bpmDisplay">100</div>
+                <div class="bpm-controls">
+                    <button class="bpm-btn" id="bpmDown" aria-label="Diminuir BPM">−</button>
+                    <span style="font-size:0.9rem;color:#c4b5fd;">BPM</span>
+                    <button class="bpm-btn" id="bpmUp" aria-label="Aumentar BPM">+</button>
+                </div>
+                <button class="metronome-btn" id="metronomeToggle">Iniciar</button>
+                <div class="beat-indicator" id="beatIndicator"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="depoimentos">
+        <div class="container">
+            <div class="section-header">
+                <h2>O que dizem nossos alunos</h2>
+                <p>Histórias reais de evolução musical.</p>
+                <div class="line"></div>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <p>A metodologia da Harmonia transformou minha forma de estudar. Em seis meses avancei mais do que em anos de aulas convencionais.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <strong>Marina Costa</strong>
+                            <span>Guitarra • Intermediário</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>O metrônomo e os exercícios de audição são excepcionais. Finalmente consegui internalizar o tempo e ouvir harmonia de verdade.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">R</div>
+                        <div class="author-info">
+                            <strong>Rafael Mendes</strong>
+                            <span>Piano • Avançado</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>Plataforma elegante, conteúdo profundo e professores que realmente entendem o processo de aprendizado musical.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <strong>Ana Beatriz</strong>
+                            <span>Canto • Iniciante</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Pronto para elevar sua música?</h2>
+        <p>Junte-se a milhares de músicos que já transformaram sua prática.</p>
+        <a href="#cursos" class="btn btn-primary">Começar minha jornada</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo">Harmonia <span>Academy</span></a>
+                <p>Plataforma de educação musical sofisticada para quem busca excelência técnica e artística.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Plataforma</h4>
+                <ul>
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#pratica">Ferramentas</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Suporte</h4>
+                <ul>
+                    <li><a href="#">Central de Ajuda</a></li>
+                    <li><a href="#">Contato</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacidade</a></li>
+                    <li><a href="#">Termos de Uso</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Harmonia Academy. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        // ========== NAV SCROLL ==========
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ========== MOBILE MENU ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Fechar menu ao clicar em link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ========== ACTIVE LINK ==========
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === '#' + current) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // ========== METRONOME ==========
+        let bpm = 100;
+        let isPlaying = false;
+        let intervalId = null;
+        let audioCtx = null;
+
+        const bpmDisplay = document.getElementById('bpmDisplay');
+        const bpmUp = document.getElementById('bpmUp');
+        const bpmDown = document.getElementById('bpmDown');
+        const toggleBtn = document.getElementById('metronomeToggle');
+        const beatIndicator = document.getElementById('beatIndicator');
+
+        function updateBpmDisplay() {
+            bpmDisplay.textContent = bpm;
+        }
+
+        bpmUp.addEventListener('click', () => {
+            if (bpm < 240) {
+                bpm += 5;
+                updateBpmDisplay();
+                if (isPlaying) restartMetronome();
+            }
+        });
+
+        bpmDown.addEventListener('click', () => {
+            if (bpm > 40) {
+                bpm -= 5;
+                updateBpmDisplay();
+                if (isPlaying) restartMetronome();
+            }
+        });
+
+        function playClick() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 1000;
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
+
+            // Visual pulse
+            beatIndicator.classList.add('pulse');
+            setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
+        }
+
+        function startMetronome() {
+            const interval = 60000 / bpm;
+            playClick();
+            intervalId = setInterval(playClick, interval);
+            isPlaying = true;
+            toggleBtn.textContent = 'Parar';
+            toggleBtn.classList.add('active');
+        }
+
+        function stopMetronome() {
+            clearInterval(intervalId);
+            isPlaying = false;
+            toggleBtn.textContent = 'Iniciar';
+            toggleBtn.classList.remove('active');
+            beatIndicator.classList.remove('pulse');
+        }
+
+        function restartMetronome() {
+            stopMetronome();
+            startMetronome();
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                stopMetronome();
+            } else {
+                startMetronome();
+            }
+        });
+    </script>
+</body>
+</html>
