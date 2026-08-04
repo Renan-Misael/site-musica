@@ -6,6 +6,8 @@
     <title>Harmonia Academy | Plataforma de Educação Musical</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- jsPDF para download de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #3b0764;
@@ -22,727 +24,430 @@
             --success: #16a34a;
             --error: #dc2626;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', system-ui, sans-serif;
             background: var(--cream);
             color: var(--text);
             line-height: 1.6;
         }
-
         h1, h2, h3, h4 {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
         }
-
         nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             background: rgba(59, 7, 100, 0.95);
             backdrop-filter: blur(12px);
-            padding: 0.9rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 0.9rem 1.5rem;
+            display: flex; justify-content: space-between; align-items: center;
             border-bottom: 2px solid var(--gold);
             transition: all 0.3s ease;
         }
-        nav.scrolled {
-            padding: 0.6rem 2rem;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-        }
+        nav.scrolled { padding: 0.55rem 1.5rem; box-shadow: 0 4px 30px rgba(0,0,0,0.2); }
         .logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--white);
-            text-decoration: none;
-            letter-spacing: 1px;
+            font-size: 1.5rem; font-weight: 700; color: var(--white);
+            text-decoration: none; letter-spacing: 1px;
         }
         .logo span { color: var(--gold); }
-        .nav-links {
-            display: flex;
-            gap: 1.6rem;
-            list-style: none;
-        }
+        .nav-links { display: flex; gap: 1.1rem; list-style: none; flex-wrap: wrap; justify-content: flex-end; }
         .nav-links a {
-            color: #e9e5ff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.92rem;
-            transition: color 0.25s;
-            position: relative;
+            color: #e9e5ff; text-decoration: none; font-weight: 500; font-size: 0.86rem;
+            transition: color 0.25s; position: relative;
         }
-        .nav-links a:hover,
-        .nav-links a.active { color: var(--gold); }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--gold);
-            transition: width 0.3s;
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--gold); transition: width 0.3s;
         }
         .nav-links a:hover::after { width: 100%; }
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+        .menu-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
         .hero {
             min-height: 100vh;
-            background: 
-                linear-gradient(135deg, rgba(59, 7, 100, 0.92) 0%, rgba(30, 5, 60, 0.95) 100%),
-                url('data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M40 0L50 30H80L55 50L65 80L40 60L15 80L25 50L0 30H30Z"/%3E%3C/g%3E%3C/svg%3E');
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, rgba(59, 7, 100, 0.92) 0%, rgba(30, 5, 60, 0.95) 100%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white; padding: 6rem 2rem 4rem;
         }
         .hero-content { max-width: 800px; }
         .hero-badge {
-            display: inline-block;
-            background: rgba(201, 162, 39, 0.2);
-            color: var(--gold-light);
-            padding: 0.4rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(201, 162, 39, 0.4);
+            display: inline-block; background: rgba(201, 162, 39, 0.2); color: var(--gold-light);
+            padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 1px; margin-bottom: 1.5rem; border: 1px solid rgba(201, 162, 39, 0.4);
         }
-        .hero h1 {
-            font-size: clamp(2.8rem, 6vw, 4.2rem);
-            line-height: 1.15;
-            margin-bottom: 1.2rem;
-        }
+        .hero h1 { font-size: clamp(2.5rem, 5.5vw, 3.8rem); line-height: 1.15; margin-bottom: 1.2rem; }
         .hero h1 span { color: var(--gold); }
-        .hero p {
-            font-size: 1.2rem;
-            color: #d4d0e8;
-            max-width: 580px;
-            margin: 0 auto 2.5rem;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .hero p { font-size: 1.1rem; color: #d4d0e8; max-width: 540px; margin: 0 auto 2.5rem; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.95rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.45rem;
+            padding: 0.85rem 1.6rem; border-radius: 10px; font-weight: 600; font-size: 0.92rem;
+            text-decoration: none; cursor: pointer; border: none; transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--gold) 0%, #b8921f 100%);
-            color: #1c1917;
-            box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
+            color: #1c1917; box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
         }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.45);
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201, 162, 39, 0.45); }
+        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.4); color: white; }
+        .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: rgba(201, 162, 39, 0.1); }
+        .btn-secondary { background: var(--primary); color: white; }
+        .btn-secondary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; border: 2px solid var(--border); color: var(--primary); }
+        .btn-ghost:hover { border-color: var(--primary); background: rgba(59, 7, 100, 0.05); }
+        .btn-sm { padding: 0.48rem 0.95rem; font-size: 0.82rem; }
+        .btn-pdf {
+            background: #b91c1c; color: white;
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.4);
-            color: white;
-        }
-        .btn-outline:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(201, 162, 39, 0.1);
-        }
-        .btn-secondary {
-            background: var(--primary);
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-        }
-        .btn-ghost {
-            background: transparent;
-            border: 2px solid var(--border);
-            color: var(--primary);
-        }
-        .btn-ghost:hover {
-            border-color: var(--primary);
-            background: rgba(59, 7, 100, 0.05);
-        }
-        .btn-audio {
-            background: rgba(59, 7, 100, 0.1);
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
-        .btn-audio:hover {
-            background: var(--primary);
-            color: white;
-        }
+        .btn-pdf:hover { background: #991b1b; transform: translateY(-2px); }
 
-        section { padding: 5rem 2rem; }
+        section { padding: 4.5rem 1.5rem; }
         .container { max-width: 1100px; margin: 0 auto; }
-        .section-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-        .section-header h2 {
-            font-size: 2.6rem;
-            color: var(--primary);
-            margin-bottom: 0.8rem;
-        }
-        .section-header p {
-            color: var(--muted);
-            font-size: 1.1rem;
-            max-width: 560px;
-            margin: 0 auto;
-        }
+        .section-header { text-align: center; margin-bottom: 2.8rem; }
+        .section-header h2 { font-size: 2.35rem; color: var(--primary); margin-bottom: 0.65rem; }
+        .section-header p { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0 auto; }
         .section-header .line {
-            width: 60px;
-            height: 3px;
-            background: var(--gold);
-            margin: 1rem auto 0;
-            border-radius: 2px;
+            width: 60px; height: 3px; background: var(--gold); margin: 1rem auto 0; border-radius: 2px;
         }
 
         .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.8rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.4rem;
         }
         .feature-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-top: 4px solid var(--primary);
-            transition: all 0.3s ease;
-            text-align: center;
+            background: var(--white); padding: 1.7rem; border-radius: var(--radius);
+            box-shadow: var(--shadow); border-top: 4px solid var(--primary);
+            transition: all 0.3s ease; text-align: center;
         }
-        .feature-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 50px rgba(59, 7, 100, 0.12);
-        }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(59, 7, 100, 0.12); }
         .feature-icon {
-            width: 64px; height: 64px;
+            width: 56px; height: 56px;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.4rem;
-            font-size: 1.6rem;
-            color: white;
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.1rem; font-size: 1.45rem; color: white;
         }
-        .feature-card h3 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-bottom: 0.6rem;
-        }
-        .feature-card p { color: var(--muted); font-size: 0.95rem; }
+        .feature-card h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: 0.45rem; }
+        .feature-card p { color: var(--muted); font-size: 0.9rem; }
 
         .courses { background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%); }
         .courses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.6rem;
         }
         .course-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.35s ease;
-            border: 1px solid var(--border);
+            background: var(--white); border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow); transition: all 0.35s ease; border: 1px solid var(--border);
         }
-        .course-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(59, 7, 100, 0.15);
-        }
+        .course-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(59, 7, 100, 0.15); }
         .course-image {
-            height: 160px;
-            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            color: rgba(255,255,255,0.9);
-            position: relative;
+            height: 145px; background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;
+            color: rgba(255,255,255,0.9); position: relative;
         }
         .course-level {
-            position: absolute;
-            top: 12px; right: 12px;
-            background: var(--gold);
-            color: #1c1917;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.3rem 0.7rem;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            position: absolute; top: 10px; right: 10px; background: var(--gold); color: #1c1917;
+            font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 50px; text-transform: uppercase;
         }
-        .course-body { padding: 1.6rem; }
-        .course-body h3 {
-            font-size: 1.35rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        .course-body p {
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.2rem;
-        }
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-bottom: 1.2rem;
-        }
+        .course-body { padding: 1.4rem; }
+        .course-body h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: 0.4rem; }
+        .course-body p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.9rem; }
+        .course-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.9rem; }
 
-        .theory {
-            background: linear-gradient(180deg, var(--cream) 0%, #f0ebe3 100%);
-        }
-
+        .theory { background: linear-gradient(180deg, var(--cream) 0%, #f0ebe3 100%); }
         .exercise-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 1.3rem;
-            margin-bottom: 1rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.15rem;
         }
-
         .exercise-card {
-            background: var(--white);
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.6rem 1.3rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
+            background: var(--white); border: 2px solid var(--border); border-radius: var(--radius);
+            padding: 1.4rem 1.1rem; text-align: center; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: var(--shadow);
         }
         .exercise-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
+            border-color: var(--primary); transform: translateY(-5px);
             box-shadow: 0 14px 40px rgba(59, 7, 100, 0.12);
         }
-        .exercise-card .icon {
-            font-size: 2.2rem;
-            margin-bottom: 0.7rem;
-        }
+        .exercise-card .icon { font-size: 1.9rem; margin-bottom: 0.55rem; }
         .exercise-card h3 {
-            font-size: 1.15rem;
-            color: var(--primary);
-            margin-bottom: 0.35rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
+            font-size: 1.05rem; color: var(--primary); margin-bottom: 0.28rem;
+            font-family: 'Inter', sans-serif; font-weight: 600;
         }
-        .exercise-card p {
-            color: var(--muted);
-            font-size: 0.88rem;
-            margin-bottom: 0.7rem;
-        }
+        .exercise-card p { color: var(--muted); font-size: 0.82rem; margin-bottom: 0.55rem; }
         .exercise-card .count {
-            display: inline-block;
-            background: rgba(59, 7, 100, 0.08);
-            color: var(--primary);
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 0.25rem 0.65rem;
-            border-radius: 50px;
+            display: inline-block; background: rgba(59, 7, 100, 0.08); color: var(--primary);
+            font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 50px;
         }
-
         .quiz-wrapper { display: none; }
         .quiz-wrapper.active { display: block; }
-
         .quiz-container {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 700px;
-            margin: 0 auto;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+            max-width: 700px; margin: 0 auto; overflow: hidden; border: 1px solid var(--border);
         }
-
         .quiz-header {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            padding: 1.3rem 1.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
+            color: white; padding: 1.15rem 1.5rem; display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 0.65rem;
         }
-        .quiz-header h3 {
-            font-size: 1.25rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
+        .quiz-header h3 { font-size: 1.15rem; font-family: 'Inter', sans-serif; font-weight: 600; }
         .quiz-progress {
-            font-size: 0.88rem;
-            background: rgba(255,255,255,0.15);
-            padding: 0.3rem 0.85rem;
-            border-radius: 50px;
+            font-size: 0.82rem; background: rgba(255,255,255,0.15);
+            padding: 0.25rem 0.75rem; border-radius: 50px;
         }
-
-        .quiz-body { padding: 2rem; }
-
+        .quiz-body { padding: 1.7rem; }
         .question-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            font-size: 1.12rem; font-weight: 600; color: var(--primary);
+            margin-bottom: 0.55rem; line-height: 1.5;
         }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+        .question-explanation {
+            display: none; margin: 0.75rem 0 1.1rem; padding: 0.95rem 1.1rem;
+            border-radius: 10px; font-size: 0.9rem; line-height: 1.55;
+            border-left: 4px solid var(--primary); background: rgba(59, 7, 100, 0.06); color: var(--text);
         }
-
+        .question-explanation.show { display: block; }
+        .question-explanation.correct-exp { border-left-color: var(--success); background: rgba(22, 163, 74, 0.08); }
+        .question-explanation.wrong-exp { border-left-color: var(--error); background: rgba(220, 38, 38, 0.06); }
+        .question-explanation strong { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; }
+        .options { display: flex; flex-direction: column; gap: 0.65rem; }
         .option-btn {
-            background: #faf8f5;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 0.95rem 1.2rem;
-            text-align: left;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.25s;
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
+            background: #faf8f5; border: 2px solid var(--border); border-radius: 12px;
+            padding: 0.85rem 1.1rem; text-align: left; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.25s; font-family: 'Inter', sans-serif; color: var(--text);
         }
-        .option-btn:hover:not(:disabled) {
-            border-color: var(--primary);
-            background: rgba(59, 7, 100, 0.04);
-        }
-        .option-btn.correct {
-            border-color: var(--success);
-            background: rgba(22, 163, 74, 0.1);
-            color: var(--success);
-        }
-        .option-btn.wrong {
-            border-color: var(--error);
-            background: rgba(220, 38, 38, 0.08);
-            color: var(--error);
-        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: rgba(59, 7, 100, 0.04); }
+        .option-btn.correct { border-color: var(--success); background: rgba(22, 163, 74, 0.1); color: var(--success); }
+        .option-btn.wrong { border-color: var(--error); background: rgba(220, 38, 38, 0.08); color: var(--error); }
         .option-btn:disabled { cursor: default; }
-
-        .quiz-feedback {
-            margin-top: 1.4rem;
-            padding: 1rem 1.2rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            display: none;
-        }
-        .quiz-feedback.show { display: block; }
-        .quiz-feedback.correct {
-            background: rgba(22, 163, 74, 0.1);
-            color: var(--success);
-            border: 1px solid rgba(22, 163, 74, 0.3);
-        }
-        .quiz-feedback.wrong {
-            background: rgba(220, 38, 38, 0.08);
-            color: var(--error);
-            border: 1px solid rgba(220, 38, 38, 0.25);
-        }
-
-        .quiz-actions {
-            margin-top: 1.6rem;
-            display: flex;
-            gap: 0.8rem;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .quiz-result {
-            text-align: center;
-            padding: 2.5rem 2rem;
-            display: none;
-        }
+        .quiz-actions { margin-top: 1.4rem; display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap; }
+        .quiz-result { text-align: center; padding: 2.3rem 1.8rem; display: none; }
         .quiz-result.show { display: block; }
         .quiz-result .score {
-            font-size: 3.5rem;
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 3rem; font-family: 'Cormorant Garamond', serif;
+            font-weight: 700; color: var(--primary); margin: 0.9rem 0;
+        }
+        .quiz-result p { color: var(--muted); margin-bottom: 1.4rem; }
+        .back-to-menu { margin-bottom: 1.3rem; }
+        .btn-audio {
+            background: rgba(59, 7, 100, 0.1); border: 2px solid var(--primary);
+            color: var(--primary); padding: 0.5rem 1rem; font-size: 0.85rem; margin-bottom: 0.9rem;
+        }
+        .btn-audio:hover { background: var(--primary); color: white; }
+
+        /* BIBLIOTECA */
+        .library { background: var(--white); }
+        .library-filters {
+            display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: center; margin-bottom: 2rem;
+        }
+        .filter-btn {
+            padding: 0.45rem 1rem; border-radius: 50px; border: 1.5px solid var(--border);
+            background: var(--cream); color: var(--muted); font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.25s; font-family: 'Inter', sans-serif;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary); border-color: var(--primary); color: white;
+        }
+        .scores-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.3rem;
+        }
+        .score-card {
+            background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column;
+        }
+        .score-card:hover {
+            transform: translateY(-4px); box-shadow: var(--shadow); border-color: rgba(59, 7, 100, 0.25);
+        }
+        .score-preview {
+            height: 95px; background: linear-gradient(135deg, #f5f0eb, #ebe4d8);
+            display: flex; align-items: center; justify-content: center; font-size: 2.3rem;
+            border-bottom: 1px solid var(--border); position: relative;
+        }
+        .score-preview .badge {
+            position: absolute; top: 8px; left: 8px; background: var(--primary); color: white;
+            font-size: 0.68rem; font-weight: 700; padding: 0.18rem 0.5rem; border-radius: 50px; text-transform: uppercase;
+        }
+        .score-body { padding: 1.15rem; flex: 1; display: flex; flex-direction: column; }
+        .score-body h3 {
+            font-size: 1.1rem; color: var(--primary); margin-bottom: 0.2rem;
+            font-family: 'Inter', sans-serif; font-weight: 600;
+        }
+        .score-composer { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.65rem; }
+        .score-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.85rem; }
+        .score-tag {
+            font-size: 0.7rem; background: rgba(59, 7, 100, 0.08); color: var(--primary);
+            padding: 0.18rem 0.5rem; border-radius: 50px; font-weight: 600;
+        }
+        .score-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; flex: 1; }
+        .score-actions { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+
+        /* Modal + Transpositor */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(28, 10, 46, 0.72);
+            z-index: 2000; align-items: center; justify-content: center; padding: 1.2rem;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--white); border-radius: var(--radius); max-width: 580px; width: 100%;
+            max-height: 92vh; overflow-y: auto; padding: 1.9rem; position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+        .modal-close {
+            position: absolute; top: 0.9rem; right: 0.9rem; background: none; border: none;
+            font-size: 1.5rem; cursor: pointer; color: var(--muted); line-height: 1;
+        }
+        .modal-close:hover { color: var(--primary); }
+        .modal h3 { color: var(--primary); font-size: 1.4rem; margin-bottom: 0.25rem; padding-right: 2rem; }
+        .modal .composer { color: var(--muted); margin-bottom: 1rem; font-size: 0.92rem; }
+        .modal-notation {
+            background: #faf8f5; border: 1px solid var(--border); border-radius: 10px;
+            padding: 1.1rem; margin: 0.9rem 0; font-family: 'Courier New', monospace;
+            font-size: 0.88rem; line-height: 1.65; color: var(--text); white-space: pre-wrap;
+        }
+        .modal p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.7rem; }
+
+        .transpose-box {
+            background: rgba(59, 7, 100, 0.06);
+            border: 1px solid rgba(59, 7, 100, 0.15);
+            border-radius: 12px;
+            padding: 1rem 1.15rem;
             margin: 1rem 0;
         }
-        .quiz-result p { color: var(--muted); margin-bottom: 1.5rem; }
-
-        .back-to-menu { margin-bottom: 1.5rem; }
+        .transpose-box label {
+            display: block; font-weight: 600; font-size: 0.88rem; color: var(--primary); margin-bottom: 0.55rem;
+        }
+        .transpose-controls {
+            display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+        }
+        .transpose-controls select {
+            padding: 0.5rem 0.75rem; border-radius: 8px; border: 1.5px solid var(--border);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; background: white; color: var(--text);
+        }
+        .transpose-controls .semitone-label {
+            font-size: 0.85rem; color: var(--muted); min-width: 90px;
+        }
+        .modal-actions {
+            display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.1rem;
+        }
 
         .practice { background: var(--primary); color: white; }
         .practice .section-header h2 { color: white; }
         .practice .section-header p { color: #c4b5fd; }
         .practice .line { background: var(--gold); }
-
         .practice-box {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            max-width: 520px;
-            margin: 0 auto;
-            text-align: center;
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius); padding: 2.2rem; max-width: 480px; margin: 0 auto;
+            text-align: center; backdrop-filter: blur(8px);
         }
-        .practice-box h3 { font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--gold); }
+        .practice-box h3 { font-size: 1.45rem; margin-bottom: 0.45rem; color: var(--gold); }
         .bpm-display {
-            font-size: 4rem;
-            font-weight: 700;
-            font-family: 'Cormorant Garamond', serif;
-            color: white;
-            margin: 1rem 0;
+            font-size: 3.6rem; font-weight: 700; font-family: 'Cormorant Garamond', serif;
+            color: white; margin: 0.9rem 0;
         }
         .bpm-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            align-items: center;
+            display: flex; justify-content: center; gap: 0.9rem; margin-bottom: 1.3rem; align-items: center;
         }
         .bpm-btn {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: transparent;
-            color: white;
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+            background: transparent; color: white; font-size: 1.25rem; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
         }
-        .bpm-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(201, 162, 39, 0.15);
-        }
+        .bpm-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201, 162, 39, 0.15); }
         .metronome-btn {
-            background: var(--gold);
-            color: #1c1917;
-            border: none;
-            padding: 0.9rem 2.5rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            max-width: 220px;
+            background: var(--gold); color: #1c1917; border: none; padding: 0.8rem 2.2rem;
+            border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.3s; width: 100%; max-width: 200px;
         }
         .metronome-btn:hover { background: var(--gold-light); transform: scale(1.03); }
         .metronome-btn.active { background: #ef4444; color: white; }
         .beat-indicator {
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            margin: 1.5rem auto 0;
-            transition: all 0.1s;
+            width: 15px; height: 15px; border-radius: 50%; background: rgba(255,255,255,0.2);
+            margin: 1.3rem auto 0; transition: all 0.1s;
         }
         .beat-indicator.pulse {
-            background: var(--gold);
-            box-shadow: 0 0 20px var(--gold);
-            transform: scale(1.3);
+            background: var(--gold); box-shadow: 0 0 16px var(--gold); transform: scale(1.3);
         }
 
         .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.8rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem;
         }
         .testimonial {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            position: relative;
+            background: var(--white); padding: 1.7rem; border-radius: var(--radius);
+            box-shadow: var(--shadow); position: relative;
         }
         .testimonial::before {
-            content: '"';
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
-            color: rgba(59, 7, 100, 0.08);
-            position: absolute;
-            top: -10px; left: 16px;
-            line-height: 1;
+            content: '"'; font-family: 'Cormorant Garamond', serif; font-size: 4.2rem;
+            color: rgba(59, 7, 100, 0.08); position: absolute; top: -6px; left: 12px; line-height: 1;
         }
         .testimonial p {
-            color: var(--muted);
-            font-style: italic;
-            margin-bottom: 1.4rem;
-            position: relative;
-            z-index: 1;
+            color: var(--muted); font-style: italic; margin-bottom: 1.1rem;
+            position: relative; z-index: 1; font-size: 0.92rem;
         }
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
+        .testimonial-author { display: flex; align-items: center; gap: 0.7rem; }
         .author-avatar {
-            width: 44px; height: 44px;
-            border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
+            display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;
         }
-        .author-info strong { display: block; color: var(--primary); font-size: 0.95rem; }
-        .author-info span { font-size: 0.8rem; color: var(--muted); }
+        .author-info strong { display: block; color: var(--primary); font-size: 0.9rem; }
+        .author-info span { font-size: 0.75rem; color: var(--muted); }
 
         .enroll { background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%); }
         .form-container {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 2.5rem;
-            border: 1px solid var(--border);
+            background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+            max-width: 600px; margin: 0 auto; padding: 2.2rem; border: 1px solid var(--border);
         }
-        .form-group { margin-bottom: 1.4rem; }
+        .form-group { margin-bottom: 1.2rem; }
         .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--primary);
-            margin-bottom: 0.45rem;
+            display: block; font-weight: 600; font-size: 0.86rem; color: var(--primary); margin-bottom: 0.35rem;
         }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            background: #faf8f5;
-            color: var(--text);
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 0.8rem 0.95rem; border: 1.5px solid var(--border); border-radius: 10px;
+            font-size: 0.95rem; font-family: 'Inter', sans-serif; background: #faf8f5; color: var(--text);
             transition: all 0.25s;
         }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: white;
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--primary); background: white;
             box-shadow: 0 0 0 4px rgba(59, 7, 100, 0.1);
         }
-        .form-group textarea { resize: vertical; min-height: 110px; }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-        }
-        .form-error {
-            color: var(--error);
-            font-size: 0.85rem;
-            margin-top: 0.35rem;
-            display: none;
-        }
+        .form-group textarea { resize: vertical; min-height: 95px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-error { color: var(--error); font-size: 0.8rem; margin-top: 0.28rem; display: none; }
         .form-error.show { display: block; }
-        .form-success {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
+        .form-success { display: none; text-align: center; padding: 1.8rem; }
         .form-success.show { display: block; }
-        .form-success .icon { font-size: 3.5rem; margin-bottom: 1rem; }
-        .form-success h3 {
-            color: var(--primary);
-            font-size: 1.6rem;
-            margin-bottom: 0.6rem;
-        }
+        .form-success .icon { font-size: 3rem; margin-bottom: 0.8rem; }
+        .form-success h3 { color: var(--primary); font-size: 1.4rem; margin-bottom: 0.45rem; }
         .form-success p { color: var(--muted); }
 
         .cta {
             background: linear-gradient(135deg, var(--primary) 0%, #4c1d95 100%);
-            text-align: center;
-            color: white;
-            padding: 5rem 2rem;
+            text-align: center; color: white; padding: 4.2rem 1.5rem;
         }
-        .cta h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .cta p { color: #c4b5fd; margin-bottom: 2rem; font-size: 1.15rem; }
+        .cta h2 { font-size: 2.2rem; margin-bottom: 0.85rem; }
+        .cta p { color: #c4b5fd; margin-bottom: 1.7rem; font-size: 1.05rem; }
 
         footer {
-            background: #1c0a2e;
-            color: #a8a29e;
-            padding: 3.5rem 2rem 2rem;
+            background: #1c0a2e; color: #a8a29e; padding: 3rem 1.5rem 1.7rem;
         }
         .footer-grid {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 2.5rem;
-            margin-bottom: 2.5rem;
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
         }
-        .footer-brand .logo {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-        .footer-brand p {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            max-width: 280px;
-        }
+        .footer-brand .logo { font-size: 1.35rem; margin-bottom: 0.85rem; display: inline-block; }
+        .footer-brand p { font-size: 0.9rem; line-height: 1.7; max-width: 260px; }
         .footer-col h4 {
-            color: white;
-            font-size: 1.1rem;
-            margin-bottom: 1.2rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
+            color: white; font-size: 1rem; margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif; font-weight: 600;
         }
         .footer-col ul { list-style: none; }
         .footer-col a {
-            color: #a8a29e;
-            text-decoration: none;
-            font-size: 0.95rem;
-            display: block;
-            margin-bottom: 0.6rem;
-            transition: color 0.2s;
+            color: #a8a29e; text-decoration: none; font-size: 0.9rem;
+            display: block; margin-bottom: 0.5rem; transition: color 0.2s;
         }
         .footer-col a:hover { color: var(--gold); }
         .footer-bottom {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding-top: 1.8rem;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            text-align: center;
-            font-size: 0.9rem;
+            max-width: 1100px; margin: 0 auto; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.08); text-align: center; font-size: 0.85rem;
         }
 
         @media (max-width: 900px) {
@@ -751,828 +456,864 @@
         }
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%; left: 0; right: 0;
-                background: var(--primary);
-                flex-direction: column;
-                padding: 1.5rem;
-                gap: 1rem;
-                border-bottom: 2px solid var(--gold);
+                display: none; position: absolute; top: 100%; left: 0; right: 0;
+                background: var(--primary); flex-direction: column; padding: 1.3rem;
+                gap: 0.85rem; border-bottom: 2px solid var(--gold);
             }
             .nav-links.open { display: flex; }
             .menu-toggle { display: block; }
-            .hero h1 { font-size: 2.4rem; }
-            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .quiz-header { flex-direction: column; align-items: flex-start; }
+            .hero h1 { font-size: 2.2rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav id="navbar">
-        <a href="#" class="logo">Harmonia <span>Academy</span></a>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#inicio" class="active">Início</a></li>
-            <li><a href="#recursos">Recursos</a></li>
-            <li><a href="#cursos">Cursos</a></li>
-            <li><a href="#teoria">Teoria</a></li>
-            <li><a href="#pratica">Prática</a></li>
-            <li><a href="#inscricao">Inscrição</a></li>
-        </ul>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
-    </nav>
+<nav id="navbar">
+    <a href="#" class="logo">Harmonia <span>Academy</span></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio" class="active">Início</a></li>
+        <li><a href="#recursos">Recursos</a></li>
+        <li><a href="#cursos">Cursos</a></li>
+        <li><a href="#teoria">Teoria</a></li>
+        <li><a href="#biblioteca">Partituras</a></li>
+        <li><a href="#pratica">Prática</a></li>
+        <li><a href="#inscricao">Inscrição</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+</nav>
 
-    <section class="hero" id="inicio">
-        <div class="hero-content">
-            <div class="hero-badge">PLATAFORMA DE EDUCAÇÃO MUSICAL</div>
-            <h1>Domine a música com<br><span>excelência e método</span></h1>
-            <p>Uma plataforma sofisticada para músicos que buscam evolução real — teoria, prática e performance em um só lugar.</p>
-            <div class="hero-buttons">
-                <a href="#cursos" class="btn btn-primary">Explorar Cursos</a>
-                <a href="#teoria" class="btn btn-outline">Praticar Teoria</a>
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <div class="hero-badge">PLATAFORMA DE EDUCAÇÃO MUSICAL</div>
+        <h1>Domine a música com<br><span>excelência e método</span></h1>
+        <p>Teoria, ritmo, partituras com transposição e download em PDF — tudo em um só lugar.</p>
+        <div class="hero-buttons">
+            <a href="#biblioteca" class="btn btn-primary">Biblioteca & PDF</a>
+            <a href="#teoria" class="btn btn-outline">Praticar Teoria</a>
+        </div>
+    </div>
+</section>
+
+<section id="recursos">
+    <div class="container">
+        <div class="section-header">
+            <h2>Por que escolher a Harmonia</h2>
+            <p>Ferramentas pensadas para o estudo real do músico.</p>
+            <div class="line"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎼</div>
+                <h3>Teoria com Explicação</h3>
+                <p>Cada resposta traz a explicação logo abaixo da pergunta.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📜</div>
+                <h3>Partituras + Transposição</h3>
+                <p>Transponha estudos e baixe em PDF para praticar offline.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🥁</div>
+                <h3>Ritmo & Áudio</h3>
+                <p>Compassos, síncopes e feedback sonoro.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎹</div>
+                <h3>Prática Guiada</h3>
+                <p>Metrônomo e exercícios progressivos.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="recursos">
-        <div class="container">
-            <div class="section-header">
-                <h2>Por que escolher a Harmonia</h2>
-                <p>Ferramentas e metodologia pensadas para o músico contemporâneo.</p>
-                <div class="line"></div>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎼</div>
-                    <h3>Teoria Aplicada</h3>
-                    <p>Aprenda harmonia, escalas, ritmos e progressões de forma prática.</p>
+<section class="courses" id="cursos">
+    <div class="container">
+        <div class="section-header">
+            <h2>Cursos em Destaque</h2>
+            <p>Programas estruturados para todos os níveis.</p>
+            <div class="line"></div>
+        </div>
+        <div class="courses-grid">
+            <article class="course-card">
+                <div class="course-image"><span>🎸</span><span class="course-level">Iniciante</span></div>
+                <div class="course-body">
+                    <h3>Fundamentos da Guitarra</h3>
+                    <p>Postura, acordes, ritmos e primeiras músicas.</p>
+                    <div class="course-meta"><span>⏱ 12 semanas</span><span>📚 24 aulas</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎹</div>
-                    <h3>Prática Guiada</h3>
-                    <p>Exercícios progressivos com feedback sonoro e visual.</p>
+            </article>
+            <article class="course-card">
+                <div class="course-image" style="background:linear-gradient(135deg,#4c1d95,#7c3aed);"><span>🎹</span><span class="course-level">Intermediário</span></div>
+                <div class="course-body">
+                    <h3>Harmonia no Piano</h3>
+                    <p>Voicings, progressões e acompanhamento.</p>
+                    <div class="course-meta"><span>⏱ 16 semanas</span><span>📚 32 aulas</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🥁</div>
-                    <h3>Ritmo & Compassos</h3>
-                    <p>Compassos simples, compostos e ritmos sincopados com áudio.</p>
+            </article>
+            <article class="course-card">
+                <div class="course-image" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);"><span>🎤</span><span class="course-level">Avançado</span></div>
+                <div class="course-body">
+                    <h3>Performance Vocal</h3>
+                    <p>Técnica, interpretação e presença de palco.</p>
+                    <div class="course-meta"><span>⏱ 10 semanas</span><span>📚 20 aulas</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📜</div>
-                    <h3>Leitura & Partitura</h3>
-                    <p>Do solfejo básico à leitura avançada de figuras e síncopes.</p>
-                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- THEORY (resumo funcional — mesmo sistema anterior) -->
+<section class="theory" id="teoria">
+    <div class="container">
+        <div class="section-header">
+            <h2>Teoria Musical na Prática</h2>
+            <p>Escolha o exercício. A explicação aparece abaixo de cada pergunta após responder.</p>
+            <div class="line"></div>
+        </div>
+        <div id="exerciseMenu">
+            <div class="exercise-menu">
+                <div class="exercise-card" data-category="figuras"><div class="icon">🎵</div><h3>Figuras Musicais</h3><p>Valores de notas e pausas</p><span class="count">8 perguntas</span></div>
+                <div class="exercise-card" data-category="ritmos"><div class="icon">🥁</div><h3>Ritmos & Compassos</h3><p>Simples, compostos e síncopes</p><span class="count">10 perguntas</span></div>
+                <div class="exercise-card" data-category="intervalos"><div class="icon">📐</div><h3>Intervalos</h3><p>Intervalos melódicos</p><span class="count">7 perguntas</span></div>
+                <div class="exercise-card" data-category="escalas"><div class="icon">🎹</div><h3>Escalas & Tonalidades</h3><p>Escalas e armaduras</p><span class="count">7 perguntas</span></div>
+                <div class="exercise-card" data-category="acordes"><div class="icon">🎸</div><h3>Acordes & Harmonia</h3><p>Tríades e cifras</p><span class="count">7 perguntas</span></div>
+                <div class="exercise-card" data-category="progressoes"><div class="icon">🔁</div><h3>Progressões</h3><p>Sequências tonais</p><span class="count">6 perguntas</span></div>
+                <div class="exercise-card" data-category="misto"><div class="icon">🎯</div><h3>Desafio Misto</h3><p>Todos os temas</p><span class="count">12 perguntas</span></div>
             </div>
         </div>
-    </section>
-
-    <section class="courses" id="cursos">
-        <div class="container">
-            <div class="section-header">
-                <h2>Cursos em Destaque</h2>
-                <p>Programas estruturados para todos os níveis e instrumentos.</p>
-                <div class="line"></div>
-            </div>
-            <div class="courses-grid">
-                <article class="course-card">
-                    <div class="course-image">
-                        <span>🎸</span>
-                        <span class="course-level">Iniciante</span>
-                    </div>
-                    <div class="course-body">
-                        <h3>Fundamentos da Guitarra</h3>
-                        <p>Postura, acordes, ritmos e primeiras músicas. Base sólida para qualquer estilo.</p>
-                        <div class="course-meta">
-                            <span>⏱ 12 semanas</span>
-                            <span>📚 24 aulas</span>
-                        </div>
-                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
-                    </div>
-                </article>
-                <article class="course-card">
-                    <div class="course-image" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">
-                        <span>🎹</span>
-                        <span class="course-level">Intermediário</span>
-                    </div>
-                    <div class="course-body">
-                        <h3>Harmonia no Piano</h3>
-                        <p>Voicings, progressões jazzísticas e acompanhamento contemporâneo.</p>
-                        <div class="course-meta">
-                            <span>⏱ 16 semanas</span>
-                            <span>📚 32 aulas</span>
-                        </div>
-                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
-                    </div>
-                </article>
-                <article class="course-card">
-                    <div class="course-image" style="background: linear-gradient(135deg, #1e3a5f, #3b82f6);">
-                        <span>🎤</span>
-                        <span class="course-level">Avançado</span>
-                    </div>
-                    <div class="course-body">
-                        <h3>Performance Vocal</h3>
-                        <p>Técnica, interpretação, presença de palco e preparação para gravação.</p>
-                        <div class="course-meta">
-                            <span>⏱ 10 semanas</span>
-                            <span>📚 20 aulas</span>
-                        </div>
-                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- THEORY -->
-    <section class="theory" id="teoria">
-        <div class="container">
-            <div class="section-header">
-                <h2>Teoria Musical na Prática</h2>
-                <p>Escolha o exercício. Agora com áudio de feedback e exemplos rítmicos.</p>
-                <div class="line"></div>
-            </div>
-
-            <div id="exerciseMenu">
-                <div class="exercise-menu">
-                    <div class="exercise-card" data-category="figuras">
-                        <div class="icon">🎵</div>
-                        <h3>Figuras Musicais</h3>
-                        <p>Valores de notas, pausas e relações rítmicas</p>
-                        <span class="count">8 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="ritmos">
-                        <div class="icon">🥁</div>
-                        <h3>Ritmos & Compassos</h3>
-                        <p>Simples, compostos e ritmos sincopados</p>
-                        <span class="count">10 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="intervalos">
-                        <div class="icon">📐</div>
-                        <h3>Intervalos</h3>
-                        <p>Reconhecimento de intervalos</p>
-                        <span class="count">7 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="escalas">
-                        <div class="icon">🎹</div>
-                        <h3>Escalas & Tonalidades</h3>
-                        <p>Escalas e armaduras de clave</p>
-                        <span class="count">7 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="acordes">
-                        <div class="icon">🎸</div>
-                        <h3>Acordes & Harmonia</h3>
-                        <p>Tríades, tétrades e cifras</p>
-                        <span class="count">7 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="progressoes">
-                        <div class="icon">🔁</div>
-                        <h3>Progressões</h3>
-                        <p>Sequências harmônicas e funções</p>
-                        <span class="count">6 perguntas</span>
-                    </div>
-                    <div class="exercise-card" data-category="misto">
-                        <div class="icon">🎯</div>
-                        <h3>Desafio Misto</h3>
-                        <p>Perguntas variadas de todos os temas</p>
-                        <span class="count">12 perguntas</span>
+        <div class="quiz-wrapper" id="quizWrapper">
+            <div class="back-to-menu"><button class="btn btn-ghost" id="backToMenu">← Voltar ao menu</button></div>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h3 id="quizTitle">Exercício</h3>
+                    <div class="quiz-progress" id="quizProgress">Pergunta 1 de 8</div>
+                </div>
+                <div class="quiz-body" id="quizBody">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="question-explanation" id="questionExplanation"></div>
+                    <button class="btn btn-audio" id="playExampleBtn" style="display:none;">▶ Ouvir exemplo rítmico</button>
+                    <div class="options" id="optionsContainer"></div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-secondary" id="nextBtn" style="display:none;">Próxima →</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="quiz-wrapper" id="quizWrapper">
-                <div class="back-to-menu">
-                    <button class="btn btn-ghost" id="backToMenu">← Voltar ao menu</button>
-                </div>
-                <div class="quiz-container">
-                    <div class="quiz-header">
-                        <h3 id="quizTitle">Exercício</h3>
-                        <div class="quiz-progress" id="quizProgress">Pergunta 1 de 8</div>
-                    </div>
-                    <div class="quiz-body" id="quizBody">
-                        <div class="question-text" id="questionText"></div>
-                        <button class="btn btn-audio" id="playExampleBtn" style="display:none;">▶ Ouvir exemplo rítmico</button>
-                        <div class="options" id="optionsContainer"></div>
-                        <div class="quiz-feedback" id="quizFeedback"></div>
-                        <div class="quiz-actions">
-                            <span></span>
-                            <button class="btn btn-secondary" id="nextBtn" style="display:none;">Próxima →</button>
-                        </div>
-                    </div>
-                    <div class="quiz-result" id="quizResult">
-                        <div style="font-size:3rem;">🎵</div>
-                        <div class="score" id="finalScore">0/8</div>
-                        <p id="resultMessage"></p>
-                        <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
-                            <button class="btn btn-primary" id="restartQuiz">Refazer</button>
-                            <button class="btn btn-ghost" id="backToMenu3">Escolher outro</button>
-                        </div>
+                <div class="quiz-result" id="quizResult">
+                    <div style="font-size:2.6rem;">🎵</div>
+                    <div class="score" id="finalScore">0/8</div>
+                    <p id="resultMessage"></p>
+                    <div style="display:flex;gap:0.7rem;justify-content:center;flex-wrap:wrap;">
+                        <button class="btn btn-primary" id="restartQuiz">Refazer</button>
+                        <button class="btn btn-ghost" id="backToMenu3">Escolher outro</button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="practice" id="pratica">
-        <div class="container">
-            <div class="section-header">
-                <h2>Ferramenta de Prática</h2>
-                <p>Metrônomo integrado para treinos precisos e consistentes.</p>
-                <div class="line"></div>
-            </div>
-            <div class="practice-box">
-                <h3>Metrônomo Online</h3>
-                <p style="color:#c4b5fd; margin-bottom:0.5rem;">Ajuste o BPM e pratique no tempo</p>
-                <div class="bpm-display" id="bpmDisplay">100</div>
-                <div class="bpm-controls">
-                    <button class="bpm-btn" id="bpmDown">−</button>
-                    <span style="font-size:0.9rem;color:#c4b5fd;">BPM</span>
-                    <button class="bpm-btn" id="bpmUp">+</button>
-                </div>
-                <button class="metronome-btn" id="metronomeToggle">Iniciar</button>
-                <div class="beat-indicator" id="beatIndicator"></div>
+<!-- BIBLIOTECA + TRANSPOSIÇÃO + PDF -->
+<section class="library" id="biblioteca">
+    <div class="container">
+        <div class="section-header">
+            <h2>Biblioteca de Partituras</h2>
+            <p>Abra qualquer peça, transponha para outra tonalidade e baixe em PDF.</p>
+            <div class="line"></div>
+        </div>
+        <div class="library-filters" id="libraryFilters">
+            <button class="filter-btn active" data-filter="all">Todas</button>
+            <button class="filter-btn" data-filter="iniciante">Iniciante</button>
+            <button class="filter-btn" data-filter="intermediario">Intermediário</button>
+            <button class="filter-btn" data-filter="avancado">Avançado</button>
+            <button class="filter-btn" data-filter="classico">Clássico</button>
+            <button class="filter-btn" data-filter="estudo">Estudos</button>
+            <button class="filter-btn" data-filter="popular">Popular</button>
+        </div>
+        <div class="scores-grid" id="scoresGrid"></div>
+    </div>
+</section>
+
+<div class="modal-overlay" id="scoreModal">
+    <div class="modal">
+        <button class="modal-close" id="modalClose">×</button>
+        <h3 id="modalTitle"></h3>
+        <div class="composer" id="modalComposer"></div>
+        <p id="modalDesc"></p>
+
+        <!-- TRANSPOSITOR -->
+        <div class="transpose-box">
+            <label>🔧 Transpor partitura</label>
+            <div class="transpose-controls">
+                <select id="transposeSelect">
+                    <option value="0">Original (0)</option>
+                    <option value="1">+1 semitom</option>
+                    <option value="2">+2 (1 tom)</option>
+                    <option value="3">+3</option>
+                    <option value="4">+4</option>
+                    <option value="5">+5 (4ª justa)</option>
+                    <option value="6">+6 (trítono)</option>
+                    <option value="7">+7 (5ª justa)</option>
+                    <option value="-1">−1 semitom</option>
+                    <option value="-2">−2 (1 tom)</option>
+                    <option value="-3">−3</option>
+                    <option value="-4">−4</option>
+                    <option value="-5">−5 (4ª ↓)</option>
+                    <option value="-7">−7 (5ª ↓)</option>
+                </select>
+                <span class="semitone-label" id="transposeLabel">Tonalidade original</span>
+                <button class="btn btn-secondary btn-sm" id="applyTranspose">Aplicar</button>
             </div>
         </div>
-    </section>
 
-    <section id="depoimentos">
-        <div class="container">
-            <div class="section-header">
-                <h2>O que dizem nossos alunos</h2>
-                <p>Histórias reais de evolução musical.</p>
-                <div class="line"></div>
+        <div class="modal-notation" id="modalNotation"></div>
+        <p style="font-size:0.82rem;color:var(--muted);">Notação simplificada para estudo. Transposição altera nomes de notas (Dó, Ré, Mi… e cifras quando presentes).</p>
+
+        <div class="modal-actions">
+            <button class="btn btn-pdf btn-sm" id="downloadPdfBtn">⬇ Baixar PDF</button>
+            <button class="btn btn-ghost btn-sm" id="resetTranspose">Restaurar original</button>
+        </div>
+    </div>
+</div>
+
+<section class="practice" id="pratica">
+    <div class="container">
+        <div class="section-header">
+            <h2>Ferramenta de Prática</h2>
+            <p>Metrônomo integrado.</p>
+            <div class="line"></div>
+        </div>
+        <div class="practice-box">
+            <h3>Metrônomo Online</h3>
+            <p style="color:#c4b5fd;margin-bottom:0.45rem;">Ajuste o BPM e pratique no tempo</p>
+            <div class="bpm-display" id="bpmDisplay">100</div>
+            <div class="bpm-controls">
+                <button class="bpm-btn" id="bpmDown">−</button>
+                <span style="font-size:0.88rem;color:#c4b5fd;">BPM</span>
+                <button class="bpm-btn" id="bpmUp">+</button>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <p>A metodologia da Harmonia transformou minha forma de estudar. Os exercícios de ritmo com áudio fizeram toda a diferença.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">M</div>
-                        <div class="author-info">
-                            <strong>Marina Costa</strong>
-                            <span>Guitarra • Intermediário</span>
-                        </div>
-                    </div>
+            <button class="metronome-btn" id="metronomeToggle">Iniciar</button>
+            <div class="beat-indicator" id="beatIndicator"></div>
+        </div>
+    </div>
+</section>
+
+<section id="depoimentos">
+    <div class="container">
+        <div class="section-header">
+            <h2>O que dizem nossos alunos</h2>
+            <div class="line"></div>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <p>Transpor e baixar as partituras em PDF facilitou muito meus estudos no metrô.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">M</div>
+                    <div class="author-info"><strong>Marina Costa</strong><span>Guitarra • Intermediário</span></div>
                 </div>
-                <div class="testimonial">
-                    <p>Finalmente entendi compassos compostos e síncopes. O feedback sonoro ajuda muito a fixar.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">R</div>
-                        <div class="author-info">
-                            <strong>Rafael Mendes</strong>
-                            <span>Piano • Avançado</span>
-                        </div>
-                    </div>
+            </div>
+            <div class="testimonial">
+                <p>As explicações abaixo das perguntas e a biblioteca com transposição são excelentes.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">R</div>
+                    <div class="author-info"><strong>Rafael Mendes</strong><span>Piano • Avançado</span></div>
                 </div>
-                <div class="testimonial">
-                    <p>Plataforma elegante, conteúdo profundo e exercícios interativos de verdade.</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">A</div>
-                        <div class="author-info">
-                            <strong>Ana Beatriz</strong>
-                            <span>Canto • Iniciante</span>
-                        </div>
-                    </div>
+            </div>
+            <div class="testimonial">
+                <p>Plataforma completa: teoria, ritmo, partituras e PDF.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">A</div>
+                    <div class="author-info"><strong>Ana Beatriz</strong><span>Canto • Iniciante</span></div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="enroll" id="inscricao">
-        <div class="container">
-            <div class="section-header">
-                <h2>Inscreva-se Agora</h2>
-                <p>Preencha o formulário e inicie sua jornada musical conosco.</p>
-                <div class="line"></div>
-            </div>
-            <div class="form-container">
-                <form id="enrollForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nome">Nome completo *</label>
-                            <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
-                            <div class="form-error" id="errorNome">Informe seu nome completo</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">E-mail *</label>
-                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
-                            <div class="form-error" id="errorEmail">Informe um e-mail válido</div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="instrumento">Instrumento principal *</label>
-                            <select id="instrumento" name="instrumento" required>
-                                <option value="">Selecione...</option>
-                                <option value="guitarra">Guitarra / Violão</option>
-                                <option value="piano">Piano / Teclado</option>
-                                <option value="canto">Canto</option>
-                                <option value="baixo">Baixo</option>
-                                <option value="bateria">Bateria</option>
-                                <option value="cordas">Cordas</option>
-                                <option value="sopro">Sopro</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                            <div class="form-error" id="errorInstrumento">Selecione um instrumento</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="nivel">Nível atual *</label>
-                            <select id="nivel" name="nivel" required>
-                                <option value="">Selecione...</option>
-                                <option value="iniciante">Iniciante</option>
-                                <option value="intermediario">Intermediário</option>
-                                <option value="avancado">Avançado</option>
-                                <option value="profissional">Profissional</option>
-                            </select>
-                            <div class="form-error" id="errorNivel">Selecione seu nível</div>
-                        </div>
+<section class="enroll" id="inscricao">
+    <div class="container">
+        <div class="section-header">
+            <h2>Inscreva-se Agora</h2>
+            <div class="line"></div>
+        </div>
+        <div class="form-container">
+            <form id="enrollForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome completo *</label>
+                        <input type="text" id="nome" required>
+                        <div class="form-error" id="errorNome">Informe seu nome</div>
                     </div>
                     <div class="form-group">
-                        <label for="curso">Curso de interesse</label>
-                        <select id="curso" name="curso">
-                            <option value="">Selecione (opcional)</option>
-                            <option value="guitarra">Fundamentos da Guitarra</option>
-                            <option value="piano">Harmonia no Piano</option>
-                            <option value="vocal">Performance Vocal</option>
-                            <option value="teoria">Teoria Musical Completa</option>
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" required>
+                        <div class="form-error" id="errorEmail">E-mail inválido</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="instrumento">Instrumento *</label>
+                        <select id="instrumento" required>
+                            <option value="">Selecione...</option>
+                            <option value="guitarra">Guitarra / Violão</option>
+                            <option value="piano">Piano</option>
+                            <option value="canto">Canto</option>
+                            <option value="outro">Outro</option>
                         </select>
+                        <div class="form-error" id="errorInstrumento">Selecione</div>
                     </div>
                     <div class="form-group">
-                        <label for="mensagem">Mensagem / Objetivos</label>
-                        <textarea id="mensagem" name="mensagem" placeholder="Conte-nos sobre seus objetivos musicais..."></textarea>
+                        <label for="nivel">Nível *</label>
+                        <select id="nivel" required>
+                            <option value="">Selecione...</option>
+                            <option value="iniciante">Iniciante</option>
+                            <option value="intermediario">Intermediário</option>
+                            <option value="avancado">Avançado</option>
+                        </select>
+                        <div class="form-error" id="errorNivel">Selecione</div>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">
-                        Enviar Inscrição
-                    </button>
-                </form>
-                <div class="form-success" id="formSuccess">
-                    <div class="icon">✅</div>
-                    <h3>Inscrição enviada com sucesso!</h3>
-                    <p>Recebemos seus dados. Nossa equipe entrará em contato em breve.</p>
-                    <button class="btn btn-secondary" id="resetForm" style="margin-top:1.5rem;">Nova inscrição</button>
                 </div>
+                <div class="form-group">
+                    <label for="mensagem">Objetivos</label>
+                    <textarea id="mensagem"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Enviar Inscrição</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+                <div class="icon">✅</div>
+                <h3>Inscrição enviada!</h3>
+                <p>Entraremos em contato em breve.</p>
+                <button class="btn btn-secondary" id="resetForm" style="margin-top:1.2rem;">Nova inscrição</button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="cta">
-        <h2>Pronto para elevar sua música?</h2>
-        <p>Junte-se a milhares de músicos que já transformaram sua prática.</p>
-        <a href="#inscricao" class="btn btn-primary">Começar minha jornada</a>
-    </section>
+<section class="cta">
+    <h2>Pronto para elevar sua música?</h2>
+    <p>Teoria, partituras com transposição e PDF em uma só plataforma.</p>
+    <a href="#inscricao" class="btn btn-primary">Começar minha jornada</a>
+</section>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <a href="#" class="logo">Harmonia <span>Academy</span></a>
-                <p>Plataforma de educação musical sofisticada para quem busca excelência técnica e artística.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Plataforma</h4>
-                <ul>
-                    <li><a href="#cursos">Cursos</a></li>
-                    <li><a href="#teoria">Teoria</a></li>
-                    <li><a href="#pratica">Ferramentas</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Suporte</h4>
-                <ul>
-                    <li><a href="#">Central de Ajuda</a></li>
-                    <li><a href="#inscricao">Contato</a></li>
-                    <li><a href="#">FAQ</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Privacidade</a></li>
-                    <li><a href="#">Termos de Uso</a></li>
-                </ul>
-            </div>
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="#" class="logo">Harmonia <span>Academy</span></a>
+            <p>Educação musical com teoria, ritmo, partituras e ferramentas de estudo.</p>
         </div>
-        <div class="footer-bottom">
-            © 2026 Harmonia Academy. Todos os direitos reservados.
+        <div class="footer-col">
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a href="#teoria">Teoria</a></li>
+                <li><a href="#biblioteca">Partituras</a></li>
+                <li><a href="#pratica">Prática</a></li>
+            </ul>
         </div>
-    </footer>
+        <div class="footer-col">
+            <h4>Suporte</h4>
+            <ul>
+                <li><a href="#inscricao">Contato</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="#">Privacidade</a></li>
+                <li><a href="#">Termos</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 Harmonia Academy.</div>
+</footer>
 
-    <script>
-        // ========== ÁUDIO (Web Audio API) ==========
-        let audioCtx = null;
+<script>
+/* ========== TRANSPOSIÇÃO ========== */
+const NOTE_NAMES = ['Dó', 'Dó#', 'Ré', 'Ré#', 'Mi', 'Fá', 'Fá#', 'Sol', 'Sol#', 'Lá', 'Lá#', 'Si'];
+const NOTE_ALIASES = {
+    'Do': 0, 'Dó': 0, 'C': 0,
+    'Do#': 1, 'Dó#': 1, 'C#': 1, 'Réb': 1, 'Reb': 1, 'Db': 1,
+    'Re': 2, 'Ré': 2, 'D': 2,
+    'Re#': 3, 'Ré#': 3, 'D#': 3, 'Mib': 3, 'Eb': 3,
+    'Mi': 4, 'E': 4,
+    'Fa': 5, 'Fá': 5, 'F': 5,
+    'Fa#': 6, 'Fá#': 6, 'F#': 6, 'Solb': 6, 'Gb': 6,
+    'Sol': 7, 'G': 7,
+    'Sol#': 8, 'G#': 8, 'Láb': 8, 'Lab': 8, 'Ab': 8,
+    'La': 9, 'Lá': 9, 'A': 9,
+    'La#': 10, 'Lá#': 10, 'A#': 10, 'Sib': 10, 'Bb': 10,
+    'Si': 11, 'B': 11
+};
+// Cifras comuns (raiz)
+const CHORD_ROOTS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+    'Db', 'Eb', 'Gb', 'Ab', 'Bb'];
 
-        function getAudioCtx() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            return audioCtx;
-        }
+function transposeNoteName(name, semitones) {
+    const clean = name.replace(/'/g, '').trim();
+    let idx = NOTE_ALIASES[clean];
+    if (idx === undefined) {
+        // tenta sem acento
+        const map = { 'Do': 0, 'Re': 2, 'Fa': 5, 'La': 9 };
+        idx = map[clean];
+    }
+    if (idx === undefined) return name;
+    const newIdx = ((idx + semitones) % 12 + 12) % 12;
+    const apostrophe = name.includes("'") ? "'" : (name.includes("''") ? "''" : '');
+    return NOTE_NAMES[newIdx] + apostrophe;
+}
 
-        function playTone(freq, duration, type = 'sine', volume = 0.25) {
-            const ctx = getAudioCtx();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.type = type;
-            osc.frequency.value = freq;
-            gain.gain.setValueAtTime(volume, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + duration);
-        }
+function transposeText(text, semitones) {
+    if (!semitones) return text;
+    // Notas em português / símbolos
+    let result = text.replace(/\b(Dó#|Ré#|Fá#|Sol#|Lá#|Dó|Ré|Mi|Fá|Sol|Lá|Si|Do#|Re#|Fa#|Sol#|La#|Do|Re|Fa|La)('+)?\b/gi, (match) => {
+        return transposeNoteName(match, semitones);
+    });
+    // Cifras tipo Am7, G7, Cmaj7, Dm7
+    result = result.replace(/\b([A-G](?:#|b)?)(m|maj|min|dim|aug|sus|add)?(\d)?\b/g, (full, root, quality, num) => {
+        const sharpMap = { 'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11 };
+        let idx = sharpMap[root];
+        if (idx === undefined) return full;
+        const newIdx = ((idx + semitones) % 12 + 12) % 12;
+        const names = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+        return names[newIdx] + (quality || '') + (num || '');
+    });
+    return result;
+}
 
-        function playSuccess() {
-            playTone(523.25, 0.12, 'sine', 0.2); // C5
-            setTimeout(() => playTone(659.25, 0.12, 'sine', 0.2), 100); // E5
-            setTimeout(() => playTone(783.99, 0.2, 'sine', 0.22), 200); // G5
-        }
+const SEMITONE_LABELS = {
+    0: 'Tonalidade original',
+    1: '+1 semitom', 2: '+1 tom', 3: '+1 tom e ½', 4: '+2 tons', 5: '+4ª justa',
+    6: '+trítono', 7: '+5ª justa',
+    '-1': '−1 semitom', '-2': '−1 tom', '-3': '−1 tom e ½', '-4': '−2 tons',
+    '-5': '−4ª justa', '-7': '−5ª justa'
+};
 
-        function playError() {
-            playTone(200, 0.15, 'square', 0.12);
-            setTimeout(() => playTone(150, 0.25, 'square', 0.12), 120);
-        }
+/* ========== ÁUDIO (resumo) ========== */
+let audioCtx = null;
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+}
+function playTone(freq, duration, type = 'sine', volume = 0.25) {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + duration);
+}
+function playSuccess() {
+    playTone(523.25, 0.12); setTimeout(() => playTone(659.25, 0.12), 100); setTimeout(() => playTone(783.99, 0.2), 200);
+}
+function playError() {
+    playTone(200, 0.15, 'square', 0.12); setTimeout(() => playTone(150, 0.25, 'square', 0.12), 120);
+}
+function playClick(freq = 900, vol = 0.2) { playTone(freq, 0.06, 'square', vol); }
+function playRhythmPattern(pattern, tempoMs = 350) {
+    pattern.forEach((isStrong, i) => setTimeout(() => playClick(isStrong ? 1000 : 700, isStrong ? 0.25 : 0.15), i * tempoMs));
+}
 
-        function playClick(freq = 900, vol = 0.2) {
-            playTone(freq, 0.06, 'square', vol);
-        }
+/* ========== NAV ========== */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
 
-        // Toca um padrão rítmico: array de delays em ms e se é beat forte
-        function playRhythmPattern(pattern, tempoMs = 400) {
-            const ctx = getAudioCtx();
-            pattern.forEach((isStrong, i) => {
-                setTimeout(() => {
-                    playClick(isStrong ? 1000 : 700, isStrong ? 0.25 : 0.15);
-                }, i * tempoMs);
-            });
-        }
+/* ========== QUIZ (banco resumido + lógica) ========== */
+const exerciseBank = {
+    figuras: { title: "Figuras Musicais", questions: [
+        { q: "Qual figura vale 4 tempos (em 4/4)?", options: ["Semínima","Mínima","Semibreve","Colcheia"], correct: 2, explanation: "A semibreve vale 4 tempos." },
+        { q: "Quantas colcheias cabem em uma semínima?", options: ["1","2","4","8"], correct: 1, explanation: "2 colcheias = 1 semínima." },
+        { q: "A mínima equivale a quantas semínimas?", options: ["1","2","4","8"], correct: 1, explanation: "1 mínima = 2 semínimas." },
+        { q: "Pausa da colcheia?", options: ["Pausa de semínima","Pausa de colcheia","Pausa de mínima","Pausa de semibreve"], correct: 1, explanation: "Mesmo valor da figura." },
+        { q: "Em 4/4, quantas semínimas?", options: ["2","3","4","8"], correct: 2, explanation: "4 unidades de semínima." },
+        { q: "Semicolcheia em 4/4 vale:", options: ["1/2","1/4","1/8","1"], correct: 1, explanation: "1/4 de tempo." },
+        { q: "Figura de 1/2 tempo em 4/4?", options: ["Semínima","Colcheia","Mínima","Semicolcheia"], correct: 1, explanation: "Colcheia." },
+        { q: "Mínima pontuada vale:", options: ["2","3","4","1,5"], correct: 1, explanation: "2 + 1 = 3 tempos." }
+    ]},
+    ritmos: { title: "Ritmos & Compassos", questions: [
+        { q: "Qual é compasso simples?", options: ["6/8","9/8","4/4","12/8"], correct: 2, explanation: "4/4 é simples; os outros são compostos.", rhythm: null },
+        { q: "Unidade de tempo no composto é:", options: ["Semínima","Mínima","Figura pontuada","Semicolcheia"], correct: 2, explanation: "Valor ternário (pontuado).", rhythm: null },
+        { q: "6/8 é:", options: ["Simples binário","Composto binário","Simples ternário","Composto ternário"], correct: 1, explanation: "2 tempos compostos.", rhythm: [1,0,0,1,0,0] },
+        { q: "Ritmo sincopado é:", options: ["Só tempos fortes","Acento em tempo fraco/entre tempos","Só semibreves","Só 3/4"], correct: 1, explanation: "Deslocamento do acento.", rhythm: [1,0,1,0,1] },
+        { q: "Tempos em 3/4?", options: ["2","3","4","6"], correct: 1, explanation: "3 tempos.", rhythm: [1,0,0] },
+        { q: "Composto ternário?", options: ["6/8","9/8","12/8","3/4"], correct: 1, explanation: "9/8 = 3 tempos compostos.", rhythm: [1,0,0,1,0,0,1,0,0] },
+        { q: "Síncope clássica em 4/4:", options: ["4 semínimas","Colcheia–Semínima–Colcheia","Só mínimas","Semibreve"], correct: 1, explanation: "Desloca o acento.", rhythm: [1,0,1,0] },
+        { q: "Tempos no 12/8?", options: ["2","3","4","6"], correct: 2, explanation: "4 tempos compostos.", rhythm: null },
+        { q: "Subdivisão no simples:", options: ["2 partes","3 partes","4 partes","5"], correct: 0, explanation: "Divisão binária.", rhythm: null },
+        { q: "Síncope clássica envolve:", options: ["Só 1º tempo","Prolongar fraco sobre forte","Só pausas","Sem barra"], correct: 1, explanation: "Nota fraca sobre o forte.", rhythm: [0,1,0,1] }
+    ]},
+    intervalos: { title: "Intervalos", questions: [
+        { q: "Intervalo Dó–Mi?", options: ["2ª maior","3ª maior","4ª justa","5ª justa"], correct: 1, explanation: "2 tons = 3ª maior." },
+        { q: "5ª justa a partir de Fá?", options: ["Lá","Si♭","Dó","Sol"], correct: 2, explanation: "Fá–Dó." },
+        { q: "Mi–Fá?", options: ["2ª menor","2ª maior","3ª menor","Uníssono"], correct: 0, explanation: "Semitom." },
+        { q: "Oitava justa tem quantos semitons?", options: ["10","11","12","13"], correct: 2, explanation: "12." },
+        { q: "Inversão da 3ª maior?", options: ["3ª menor","6ª menor","6ª maior","5ª justa"], correct: 1, explanation: "6ª menor." },
+        { q: "Sol–Ré?", options: ["4ª justa","5ª justa","6ª maior","3ª maior"], correct: 1, explanation: "5ª justa." },
+        { q: "7ª menor a partir de Dó?", options: ["Si","Si♭","Lá","Lá♭"], correct: 1, explanation: "Dó–Si♭." }
+    ]},
+    escalas: { title: "Escalas & Tonalidades", questions: [
+        { q: "Sol maior tem quantos #?", options: ["0","1 (Fá#)","2","3"], correct: 1, explanation: "Fá#." },
+        { q: "Relativa menor de Dó?", options: ["Ré m","Mi m","Lá m","Sol m"], correct: 2, explanation: "Lá menor." },
+        { q: "Fá maior tem:", options: ["1 #","1 b (Si♭)","2 b","Nenhuma"], correct: 1, explanation: "Si♭." },
+        { q: "Notas na escala maior?", options: ["5","6","7","8"], correct: 2, explanation: "7 distintas." },
+        { q: "Lá menor natural:", options: ["Lá–Lá","Dó–Dó","Mi–Mi","Sol–Sol"], correct: 0, explanation: "Começa e termina em Lá." },
+        { q: "3 sustenidos?", options: ["Ré","Lá","Mi","Si"], correct: 1, explanation: "Lá maior." },
+        { q: "6º grau de Dó maior?", options: ["Fá","Sol","Lá","Si"], correct: 2, explanation: "Lá." }
+    ]},
+    acordes: { title: "Acordes & Harmonia", questions: [
+        { q: "Dó–Mi–Sol?", options: ["Dó m","Dó aum","Dó maior","Dó dim"], correct: 2, explanation: "Tríade maior." },
+        { q: "m7 significa?", options: ["Maior c/ 7","Menor c/ 7 menor","Menor c/ 7 maior","Dim"], correct: 1, explanation: "Menor + 7ª menor." },
+        { q: "Acorde diminuto:", options: ["2 terças maiores","2 terças menores","3ª M + m","4ª+5ª"], correct: 1, explanation: "Duas terças menores." },
+        { q: "Cmaj7?", options: ["Dó m c/ 7","Dó M c/ 7 maior","Dó c/ 7 menor","Aum"], correct: 1, explanation: "Maior + 7ª maior." },
+        { q: "Tríade de Ré menor?", options: ["Ré Fá# Lá","Ré Fá Lá","Ré Fá Lá♭","Ré Fá# Lá#"], correct: 1, explanation: "Ré–Fá–Lá." },
+        { q: "Power chord:", options: ["Tônica 3ª 5ª","Tônica e 5ª","Tônica e 7ª","3ª e 7ª"], correct: 1, explanation: "Só 1 e 5." },
+        { q: "7ª no G7?", options: ["Maior","Menor","Dim","Aum"], correct: 1, explanation: "7ª menor." }
+    ]},
+    progressoes: { title: "Progressões", questions: [
+        { q: "I–V–vi–IV em Dó?", options: ["Dó Sol Lám Fá","Dó Fá Lám Sol","Dó Sol Ré Fá","Dó Mim Lám Fá"], correct: 0, explanation: "Progressão pop clássica." },
+        { q: "II–V–I é típico de?", options: ["Blues","Jazz","Metal","Folk"], correct: 1, explanation: "Jazz." },
+        { q: "V grau em maior?", options: ["Menor","Maior (dom)","Dim","Aum"], correct: 1, explanation: "Dominante." },
+        { q: "I–IV–V–I em Sol?", options: ["Sol Dó Ré Sol","Sol Ré Dó Sol","Sol Lá Ré Sol","Sol Mi Ré Sol"], correct: 0, explanation: "I=Sol IV=Dó V=Ré." },
+        { q: "vi em maior é?", options: ["Maior","Menor","Dim","Aum"], correct: 1, explanation: "Relativa menor." },
+        { q: "Cadência plagal?", options: ["V–I","IV–I","II–V","vi–IV"], correct: 1, explanation: "IV–I." }
+    ]},
+    misto: { title: "Desafio Misto", questions: [] }
+};
+function buildMixedQuiz() {
+    const all = [];
+    ['figuras','ritmos','intervalos','escalas','acordes','progressoes'].forEach(c => all.push(...exerciseBank[c].questions));
+    for (let i = all.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]]; }
+    exerciseBank.misto.questions = all.slice(0, 12);
+}
+buildMixedQuiz();
 
-        // ========== NAV ==========
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => navLinks.classList.remove('open'));
-        });
-        const sections = document.querySelectorAll('section[id]');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                if (scrollY >= section.offsetTop - 120) current = section.getAttribute('id');
-            });
-            document.querySelectorAll('.nav-links a').forEach(a => {
-                a.classList.remove('active');
-                if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-            });
-        });
+let currentQuestions = [], currentQuestion = 0, score = 0, answered = false, currentCategory = '';
+const exerciseMenu = document.getElementById('exerciseMenu');
+const quizWrapper = document.getElementById('quizWrapper');
+const questionText = document.getElementById('questionText');
+const questionExplanation = document.getElementById('questionExplanation');
+const optionsContainer = document.getElementById('optionsContainer');
+const quizProgress = document.getElementById('quizProgress');
+const quizTitle = document.getElementById('quizTitle');
+const nextBtn = document.getElementById('nextBtn');
+const quizBody = document.getElementById('quizBody');
+const quizResult = document.getElementById('quizResult');
+const playExampleBtn = document.getElementById('playExampleBtn');
 
-        // ========== BANCO DE EXERCÍCIOS ==========
-        const exerciseBank = {
-            figuras: {
-                title: "Figuras Musicais",
-                questions: [
-                    { q: "Qual figura musical vale 4 tempos (em 4/4)?", options: ["Semínima", "Mínima", "Semibreve", "Colcheia"], correct: 2, explanation: "A semibreve vale 4 tempos." },
-                    { q: "Quantas colcheias cabem em uma semínima?", options: ["1", "2", "4", "8"], correct: 1, explanation: "Uma semínima = 2 colcheias." },
-                    { q: "A mínima equivale a quantas semínimas?", options: ["1", "2", "4", "8"], correct: 1, explanation: "A mínima vale 2 tempos = 2 semínimas." },
-                    { q: "Qual é a pausa correspondente à colcheia?", options: ["Pausa de semínima", "Pausa de colcheia", "Pausa de mínima", "Pausa de semibreve"], correct: 1, explanation: "Cada figura tem sua pausa com o mesmo valor." },
-                    { q: "Em um compasso 4/4, quantas semínimas cabem?", options: ["2", "3", "4", "8"], correct: 2, explanation: "4/4 = 4 semínimas por compasso." },
-                    { q: "A semicolcheia vale quantos tempos (em 4/4)?", options: ["1/2", "1/4", "1/8", "1 tempo"], correct: 1, explanation: "Semicolcheia = 1/4 de tempo." },
-                    { q: "Qual figura vale 1/2 tempo em 4/4?", options: ["Semínima", "Colcheia", "Mínima", "Semicolcheia"], correct: 1, explanation: "A colcheia vale meio tempo." },
-                    { q: "Uma mínima pontuada vale quantos tempos?", options: ["2", "3", "4", "1,5"], correct: 1, explanation: "Mínima (2) + ponto (1) = 3 tempos." }
-                ]
-            },
-            ritmos: {
-                title: "Ritmos & Compassos",
-                questions: [
-                    {
-                        q: "Qual destes é um compasso simples?",
-                        options: ["6/8", "9/8", "4/4", "12/8"],
-                        correct: 2,
-                        explanation: "4/4 é compasso simples (unidade de tempo divisível por 2). 6/8, 9/8 e 12/8 são compostos.",
-                        rhythm: null
-                    },
-                    {
-                        q: "Em um compasso composto, a unidade de tempo é normalmente uma:",
-                        options: ["Semínima", "Mínima", "Tercina de colcheias (valor pontuado)", "Semicolcheia"],
-                        correct: 2,
-                        explanation: "Nos compostos, a unidade de tempo é uma figura pontuada (ex: mínima pontuada no 6/8), equivalente a 3 colcheias.",
-                        rhythm: null
-                    },
-                    {
-                        q: "O compasso 6/8 é classificado como:",
-                        options: ["Simples binário", "Composto binário", "Simples ternário", "Composto ternário"],
-                        correct: 1,
-                        explanation: "6/8 = 2 tempos compostos (cada tempo = 3 colcheias) → composto binário.",
-                        rhythm: [1,0,0, 1,0,0] // dois grupos de 3
-                    },
-                    {
-                        q: "O que caracteriza um ritmo sincopado?",
-                        options: ["Acentos apenas nos tempos fortes", "Deslocamento do acento para tempos fracos ou entre tempos", "Uso exclusivo de semibreves", "Compasso sempre em 3/4"],
-                        correct: 1,
-                        explanation: "Síncope ocorre quando o acento rítmico cai em tempo fraco ou na parte fraca do tempo, criando deslocamento.",
-                        rhythm: [1, 0, 1, 0, 1] // exemplo de síncope simples
-                    },
-                    {
-                        q: "No compasso 3/4 (simples ternário), quantos tempos há por compasso?",
-                        options: ["2", "3", "4", "6"],
-                        correct: 1,
-                        explanation: "3/4 tem 3 tempos, cada um valendo uma semínima.",
-                        rhythm: [1, 0, 0]
-                    },
-                    {
-                        q: "Qual compasso é composto ternário?",
-                        options: ["6/8", "9/8", "12/8", "3/4"],
-                        correct: 1,
-                        explanation: "9/8 = 3 tempos compostos (cada um = 3 colcheias) → composto ternário.",
-                        rhythm: [1,0,0, 1,0,0, 1,0,0]
-                    },
-                    {
-                        q: "Uma síncope clássica em 4/4 pode ser representada por:",
-                        options: ["4 semínimas iguais", "Colcheia – Semínima – Colcheia (acento no meio)", "Apenas mínimas", "Semibreve única"],
-                        correct: 1,
-                        explanation: "Colcheia + Semínima + Colcheia desloca o acento para o tempo fraco (síncope).",
-                        rhythm: [1, 0, 1, 0] // simplificado
-                    },
-                    {
-                        q: "No 12/8, quantos tempos compostos existem?",
-                        options: ["2", "3", "4", "6"],
-                        correct: 2,
-                        explanation: "12/8 = 4 tempos compostos (quaternário composto).",
-                        rhythm: null
-                    },
-                    {
-                        q: "Compassos simples têm a subdivisão do tempo em:",
-                        options: ["2 partes iguais", "3 partes iguais", "4 partes sempre", "5 partes"],
-                        correct: 0,
-                        explanation: "No compasso simples, cada tempo divide-se em 2 (binário). No composto, em 3 (ternário).",
-                        rhythm: null
-                    },
-                    {
-                        q: "Qual alternativa descreve melhor a síncope?",
-                        options: ["Acento no 1º tempo de cada compasso", "Prolongamento de nota de tempo fraco para tempo forte", "Uso só de pausas", "Compasso sem barra de compasso"],
-                        correct: 1,
-                        explanation: "A síncope clássica liga (ou acentua) uma nota em tempo fraco que se prolonga sobre o tempo forte seguinte.",
-                        rhythm: [0, 1, 0, 1]
-                    }
-                ]
-            },
-            intervalos: {
-                title: "Intervalos",
-                questions: [
-                    { q: "Qual é o intervalo entre Dó e Mi?", options: ["Segunda maior", "Terça maior", "Quarta justa", "Quinta justa"], correct: 1, explanation: "Dó–Mi = 2 tons = Terça maior." },
-                    { q: "O intervalo de 5ª justa a partir de Fá é:", options: ["Lá", "Si♭", "Dó", "Sol"], correct: 2, explanation: "Fá–Dó = 5ª justa." },
-                    { q: "Qual intervalo existe entre Mi e Fá?", options: ["Segunda menor", "Segunda maior", "Terça menor", "Uníssono"], correct: 0, explanation: "Mi–Fá = semitom = Segunda menor." },
-                    { q: "A oitava justa contém quantos semitons?", options: ["10", "11", "12", "13"], correct: 2, explanation: "Oitava justa = 12 semitons." },
-                    { q: "Qual é a inversão da 3ª maior?", options: ["3ª menor", "6ª menor", "6ª maior", "5ª justa"], correct: 1, explanation: "Inversão da 3ª maior = 6ª menor." },
-                    { q: "O intervalo entre Sol e Ré é:", options: ["4ª justa", "5ª justa", "6ª maior", "3ª maior"], correct: 1, explanation: "Sol–Ré = 5ª justa." },
-                    { q: "Uma 7ª menor a partir de Dó chega em:", options: ["Si", "Si♭", "Lá", "Lá♭"], correct: 1, explanation: "Dó–Si♭ = 7ª menor." }
-                ]
-            },
-            escalas: {
-                title: "Escalas & Tonalidades",
-                questions: [
-                    { q: "A escala de Sol maior possui quantos sustenidos?", options: ["Nenhum", "1 (Fá#)", "2", "3"], correct: 1, explanation: "Sol maior = 1 sustenido (Fá#)." },
-                    { q: "Qual é a relativa menor de Dó maior?", options: ["Ré menor", "Mi menor", "Lá menor", "Sol menor"], correct: 2, explanation: "Relativa menor de Dó = Lá menor." },
-                    { q: "A escala de Fá maior possui:", options: ["1 sustenido", "1 bemol (Si♭)", "2 bemóis", "Nenhuma"], correct: 1, explanation: "Fá maior = Si♭." },
-                    { q: "Quantas notas tem uma escala maior diatônica?", options: ["5", "6", "7", "8"], correct: 2, explanation: "7 notas diferentes (a 8ª é a oitava)." },
-                    { q: "A escala menor natural de Lá começa e termina em:", options: ["Lá – Lá", "Dó – Dó", "Mi – Mi", "Sol – Sol"], correct: 0, explanation: "Lá menor natural: Lá Si Dó Ré Mi Fá Sol Lá." },
-                    { q: "Qual tonalidade tem 3 sustenidos?", options: ["Ré maior", "Lá maior", "Mi maior", "Si maior"], correct: 1, explanation: "Lá maior = Fá#, Dó#, Sol#." },
-                    { q: "O 6º grau da escala de Dó maior é:", options: ["Fá", "Sol", "Lá", "Si"], correct: 2, explanation: "1Dó 2Ré 3Mi 4Fá 5Sol 6Lá 7Si." }
-                ]
-            },
-            acordes: {
-                title: "Acordes & Harmonia",
-                questions: [
-                    { q: "Qual acorde é formado por Dó – Mi – Sol?", options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó diminuto"], correct: 2, explanation: "Tríade maior." },
-                    { q: "O que significa 'm7' (ex: Am7)?", options: ["Maior com 7ª", "Menor com 7ª menor", "Menor com 7ª maior", "Diminuto"], correct: 1, explanation: "m7 = menor + 7ª menor." },
-                    { q: "Um acorde diminuto é formado por:", options: ["Duas terças maiores", "Duas terças menores", "Terça maior + menor", "Quarta + quinta"], correct: 1, explanation: "Duas terças menores." },
-                    { q: "A cifra 'Cmaj7' representa:", options: ["Dó menor com 7ª", "Dó maior com 7ª maior", "Dó com 7ª menor", "Dó aumentado"], correct: 1, explanation: "maj7 = maior + 7ª maior." },
-                    { q: "Qual é a tríade de Ré menor?", options: ["Ré–Fá#–Lá", "Ré–Fá–Lá", "Ré–Fá–Lá♭", "Ré–Fá#–Lá#"], correct: 1, explanation: "Ré–Fá–Lá." },
-                    { q: "O power chord contém:", options: ["Tônica, terça e quinta", "Tônica e quinta", "Tônica e sétima", "Terça e sétima"], correct: 1, explanation: "Apenas tônica e quinta." },
-                    { q: "Em um acorde de 7ª dominante (G7), a 7ª é:", options: ["Maior", "Menor", "Diminuta", "Aumentada"], correct: 1, explanation: "7ª dominante = 7ª menor." }
-                ]
-            },
-            progressoes: {
-                title: "Progressões",
-                questions: [
-                    { q: "Em Dó maior, I – V – vi – IV é:", options: ["Dó – Sol – Lám – Fá", "Dó – Fá – Lám – Sol", "Dó – Sol – Ré – Fá", "Dó – Mim – Lám – Fá"], correct: 0, explanation: "Progressão clássica do pop." },
-                    { q: "A progressão II – V – I é típica de:", options: ["Blues", "Jazz", "Heavy Metal", "Folk"], correct: 1, explanation: "Fundamento do jazz." },
-                    { q: "Em tonalidade maior, o V grau é:", options: ["Menor", "Maior (dominante)", "Diminuto", "Aumentado"], correct: 1, explanation: "V = dominante maior." },
-                    { q: "I – IV – V – I em Sol maior é:", options: ["Sol – Dó – Ré – Sol", "Sol – Ré – Dó – Sol", "Sol – Lá – Ré – Sol", "Sol – Mi – Ré – Sol"], correct: 0, explanation: "I=Sol, IV=Dó, V=Ré." },
-                    { q: "O acorde vi em tonalidade maior é:", options: ["Maior", "Menor", "Diminuto", "Aumentado"], correct: 1, explanation: "vi = menor (relativa)." },
-                    { q: "A cadência plagal é:", options: ["V – I", "IV – I", "II – V", "vi – IV"], correct: 1, explanation: "IV–I = cadência plagal ('Amém')." }
-                ]
-            },
-            misto: {
-                title: "Desafio Misto",
-                questions: []
-            }
-        };
+document.querySelectorAll('.exercise-card').forEach(c => c.addEventListener('click', () => startExercise(c.dataset.category)));
+function startExercise(cat) {
+    currentCategory = cat;
+    if (cat === 'misto') buildMixedQuiz();
+    currentQuestions = exerciseBank[cat].questions;
+    currentQuestion = 0; score = 0;
+    quizTitle.textContent = exerciseBank[cat].title;
+    exerciseMenu.style.display = 'none';
+    quizWrapper.classList.add('active');
+    quizResult.classList.remove('show');
+    quizBody.style.display = 'block';
+    loadQuestion();
+}
+function loadQuestion() {
+    answered = false;
+    const q = currentQuestions[currentQuestion];
+    questionText.textContent = q.q;
+    quizProgress.textContent = `Pergunta ${currentQuestion+1} de ${currentQuestions.length}`;
+    optionsContainer.innerHTML = '';
+    nextBtn.style.display = 'none';
+    questionExplanation.className = 'question-explanation';
+    questionExplanation.innerHTML = '';
+    if (q.rhythm && q.rhythm.length) {
+        playExampleBtn.style.display = 'inline-flex';
+        playExampleBtn.onclick = () => playRhythmPattern(q.rhythm, 350);
+    } else playExampleBtn.style.display = 'none';
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => selectOption(i, btn));
+        optionsContainer.appendChild(btn);
+    });
+}
+function selectOption(index, btn) {
+    if (answered) return;
+    answered = true;
+    const q = currentQuestions[currentQuestion];
+    const buttons = optionsContainer.querySelectorAll('.option-btn');
+    buttons.forEach(b => b.disabled = true);
+    if (index === q.correct) {
+        btn.classList.add('correct'); score++; playSuccess();
+        questionExplanation.className = 'question-explanation show correct-exp';
+        questionExplanation.innerHTML = '<strong>✓ Correto</strong>' + q.explanation;
+    } else {
+        btn.classList.add('wrong');
+        buttons[q.correct].classList.add('correct');
+        playError();
+        questionExplanation.className = 'question-explanation show wrong-exp';
+        questionExplanation.innerHTML = '<strong>✗ Incorreto</strong>' + q.explanation;
+    }
+    nextBtn.style.display = 'inline-flex';
+    nextBtn.textContent = currentQuestion < currentQuestions.length - 1 ? 'Próxima →' : 'Ver Resultado';
+}
+nextBtn.addEventListener('click', () => {
+    currentQuestion++;
+    if (currentQuestion < currentQuestions.length) loadQuestion();
+    else {
+        quizBody.style.display = 'none';
+        quizResult.classList.add('show');
+        document.getElementById('finalScore').textContent = `${score}/${currentQuestions.length}`;
+        const pct = Math.round(score / currentQuestions.length * 100);
+        document.getElementById('resultMessage').textContent =
+            pct === 100 ? 'Perfeito!' : pct >= 70 ? 'Muito bem!' : pct >= 40 ? 'Bom começo.' : 'Continue praticando.';
+        if (pct === 100) playSuccess();
+    }
+});
+function backToMenu() {
+    quizWrapper.classList.remove('active');
+    exerciseMenu.style.display = 'block';
+    quizResult.classList.remove('show');
+    quizBody.style.display = 'block';
+}
+document.getElementById('backToMenu').addEventListener('click', backToMenu);
+document.getElementById('backToMenu3').addEventListener('click', backToMenu);
+document.getElementById('restartQuiz').addEventListener('click', () => startExercise(currentCategory));
 
-        function buildMixedQuiz() {
-            const all = [];
-            ['figuras', 'ritmos', 'intervalos', 'escalas', 'acordes', 'progressoes'].forEach(cat => {
-                all.push(...exerciseBank[cat].questions);
-            });
-            for (let i = all.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [all[i], all[j]] = [all[j], all[i]];
-            }
-            exerciseBank.misto.questions = all.slice(0, 12);
-        }
-        buildMixedQuiz();
+/* ========== BIBLIOTECA + PDF + TRANSPOSE ========== */
+const scoresData = [
+    { id:1, title:"Estudo Op. 10 nº 1", composer:"Fernando Sor", level:"iniciante", style:"estudo", tags:["Violão","Iniciante"], icon:"🎸",
+      desc:"Estudo de arpejos para violão.",
+      notation:"Compaso 4/4 | Tonalidade: Dó maior\n\nDó ── Mi ── Sol ── Dó'\nMi ── Sol ── Dó' ── Mi'\nSol ── Dó' ── Mi' ── Sol'" },
+    { id:2, title:"Minueto em Sol", composer:"J. S. Bach (Anh. 114)", level:"iniciante", style:"classico", tags:["Piano","Clássico"], icon:"🎹",
+      desc:"Minueto do Pequeno Livro de Anna Magdalena.",
+      notation:"Compaso 3/4 | Tonalidade: Sol maior\n\nSol - Ré - Si | Lá - Fá# - Ré\nSol - Mi - Dó | Ré - Si - Sol" },
+    { id:3, title:"Estudo de Escalas em Dó", composer:"Harmonia Academy", level:"iniciante", style:"estudo", tags:["Escalas","Iniciante"], icon:"📜",
+      desc:"Escala maior em semínimas e colcheias.",
+      notation:"Compaso 4/4 | Dó maior\n\nDó Ré Mi Fá | Sol Lá Si Dó'\nDó' Si Lá Sol | Fá Mi Ré Dó" },
+    { id:4, title:"Prelúdio em Dó Maior (BWV 846)", composer:"J. S. Bach", level:"intermediario", style:"classico", tags:["Piano","Clássico"], icon:"🎹",
+      desc:"Abertura do Cravo Bem Temperado.",
+      notation:"Compaso 4/4 | Dó maior\n\nArpejo: Dó–Mi–Sol–Dó'–Mi'–Sol'–Dó''–Mi''" },
+    { id:5, title:"Romanza Anónima", composer:"Anônimo", level:"intermediario", style:"classico", tags:["Violão","Clássico"], icon:"🎸",
+      desc:"Melodia célebre para violão solo.",
+      notation:"Compaso 3/4 | Mi menor\n\nMi - Sol - Si | Lá - Dó - Mi\nRé - Fá# - Lá | Sol - Si - Ré" },
+    { id:6, title:"Blues em Lá – 12 compassos", composer:"Forma tradicional", level:"intermediario", style:"popular", tags:["Guitarra","Blues"], icon:"🎸",
+      desc:"Forma clássica de blues de 12 compassos.",
+      notation:"Compaso 4/4 | Lá blues\n\n| A7 | A7 | A7 | A7 |\n| D7 | D7 | A7 | A7 |\n| E7 | D7 | A7 | E7 |" },
+    { id:7, title:"Invenções a duas vozes nº 1", composer:"J. S. Bach", level:"avancado", style:"classico", tags:["Piano","Contraponto"], icon:"🎹",
+      desc:"Contraponto imitativo.",
+      notation:"Compaso 4/4 | Dó maior\n\nSujeito: Dó–Ré–Mi–Fá–Ré–Mi–Dó–Sol..." },
+    { id:8, title:"Estudo de Síncopes", composer:"Harmonia Academy", level:"intermediario", style:"estudo", tags:["Ritmo","Síncope"], icon:"🥁",
+      desc:"Ritmos sincopados em 4/4.",
+      notation:"Compaso 4/4\n\nColcheia – Semínima – Colcheia | Semínima – Semínima" },
+    { id:9, title:"Asturias (Leyenda) – tema", composer:"Isaac Albéniz", level:"avancado", style:"classico", tags:["Violão","Espanhol"], icon:"🎸",
+      desc:"Tema principal da peça.",
+      notation:"Compaso 3/4 | Mi menor\n\nBaixo: Mi\nMelodia: Si–Dó–Si–Lá–Sol–Fá#–Mi" },
+    { id:10, title:"Cadência II–V–I", composer:"Exercício harmônico", level:"intermediario", style:"estudo", tags:["Harmonia","Jazz"], icon:"🎶",
+      desc:"II–V–I em todas as tonalidades.",
+      notation:"Ex. em Dó:\n| Dm7 | G7 | Cmaj7 | Cmaj7 |" },
+    { id:11, title:"Canção de Ninar", composer:"Tradicional", level:"iniciante", style:"popular", tags:["Piano","6/8"], icon:"🎤",
+      desc:"Melodia em 6/8 (composto).",
+      notation:"Compaso 6/8 | Fá maior\n\nFá–Lá–Dó | Dó–Si♭–Lá\nSol–Si♭–Ré | Dó–Lá–Fá" },
+    { id:12, title:"Prelúdio Suíte nº 1 (tema)", composer:"J. S. Bach", level:"avancado", style:"classico", tags:["Cello","Barroco"], icon:"🎻",
+      desc:"Abertura da Suíte para violoncelo.",
+      notation:"Compaso 4/4 | Sol maior\n\nSol–Ré–Si–Lá–Si–Ré–Si–Ré" }
+];
 
-        // ========== QUIZ LOGIC ==========
-        let currentQuestions = [];
-        let currentQuestion = 0;
-        let score = 0;
-        let answered = false;
-        let currentCategory = '';
+const scoresGrid = document.getElementById('scoresGrid');
+let currentScore = null;
+let originalNotation = '';
+let currentSemitones = 0;
 
-        const exerciseMenu = document.getElementById('exerciseMenu');
-        const quizWrapper = document.getElementById('quizWrapper');
-        const questionText = document.getElementById('questionText');
-        const optionsContainer = document.getElementById('optionsContainer');
-        const quizFeedback = document.getElementById('quizFeedback');
-        const quizProgress = document.getElementById('quizProgress');
-        const quizTitle = document.getElementById('quizTitle');
-        const nextBtn = document.getElementById('nextBtn');
-        const quizBody = document.getElementById('quizBody');
-        const quizResult = document.getElementById('quizResult');
-        const finalScore = document.getElementById('finalScore');
-        const resultMessage = document.getElementById('resultMessage');
-        const playExampleBtn = document.getElementById('playExampleBtn');
+function renderScores(filter = 'all') {
+    scoresGrid.innerHTML = '';
+    scoresData.filter(s => {
+        if (filter === 'all') return true;
+        if (['iniciante','intermediario','avancado'].includes(filter)) return s.level === filter;
+        return s.style === filter;
+    }).forEach(s => {
+        const card = document.createElement('article');
+        card.className = 'score-card';
+        card.innerHTML = `
+            <div class="score-preview"><span class="badge">${s.level}</span><span>${s.icon}</span></div>
+            <div class="score-body">
+                <h3>${s.title}</h3>
+                <div class="score-composer">${s.composer}</div>
+                <div class="score-meta">${s.tags.map(t => `<span class="score-tag">${t}</span>`).join('')}</div>
+                <p class="score-desc">${s.desc}</p>
+                <div class="score-actions">
+                    <button class="btn btn-secondary btn-sm" data-id="${s.id}">Abrir / Transpor / PDF</button>
+                </div>
+            </div>`;
+        scoresGrid.appendChild(card);
+    });
+    scoresGrid.querySelectorAll('[data-id]').forEach(btn => {
+        btn.addEventListener('click', () => openScoreModal(+btn.dataset.id));
+    });
+}
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderScores(btn.dataset.filter);
+    });
+});
+renderScores();
 
-        document.querySelectorAll('.exercise-card').forEach(card => {
-            card.addEventListener('click', () => startExercise(card.dataset.category));
-        });
+function openScoreModal(id) {
+    currentScore = scoresData.find(x => x.id === id);
+    if (!currentScore) return;
+    originalNotation = currentScore.notation;
+    currentSemitones = 0;
+    document.getElementById('modalTitle').textContent = currentScore.title;
+    document.getElementById('modalComposer').textContent = currentScore.composer + ' · ' + currentScore.level;
+    document.getElementById('modalDesc').textContent = currentScore.desc;
+    document.getElementById('modalNotation').textContent = originalNotation;
+    document.getElementById('transposeSelect').value = '0';
+    document.getElementById('transposeLabel').textContent = 'Tonalidade original';
+    document.getElementById('scoreModal').classList.add('open');
+}
+document.getElementById('modalClose').addEventListener('click', () => document.getElementById('scoreModal').classList.remove('open'));
+document.getElementById('scoreModal').addEventListener('click', e => {
+    if (e.target.id === 'scoreModal') document.getElementById('scoreModal').classList.remove('open');
+});
 
-        function startExercise(category) {
-            currentCategory = category;
-            if (category === 'misto') buildMixedQuiz();
-            currentQuestions = exerciseBank[category].questions;
-            currentQuestion = 0;
-            score = 0;
-            answered = false;
-            quizTitle.textContent = exerciseBank[category].title;
-            exerciseMenu.style.display = 'none';
-            quizWrapper.classList.add('active');
-            quizResult.classList.remove('show');
-            quizBody.style.display = 'block';
-            loadQuestion();
-        }
+document.getElementById('applyTranspose').addEventListener('click', () => {
+    currentSemitones = parseInt(document.getElementById('transposeSelect').value, 10);
+    document.getElementById('modalNotation').textContent = transposeText(originalNotation, currentSemitones);
+    document.getElementById('transposeLabel').textContent = SEMITONE_LABELS[String(currentSemitones)] || (currentSemitones + ' semitons');
+});
+document.getElementById('resetTranspose').addEventListener('click', () => {
+    currentSemitones = 0;
+    document.getElementById('transposeSelect').value = '0';
+    document.getElementById('modalNotation').textContent = originalNotation;
+    document.getElementById('transposeLabel').textContent = 'Tonalidade original';
+});
 
-        function loadQuestion() {
-            answered = false;
-            const q = currentQuestions[currentQuestion];
-            questionText.textContent = q.q;
-            quizProgress.textContent = `Pergunta ${currentQuestion + 1} de ${currentQuestions.length}`;
-            optionsContainer.innerHTML = '';
-            quizFeedback.className = 'quiz-feedback';
-            quizFeedback.textContent = '';
-            nextBtn.style.display = 'none';
+/* DOWNLOAD PDF */
+document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+    if (!currentScore || !window.jspdf) {
+        alert('Biblioteca PDF ainda carregando. Tente de novo em instantes.');
+        return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const margin = 20;
+    let y = 22;
 
-            // Botão de áudio rítmico (quando houver pattern)
-            if (q.rhythm && q.rhythm.length) {
-                playExampleBtn.style.display = 'inline-flex';
-                playExampleBtn.onclick = () => playRhythmPattern(q.rhythm, 350);
-            } else {
-                playExampleBtn.style.display = 'none';
-            }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('Harmonia Academy', margin, y);
+    y += 10;
 
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = opt;
-                btn.addEventListener('click', () => selectOption(i, btn));
-                optionsContainer.appendChild(btn);
-            });
-        }
+    doc.setFontSize(14);
+    doc.text(currentScore.title, margin, y);
+    y += 8;
 
-        function selectOption(index, btn) {
-            if (answered) return;
-            answered = true;
-            const q = currentQuestions[currentQuestion];
-            const buttons = optionsContainer.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.disabled = true);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(80);
+    doc.text(currentScore.composer + '  |  Nível: ' + currentScore.level, margin, y);
+    y += 10;
 
-            if (index === q.correct) {
-                btn.classList.add('correct');
-                score++;
-                playSuccess();
-                quizFeedback.textContent = '✓ Correto! ' + q.explanation;
-                quizFeedback.className = 'quiz-feedback show correct';
-            } else {
-                btn.classList.add('wrong');
-                buttons[q.correct].classList.add('correct');
-                playError();
-                quizFeedback.textContent = '✗ Incorreto. ' + q.explanation;
-                quizFeedback.className = 'quiz-feedback show wrong';
-            }
-            nextBtn.style.display = 'inline-flex';
-            nextBtn.textContent = currentQuestion < currentQuestions.length - 1 ? 'Próxima →' : 'Ver Resultado';
-        }
+    doc.setTextColor(40);
+    doc.setFontSize(10);
+    const descLines = doc.splitTextToSize(currentScore.desc, 170);
+    doc.text(descLines, margin, y);
+    y += descLines.length * 5 + 8;
 
-        nextBtn.addEventListener('click', () => {
-            currentQuestion++;
-            if (currentQuestion < currentQuestions.length) loadQuestion();
-            else showResult();
-        });
+    if (currentSemitones !== 0) {
+        doc.setFont('helvetica', 'italic');
+        doc.text('Transposto: ' + (SEMITONE_LABELS[String(currentSemitones)] || currentSemitones + ' semitons'), margin, y);
+        y += 8;
+        doc.setFont('helvetica', 'normal');
+    }
 
-        function showResult() {
-            quizBody.style.display = 'none';
-            quizResult.classList.add('show');
-            finalScore.textContent = `${score}/${currentQuestions.length}`;
-            const pct = Math.round((score / currentQuestions.length) * 100);
-            if (pct === 100) {
-                resultMessage.textContent = 'Perfeito! Domínio completo deste tema.';
-                playSuccess();
-            } else if (pct >= 70) resultMessage.textContent = 'Muito bem! Continue praticando para solidificar.';
-            else if (pct >= 40) resultMessage.textContent = 'Bom começo. Revise os conceitos e tente de novo.';
-            else resultMessage.textContent = 'Continue estudando! A teoria se constrói com prática.';
-        }
+    doc.setDrawColor(180);
+    doc.line(margin, y, 190, y);
+    y += 10;
 
-        function backToMenu() {
-            quizWrapper.classList.remove('active');
-            exerciseMenu.style.display = 'block';
-            quizResult.classList.remove('show');
-            quizBody.style.display = 'block';
-        }
+    doc.setFont('courier', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(30);
+    const notation = document.getElementById('modalNotation').textContent;
+    const lines = doc.splitTextToSize(notation, 170);
+    lines.forEach(line => {
+        if (y > 270) { doc.addPage(); y = 20; }
+        doc.text(line, margin, y);
+        y += 5.5;
+    });
 
-        document.getElementById('backToMenu').addEventListener('click', backToMenu);
-        document.getElementById('backToMenu3').addEventListener('click', backToMenu);
-        document.getElementById('restartQuiz').addEventListener('click', () => startExercise(currentCategory));
+    y += 12;
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(120);
+    doc.text('Material de estudo — Harmonia Academy · Notação simplificada', margin, y);
 
-        // ========== METRONOME ==========
-        let bpm = 100;
-        let isPlaying = false;
-        let intervalId = null;
-        const bpmDisplay = document.getElementById('bpmDisplay');
-        const toggleBtn = document.getElementById('metronomeToggle');
-        const beatIndicator = document.getElementById('beatIndicator');
+    const safeName = currentScore.title.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').replace(/\s+/g, '_');
+    doc.save(`Harmonia_${safeName}.pdf`);
+});
 
-        document.getElementById('bpmUp').addEventListener('click', () => {
-            if (bpm < 240) { bpm += 5; bpmDisplay.textContent = bpm; if (isPlaying) restartMetronome(); }
-        });
-        document.getElementById('bpmDown').addEventListener('click', () => {
-            if (bpm > 40) { bpm -= 5; bpmDisplay.textContent = bpm; if (isPlaying) restartMetronome(); }
-        });
+/* METRONOME */
+let bpm = 100, isPlaying = false, intervalId = null;
+const bpmDisplay = document.getElementById('bpmDisplay');
+const toggleBtn = document.getElementById('metronomeToggle');
+const beatIndicator = document.getElementById('beatIndicator');
+document.getElementById('bpmUp').addEventListener('click', () => {
+    if (bpm < 240) { bpm += 5; bpmDisplay.textContent = bpm; if (isPlaying) { stopMetronome(); startMetronome(); } }
+});
+document.getElementById('bpmDown').addEventListener('click', () => {
+    if (bpm > 40) { bpm -= 5; bpmDisplay.textContent = bpm; if (isPlaying) { stopMetronome(); startMetronome(); } }
+});
+function playMetroClick() {
+    playClick(1000, 0.22);
+    beatIndicator.classList.add('pulse');
+    setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
+}
+function startMetronome() {
+    playMetroClick();
+    intervalId = setInterval(playMetroClick, 60000 / bpm);
+    isPlaying = true;
+    toggleBtn.textContent = 'Parar';
+    toggleBtn.classList.add('active');
+}
+function stopMetronome() {
+    clearInterval(intervalId);
+    isPlaying = false;
+    toggleBtn.textContent = 'Iniciar';
+    toggleBtn.classList.remove('active');
+    beatIndicator.classList.remove('pulse');
+}
+toggleBtn.addEventListener('click', () => isPlaying ? stopMetronome() : startMetronome());
 
-        function playMetroClick() {
-            playClick(1000, 0.22);
-            beatIndicator.classList.add('pulse');
-            setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
-        }
-        function startMetronome() {
-            playMetroClick();
-            intervalId = setInterval(playMetroClick, 60000 / bpm);
-            isPlaying = true;
-            toggleBtn.textContent = 'Parar';
-            toggleBtn.classList.add('active');
-        }
-        function stopMetronome() {
-            clearInterval(intervalId);
-            isPlaying = false;
-            toggleBtn.textContent = 'Iniciar';
-            toggleBtn.classList.remove('active');
-            beatIndicator.classList.remove('pulse');
-        }
-        function restartMetronome() { stopMetronome(); startMetronome(); }
-        toggleBtn.addEventListener('click', () => isPlaying ? stopMetronome() : startMetronome());
-
-        // ========== FORM ==========
-        const enrollForm = document.getElementById('enrollForm');
-        const formSuccess = document.getElementById('formSuccess');
-        enrollForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            let valid = true;
-            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
-            if (!document.getElementById('nome').value.trim() || document.getElementById('nome').value.trim().length < 3) {
-                document.getElementById('errorNome').classList.add('show'); valid = false;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) {
-                document.getElementById('errorEmail').classList.add('show'); valid = false;
-            }
-            if (!document.getElementById('instrumento').value) {
-                document.getElementById('errorInstrumento').classList.add('show'); valid = false;
-            }
-            if (!document.getElementById('nivel').value) {
-                document.getElementById('errorNivel').classList.add('show'); valid = false;
-            }
-            if (valid) {
-                enrollForm.style.display = 'none';
-                formSuccess.classList.add('show');
-                playSuccess();
-            }
-        });
-        document.getElementById('resetForm').addEventListener('click', () => {
-            formSuccess.classList.remove('show');
-            enrollForm.style.display = 'block';
-            enrollForm.reset();
-        });
-    </script>
+/* FORM */
+document.getElementById('enrollForm').addEventListener('submit', e => {
+    e.preventDefault();
+    let valid = true;
+    document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+    if (!document.getElementById('nome').value.trim() || document.getElementById('nome').value.trim().length < 3) {
+        document.getElementById('errorNome').classList.add('show'); valid = false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) {
+        document.getElementById('errorEmail').classList.add('show'); valid = false;
+    }
+    if (!document.getElementById('instrumento').value) { document.getElementById('errorInstrumento').classList.add('show'); valid = false; }
+    if (!document.getElementById('nivel').value) { document.getElementById('errorNivel').classList.add('show'); valid = false; }
+    if (valid) {
+        document.getElementById('enrollForm').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+        playSuccess();
+    }
+});
+document.getElementById('resetForm').addEventListener('click', () => {
+    document.getElementById('formSuccess').classList.remove('show');
+    document.getElementById('enrollForm').style.display = 'block';
+    document.getElementById('enrollForm').reset();
+});
+</script>
 </body>
 </html>
