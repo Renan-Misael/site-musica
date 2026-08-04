@@ -19,17 +19,12 @@
             --border: #e7e5e4;
             --shadow: 0 10px 40px rgba(59, 7, 100, 0.08);
             --radius: 16px;
+            --success: #16a34a;
+            --error: #dc2626;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -46,9 +41,7 @@
         /* ========== NAV ========== */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             background: rgba(59, 7, 100, 0.95);
             backdrop-filter: blur(12px);
@@ -73,14 +66,11 @@
             text-decoration: none;
             letter-spacing: 1px;
         }
-
-        .logo span {
-            color: var(--gold);
-        }
+        .logo span { color: var(--gold); }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.6rem;
             list-style: none;
         }
 
@@ -88,30 +78,23 @@
             color: #e9e5ff;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             transition: color 0.25s;
             position: relative;
         }
 
         .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--gold);
-        }
+        .nav-links a.active { color: var(--gold); }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
             background: var(--gold);
             transition: width 0.3s;
         }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
+        .nav-links a:hover::after { width: 100%; }
 
         .menu-toggle {
             display: none;
@@ -138,11 +121,7 @@
             overflow: hidden;
         }
 
-        .hero-content {
-            max-width: 800px;
-            position: relative;
-            z-index: 2;
-        }
+        .hero-content { max-width: 800px; position: relative; z-index: 2; }
 
         .hero-badge {
             display: inline-block;
@@ -161,19 +140,14 @@
             font-size: clamp(2.8rem, 6vw, 4.2rem);
             line-height: 1.15;
             margin-bottom: 1.2rem;
-            letter-spacing: 0.5px;
         }
-
-        .hero h1 span {
-            color: var(--gold);
-        }
+        .hero h1 span { color: var(--gold); }
 
         .hero p {
             font-size: 1.2rem;
             color: #d4d0e8;
             max-width: 580px;
             margin: 0 auto 2.5rem;
-            font-weight: 400;
         }
 
         .hero-buttons {
@@ -203,7 +177,6 @@
             color: #1c1917;
             box-shadow: 0 6px 20px rgba(201, 162, 39, 0.35);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(201, 162, 39, 0.45);
@@ -214,41 +187,40 @@
             border: 2px solid rgba(255,255,255,0.4);
             color: white;
         }
-
         .btn-outline:hover {
             border-color: var(--gold);
             color: var(--gold);
             background: rgba(201, 162, 39, 0.1);
         }
 
-        /* ========== SECTIONS ========== */
-        section {
-            padding: 5rem 2rem;
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+        /* ========== SECTIONS ========== */
+        section { padding: 5rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
 
         .section-header {
             text-align: center;
             margin-bottom: 3.5rem;
         }
-
         .section-header h2 {
             font-size: 2.6rem;
             color: var(--primary);
             margin-bottom: 0.8rem;
         }
-
         .section-header p {
             color: var(--muted);
             font-size: 1.1rem;
             max-width: 560px;
             margin: 0 auto;
         }
-
         .section-header .line {
             width: 60px;
             height: 3px;
@@ -273,15 +245,13 @@
             transition: all 0.3s ease;
             text-align: center;
         }
-
         .feature-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 16px 50px rgba(59, 7, 100, 0.12);
         }
 
         .feature-icon {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             border-radius: 16px;
             display: flex;
@@ -291,22 +261,15 @@
             font-size: 1.6rem;
             color: white;
         }
-
         .feature-card h3 {
             font-size: 1.4rem;
             color: var(--primary);
             margin-bottom: 0.6rem;
         }
-
-        .feature-card p {
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
+        .feature-card p { color: var(--muted); font-size: 0.95rem; }
 
         /* ========== COURSES ========== */
-        .courses {
-            background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%);
-        }
+        .courses { background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%); }
 
         .courses-grid {
             display: grid;
@@ -322,7 +285,6 @@
             transition: all 0.35s ease;
             border: 1px solid var(--border);
         }
-
         .course-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 50px rgba(59, 7, 100, 0.15);
@@ -341,8 +303,7 @@
 
         .course-level {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 12px; right: 12px;
             background: var(--gold);
             color: #1c1917;
             font-size: 0.75rem;
@@ -353,16 +314,12 @@
             letter-spacing: 0.5px;
         }
 
-        .course-body {
-            padding: 1.6rem;
-        }
-
+        .course-body { padding: 1.6rem; }
         .course-body h3 {
             font-size: 1.35rem;
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
-
         .course-body p {
             color: var(--muted);
             font-size: 0.95rem;
@@ -378,29 +335,138 @@
             margin-bottom: 1.2rem;
         }
 
-        .course-meta span {
+        /* ========== THEORY QUIZ ========== */
+        .theory {
+            background: linear-gradient(180deg, var(--cream) 0%, #f0ebe3 100%);
+        }
+
+        .quiz-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 680px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.5rem 2rem;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        /* ========== PRACTICE TOOL ========== */
-        .practice {
-            background: var(--primary);
-            color: white;
+        .quiz-header h3 {
+            font-size: 1.4rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
 
-        .practice .section-header h2 {
-            color: white;
+        .quiz-progress {
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.15);
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
         }
 
-        .practice .section-header p {
-            color: #c4b5fd;
+        .quiz-body { padding: 2rem; }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.8rem;
+            line-height: 1.5;
         }
 
-        .practice .line {
-            background: var(--gold);
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
         }
+
+        .option-btn {
+            background: #faf8f5;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.3rem;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: rgba(59, 7, 100, 0.04);
+        }
+        .option-btn.selected { border-color: var(--primary); background: rgba(59, 7, 100, 0.08); }
+        .option-btn.correct {
+            border-color: var(--success);
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+        }
+        .option-btn.wrong {
+            border-color: var(--error);
+            background: rgba(220, 38, 38, 0.08);
+            color: var(--error);
+        }
+        .option-btn:disabled { cursor: default; }
+
+        .quiz-feedback {
+            margin-top: 1.5rem;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            display: none;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct {
+            background: rgba(22, 163, 74, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+        .quiz-feedback.wrong {
+            background: rgba(220, 38, 38, 0.08);
+            color: var(--error);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+        }
+
+        .quiz-actions {
+            margin-top: 1.8rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            display: none;
+        }
+        .quiz-result.show { display: block; }
+
+        .quiz-result .score {
+            font-size: 3.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        .quiz-result p { color: var(--muted); margin-bottom: 1.5rem; }
+
+        /* ========== PRACTICE / METRONOME ========== */
+        .practice { background: var(--primary); color: white; }
+        .practice .section-header h2 { color: white; }
+        .practice .section-header p { color: #c4b5fd; }
+        .practice .line { background: var(--gold); }
 
         .practice-box {
             background: rgba(255,255,255,0.08);
@@ -412,12 +478,7 @@
             text-align: center;
             backdrop-filter: blur(8px);
         }
-
-        .practice-box h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-            color: var(--gold);
-        }
+        .practice-box h3 { font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--gold); }
 
         .bpm-display {
             font-size: 4rem;
@@ -425,7 +486,6 @@
             font-family: 'Cormorant Garamond', serif;
             color: white;
             margin: 1rem 0;
-            letter-spacing: 2px;
         }
 
         .bpm-controls {
@@ -437,8 +497,7 @@
         }
 
         .bpm-btn {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.3);
             background: transparent;
@@ -450,7 +509,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .bpm-btn:hover {
             border-color: var(--gold);
             color: var(--gold);
@@ -470,26 +528,16 @@
             width: 100%;
             max-width: 220px;
         }
-
-        .metronome-btn:hover {
-            background: var(--gold-light);
-            transform: scale(1.03);
-        }
-
-        .metronome-btn.active {
-            background: #ef4444;
-            color: white;
-        }
+        .metronome-btn:hover { background: var(--gold-light); transform: scale(1.03); }
+        .metronome-btn.active { background: #ef4444; color: white; }
 
         .beat-indicator {
-            width: 18px;
-            height: 18px;
+            width: 18px; height: 18px;
             border-radius: 50%;
             background: rgba(255,255,255,0.2);
             margin: 1.5rem auto 0;
             transition: all 0.1s;
         }
-
         .beat-indicator.pulse {
             background: var(--gold);
             box-shadow: 0 0 20px var(--gold);
@@ -510,18 +558,15 @@
             box-shadow: var(--shadow);
             position: relative;
         }
-
         .testimonial::before {
             content: '"';
             font-family: 'Cormorant Garamond', serif;
             font-size: 5rem;
             color: rgba(59, 7, 100, 0.08);
             position: absolute;
-            top: -10px;
-            left: 16px;
+            top: -10px; left: 16px;
             line-height: 1;
         }
-
         .testimonial p {
             color: var(--muted);
             font-style: italic;
@@ -535,10 +580,8 @@
             align-items: center;
             gap: 0.8rem;
         }
-
         .author-avatar {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             display: flex;
@@ -546,19 +589,92 @@
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 1rem;
+        }
+        .author-info strong { display: block; color: var(--primary); font-size: 0.95rem; }
+        .author-info span { font-size: 0.8rem; color: var(--muted); }
+
+        /* ========== ENROLLMENT FORM ========== */
+        .enroll {
+            background: linear-gradient(180deg, #f5f0eb 0%, var(--cream) 100%);
         }
 
-        .author-info strong {
+        .form-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .form-group label {
             display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
             color: var(--primary);
-            font-size: 0.95rem;
+            margin-bottom: 0.45rem;
         }
 
-        .author-info span {
-            font-size: 0.8rem;
-            color: var(--muted);
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: #faf8f5;
+            color: var(--text);
+            transition: all 0.25s;
         }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(59, 7, 100, 0.1);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 110px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .form-error {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.35rem;
+            display: none;
+        }
+        .form-error.show { display: block; }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .form-success.show { display: block; }
+        .form-success .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        .form-success h3 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+        }
+        .form-success p { color: var(--muted); }
 
         /* ========== CTA ========== */
         .cta {
@@ -567,17 +683,8 @@
             color: white;
             padding: 5rem 2rem;
         }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta p {
-            color: #c4b5fd;
-            margin-bottom: 2rem;
-            font-size: 1.15rem;
-        }
+        .cta h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta p { color: #c4b5fd; margin-bottom: 2rem; font-size: 1.15rem; }
 
         /* ========== FOOTER ========== */
         footer {
@@ -600,7 +707,6 @@
             margin-bottom: 1rem;
             display: inline-block;
         }
-
         .footer-brand p {
             font-size: 0.95rem;
             line-height: 1.7;
@@ -614,11 +720,7 @@
             font-family: 'Inter', sans-serif;
             font-weight: 600;
         }
-
-        .footer-col ul {
-            list-style: none;
-        }
-
+        .footer-col ul { list-style: none; }
         .footer-col a {
             color: #a8a29e;
             text-decoration: none;
@@ -627,10 +729,7 @@
             margin-bottom: 0.6rem;
             transition: color 0.2s;
         }
-
-        .footer-col a:hover {
-            color: var(--gold);
-        }
+        .footer-col a:hover { color: var(--gold); }
 
         .footer-bottom {
             max-width: 1100px;
@@ -643,41 +742,26 @@
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 900px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
                 position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
+                top: 100%; left: 0; right: 0;
                 background: var(--primary);
                 flex-direction: column;
                 padding: 1.5rem;
                 gap: 1rem;
                 border-bottom: 2px solid var(--gold);
             }
-
-            .nav-links.open {
-                display: flex;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
+            .nav-links.open { display: flex; }
+            .menu-toggle { display: block; }
+            .hero h1 { font-size: 2.4rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .quiz-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -690,8 +774,9 @@
             <li><a href="#inicio" class="active">Início</a></li>
             <li><a href="#recursos">Recursos</a></li>
             <li><a href="#cursos">Cursos</a></li>
+            <li><a href="#teoria">Teoria</a></li>
             <li><a href="#pratica">Prática</a></li>
-            <li><a href="#depoimentos">Depoimentos</a></li>
+            <li><a href="#inscricao">Inscrição</a></li>
         </ul>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
     </nav>
@@ -704,7 +789,7 @@
             <p>Uma plataforma sofisticada para músicos que buscam evolução real — teoria, prática e performance em um só lugar.</p>
             <div class="hero-buttons">
                 <a href="#cursos" class="btn btn-primary">Explorar Cursos</a>
-                <a href="#pratica" class="btn btn-outline">Experimentar Metrônomo</a>
+                <a href="#teoria" class="btn btn-outline">Praticar Teoria</a>
             </div>
         </div>
     </section>
@@ -763,10 +848,9 @@
                             <span>⏱ 12 semanas</span>
                             <span>📚 24 aulas</span>
                         </div>
-                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                     </div>
                 </article>
-
                 <article class="course-card">
                     <div class="course-image" style="background: linear-gradient(135deg, #4c1d95, #7c3aed);">
                         <span>🎹</span>
@@ -779,10 +863,9 @@
                             <span>⏱ 16 semanas</span>
                             <span>📚 32 aulas</span>
                         </div>
-                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                     </div>
                 </article>
-
                 <article class="course-card">
                     <div class="course-image" style="background: linear-gradient(135deg, #1e3a5f, #3b82f6);">
                         <span>🎤</span>
@@ -795,9 +878,43 @@
                             <span>⏱ 10 semanas</span>
                             <span>📚 20 aulas</span>
                         </div>
-                        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Começar Agora</a>
+                        <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
                     </div>
                 </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- THEORY QUIZ -->
+    <section class="theory" id="teoria">
+        <div class="container">
+            <div class="section-header">
+                <h2>Teoria Musical na Prática</h2>
+                <p>Teste seus conhecimentos com exercícios interativos de intervalos, escalas e harmonia.</p>
+                <div class="line"></div>
+            </div>
+
+            <div class="quiz-container" id="quizContainer">
+                <div class="quiz-header">
+                    <h3>Exercício de Teoria</h3>
+                    <div class="quiz-progress" id="quizProgress">Pergunta 1 de 6</div>
+                </div>
+
+                <div class="quiz-body" id="quizBody">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                    <div class="quiz-feedback" id="quizFeedback"></div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-secondary" id="nextBtn" style="display:none;">Próxima →</button>
+                    </div>
+                </div>
+
+                <div class="quiz-result" id="quizResult">
+                    <div style="font-size:3rem;">🎵</div>
+                    <div class="score" id="finalScore">0/6</div>
+                    <p id="resultMessage"></p>
+                    <button class="btn btn-primary" id="restartQuiz">Refazer Exercício</button>
+                </div>
             </div>
         </div>
     </section>
@@ -868,11 +985,95 @@
         </div>
     </section>
 
+    <!-- ENROLLMENT FORM -->
+    <section class="enroll" id="inscricao">
+        <div class="container">
+            <div class="section-header">
+                <h2>Inscreva-se Agora</h2>
+                <p>Preencha o formulário e inicie sua jornada musical conosco.</p>
+                <div class="line"></div>
+            </div>
+
+            <div class="form-container">
+                <form id="enrollForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome completo *</label>
+                            <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+                            <div class="form-error" id="errorNome">Informe seu nome completo</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                            <div class="form-error" id="errorEmail">Informe um e-mail válido</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="instrumento">Instrumento principal *</label>
+                            <select id="instrumento" name="instrumento" required>
+                                <option value="">Selecione...</option>
+                                <option value="guitarra">Guitarra / Violão</option>
+                                <option value="piano">Piano / Teclado</option>
+                                <option value="canto">Canto</option>
+                                <option value="baixo">Baixo</option>
+                                <option value="bateria">Bateria</option>
+                                <option value="cordas">Cordas (Violino, Cello...)</option>
+                                <option value="sopro">Sopro</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                            <div class="form-error" id="errorInstrumento">Selecione um instrumento</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nivel">Nível atual *</label>
+                            <select id="nivel" name="nivel" required>
+                                <option value="">Selecione...</option>
+                                <option value="iniciante">Iniciante</option>
+                                <option value="intermediario">Intermediário</option>
+                                <option value="avancado">Avançado</option>
+                                <option value="profissional">Profissional</option>
+                            </select>
+                            <div class="form-error" id="errorNivel">Selecione seu nível</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="curso">Curso de interesse</label>
+                        <select id="curso" name="curso">
+                            <option value="">Selecione (opcional)</option>
+                            <option value="guitarra">Fundamentos da Guitarra</option>
+                            <option value="piano">Harmonia no Piano</option>
+                            <option value="vocal">Performance Vocal</option>
+                            <option value="teoria">Teoria Musical Completa</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem / Objetivos</label>
+                        <textarea id="mensagem" name="mensagem" placeholder="Conte-nos sobre seus objetivos musicais..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">
+                        Enviar Inscrição
+                    </button>
+                </form>
+
+                <div class="form-success" id="formSuccess">
+                    <div class="icon">✅</div>
+                    <h3>Inscrição enviada com sucesso!</h3>
+                    <p>Recebemos seus dados. Nossa equipe entrará em contato em breve pelo e-mail informado.</p>
+                    <button class="btn btn-secondary" id="resetForm" style="margin-top:1.5rem;">Nova inscrição</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="cta">
         <h2>Pronto para elevar sua música?</h2>
         <p>Junte-se a milhares de músicos que já transformaram sua prática.</p>
-        <a href="#cursos" class="btn btn-primary">Começar minha jornada</a>
+        <a href="#inscricao" class="btn btn-primary">Começar minha jornada</a>
     </section>
 
     <!-- FOOTER -->
@@ -886,15 +1087,15 @@
                 <h4>Plataforma</h4>
                 <ul>
                     <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#teoria">Teoria</a></li>
                     <li><a href="#pratica">Ferramentas</a></li>
-                    <li><a href="#recursos">Recursos</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Suporte</h4>
                 <ul>
                     <li><a href="#">Central de Ajuda</a></li>
-                    <li><a href="#">Contato</a></li>
+                    <li><a href="#inscricao">Contato</a></li>
                     <li><a href="#">FAQ</a></li>
                 </ul>
             </div>
@@ -912,124 +1113,46 @@
     </footer>
 
     <script>
-        // ========== NAV SCROLL ==========
+        // ========== NAV ==========
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // ========== MOBILE MENU ==========
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
+        menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 
-        // Fechar menu ao clicar em link
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-            });
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
         });
 
-        // ========== ACTIVE LINK ==========
         const sections = document.querySelectorAll('section[id]');
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop - 120;
-                if (scrollY >= sectionTop) {
-                    current = section.getAttribute('id');
-                }
+                if (scrollY >= section.offsetTop - 120) current = section.getAttribute('id');
             });
             document.querySelectorAll('.nav-links a').forEach(a => {
                 a.classList.remove('active');
-                if (a.getAttribute('href') === '#' + current) {
-                    a.classList.add('active');
-                }
+                if (a.getAttribute('href') === '#' + current) a.classList.add('active');
             });
         });
 
-        // ========== METRONOME ==========
-        let bpm = 100;
-        let isPlaying = false;
-        let intervalId = null;
-        let audioCtx = null;
-
-        const bpmDisplay = document.getElementById('bpmDisplay');
-        const bpmUp = document.getElementById('bpmUp');
-        const bpmDown = document.getElementById('bpmDown');
-        const toggleBtn = document.getElementById('metronomeToggle');
-        const beatIndicator = document.getElementById('beatIndicator');
-
-        function updateBpmDisplay() {
-            bpmDisplay.textContent = bpm;
-        }
-
-        bpmUp.addEventListener('click', () => {
-            if (bpm < 240) {
-                bpm += 5;
-                updateBpmDisplay();
-                if (isPlaying) restartMetronome();
-            }
-        });
-
-        bpmDown.addEventListener('click', () => {
-            if (bpm > 40) {
-                bpm -= 5;
-                updateBpmDisplay();
-                if (isPlaying) restartMetronome();
-            }
-        });
-
-        function playClick() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = 1000;
-            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 0.08);
-
-            // Visual pulse
-            beatIndicator.classList.add('pulse');
-            setTimeout(() => beatIndicator.classList.remove('pulse'), 100);
-        }
-
-        function startMetronome() {
-            const interval = 60000 / bpm;
-            playClick();
-            intervalId = setInterval(playClick, interval);
-            isPlaying = true;
-            toggleBtn.textContent = 'Parar';
-            toggleBtn.classList.add('active');
-        }
-
-        function stopMetronome() {
-            clearInterval(intervalId);
-            isPlaying = false;
-            toggleBtn.textContent = 'Iniciar';
-            toggleBtn.classList.remove('active');
-            beatIndicator.classList.remove('pulse');
-        }
-
-        function restartMetronome() {
-            stopMetronome();
-            startMetronome();
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                stopMetronome();
-            } else {
-                startMetronome();
-            }
-        });
-    </script>
-</body>
-</html>
+        // ========== QUIZ DE TEORIA ==========
+        const questions = [
+            {
+                q: "Qual é o intervalo entre as notas Dó e Mi?",
+                options: ["Segunda maior", "Terça maior", "Quarta justa", "Quinta justa"],
+                correct: 1,
+                explanation: "De Dó para Mi há 2 tons → Terça maior."
+            },
+            {
+                q: "A escala maior de Sol (G) possui quantos sustenidos?",
+                options: ["Nenhum", "1 (Fá#)", "2 (Fá# e Dó#)", "3 (Fá#, Dó# e Sol#)"],
+                correct: 1,
+                explanation: "A escala de Sol maior tem apenas 1 sustenido: Fá#."
+            },
+            {
+                q: "Qual acorde é formado pelas notas Dó – Mi – Sol?",
+                options: ["Dó menor", "Dó aumentado", "Dó maior", "Dó dimin
