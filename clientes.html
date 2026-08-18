@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="estilo.css">
+    <title>SisCristóvão - Cadastro de Clientes</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="agendamentos.html">Agendamentos</a>
+        <a href="consulta_agendamentos.html">Consulta Agendamentos</a>
+    </nav>
 
+    <header class="banner">
+        <h1>Gestão de Clientes</h1>
+        <p>Cadastre os solicitantes de serviços e assistência técnica</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Novo Cadastro de Cliente</h2>
+            <form action="/salvar-cliente" method="POST">
+                <label for="nome">Nome do Solicitante:</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required>
+                
+                <label for="cpf">CPF / CNPJ:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                
+                <label for="telefone">Telefone / Whatsapp:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(00) 99999-9999" required>
+                
+                <button type="submit">Salvar Cliente</button>
+            </form>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <h2>Clientes Cadastrados</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
+                Abaixo estão listadas as pessoas e instituições cadastradas para atendimento no laboratório.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Telefone</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-clientes">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        fetch('/listar-clientes')
+            .then(res => res.json())
+            .then(clientes => {
+                const corpoTabela = document.getElementById('lista-clientes');
+                clientes.forEach(c => {
+                    corpoTabela.innerHTML += `
+                        <tr>
+                            <td><strong>${c.nome}</strong></td>
+                            <td>${c.cpf}</td>
+                            <td>${c.telefone}</td>
+                        </tr>`;
+                });
+            })
+            .catch(err => console.error("Erro ao listar clientes:", err));
+    </script>
+</body>
+
+<footer class="rodape">
+    <div class="container-rodape">
+        <p>&copy; 2026 SisCristóvão - Sistema de Controle de Serviços</p>
+        <p>Desenvolvido para fins didáticos - Alunos do São Cristóvão</p>
+    </div>
+</footer>
+</html>
