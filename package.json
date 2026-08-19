@@ -1,0 +1,19 @@
+{
+  "name": "site-musica",
+  "version": "1.0.0",
+  "description": "Harmonia Academy - Plataforma de Educação Musical + módulos de gestão",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "MIT"
+}
