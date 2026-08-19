@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Login | Harmonia Academy</title>
+    <style>
+        body { min-height: 100vh; display: flex; flex-direction: column; }
+        .login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+        .login-card {
+            background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(76, 29, 149, 0.12);
+            border-top: 4px solid #4c1d95; padding: 2.2rem 2rem; width: 100%; max-width: 400px;
+        }
+        .login-card h1 { margin: 0 0 0.35rem; color: #4c1d95; font-size: 1.6rem; text-align: center; }
+        .login-card .sub { text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .login-card label { display: block; font-weight: 600; font-size: 0.85rem; color: #4c1d95; margin-bottom: 0.3rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .login-card input { width: 100%; margin-bottom: 1rem; }
+        .login-error { display: none; background: #fee2e2; color: #991b1b; padding: 0.7rem 0.9rem; border-radius: 8px; font-size: 0.88rem; margin-bottom: 1rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .login-error.show { display: block; }
+        .login-card button[type="submit"] { width: 100%; margin-top: 0.25rem; }
+        .login-links { text-align: center; margin-top: 1.25rem; font-size: 0.88rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .login-links a { color: #4c1d95; text-decoration: none; font-weight: 600; }
+        .login-links a:hover { text-decoration: underline; }
+        .badge-admin { display: inline-block; background: linear-gradient(135deg, #4c1d95, #5b21b6); color: #fbbf24; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px; letter-spacing: 0.4px; text-transform: uppercase; }
+        .note-box { margin-top: 1rem; padding: 0.75rem; background: #faf7f2; border-radius: 8px; font-size: 0.8rem; color: #6b7280; text-align: center; font-family: 'Segoe UI', system-ui, sans-serif; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#inscricao">Inscrição (alunos)</a>
+        <a href="login.html"><strong>Login</strong></a>
+    </nav>
+
+    <div class="login-wrap">
+        <div class="login-card">
+            <h1>Entrar <span class="badge-admin">Admin</span></h1>
+            <p class="sub">Área restrita — diferente da inscrição de alunos</p>
+            <div id="loginError" class="login-error"></div>
+            <form id="loginForm">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" name="usuario" autocomplete="username" required placeholder="Seu usuário" autofocus>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" required placeholder="Sua senha">
+                <button type="submit" id="btnLogin">Entrar</button>
+            </form>
+            <div class="note-box">
+                Login de administrador para gerenciar inscrições.<br>
+                Alunos usam a <a href="index.html#inscricao">inscrição no site</a>, sem senha.
+            </div>
+            <div class="login-links"><a href="index.html">← Voltar ao site</a></div>
+        </div>
+    </div>
+
+    <script>
+        fetch('/api/me').then(r => r.json()).then(data => {
+            if (data.loggedIn) {
+                const params = new URLSearchParams(window.location.search);
+                window.location.href = params.get('next') || '/inscricoes.html';
+            }
+        }).catch(() => {});
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById('loginError');
+            errEl.classList.remove('show');
+            const btn = document.getElementById('btnLogin');
+            btn.disabled = true;
+            btn.textContent = 'Entrando...';
+            const usuario = document.getElementById('usuario').value.trim();
+            const senha = document.getElementById('senha').value;
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario, senha })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    const params = new URLSearchParams(window.location.search);
+                    window.location.href = params.get('next') || '/inscricoes.html';
+                    return;
+                }
+                errEl.textContent = data.error || 'Usuário ou senha incorretos.';
+                errEl.classList.add('show');
+            } catch (err) {
+                errEl.textContent = 'Servidor offline. Rode npm start e tente de novo.';
+                errEl.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Entrar';
+            }
+        });
+    </script>
+</body>
+</html>
