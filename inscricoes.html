@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Harmonia Academy - Inscrições nas Aulas</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="agendamentos.html">Agendamentos</a>
+        <a href="consulta_agendamentos.html">Consulta</a>
+        <a href="inscricoes.html">Inscrições</a>
+    </nav>
+    <header class="banner">
+        <h1>Inscrições nas Aulas</h1>
+        <p>Gerencie as inscrições recebidas pelo site</p>
+    </header>
+    <div class="container">
+        <div class="card">
+            <h2>Inscrições recebidas</h2>
+            <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:15px;">Alunos que se inscreveram pelo formulário da página principal.</p>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Instrumento</th><th>Nível</th><th>Data</th><th>Status</th><th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-inscricoes"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
+    <script>
+        function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
+        function formatDate(iso) { try { return new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }); } catch (e) { return iso; } }
+        function labelStatus(s) { return ({ pendente: 'Pendente', confirmada: 'Confirmada', cancelada: 'Cancelada' })[s] || s; }
+        function carregar() {
+            fetch('/api/inscricoes')
+                .then(r => { if (!r.ok) throw new Error('Falha'); return r.json(); })
+                .then(rows => {
+                    const tbody = document.getElementById('lista-inscricoes');
+                    if (!rows.length) {
+                        tbody.innerHTML = '<tr><td colspan="9">Nenhuma inscrição ainda. Peça aos alunos para se inscreverem em index.html#inscricao</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = rows.map(row => `
+                        <tr>
+                            <td>${row.id}</td>
+                            <td><strong>${escapeHtml(row.nome)}</strong></td>
+                            <td>${escapeHtml(row.email)}</td>
+                            <td>${escapeHtml(row.telefone || '—')}</td>
+                            <td>${escapeHtml(row.instrumento)}</td>
+                            <td>${escapeHtml(row.nivel)}</td>
+                            <td>${formatDate(row.data_inscricao)}</td>
+                            <td><span class="note">${labelStatus(row.status)}</span></td>
+                            <td style="white-space:nowrap;">
+                                <button type="button" style="padding:0.35rem 0.7rem;font-size:0.75rem;margin:2px;" onclick="setStatus(${row.id},'confirmada')">Confirmar</button>
+                                <button type="button" class="secondary" style="padding:0.35rem 0.7rem;font-size:0.75rem;margin:2px;" onclick="setStatus(${row.id},'cancelada')">Cancelar</button>
+                            </td>
+                        </tr>
+                        ${row.mensagem ? `<tr><td colspan="9" style="font-size:0.85rem;color:#6b7280;">Objetivos: ${escapeHtml(row.mensagem)}</td></tr>` : ''}
+                    `).join('');
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('lista-inscricoes').innerHTML = '<tr><td colspan="9">Inicie o servidor com <code>npm start</code> para ver as inscrições.</td></tr>';
+                });
+        }
+        function setStatus(id, status) {
+            fetch('/api/inscricoes/' + id + '/status', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            }).then(r => r.json()).then(res => {
+                if (res.success) carregar();
+                else alert(res.error || 'Erro ao atualizar');
+            }).catch(() => alert('Erro de conexão com o servidor.'));
+        }
+        carregar();
+    </script>
+</body>
+</html>
