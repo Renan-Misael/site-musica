@@ -1,133 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="estilo.css">
-    <title>SisCristóvão - Consulta de Agendamentos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Harmonia Academy - Consulta de Agendamentos</title>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="clientes.html">Clientes</a>
-        <a href="servicos.html">Serviços</a>
-        <a href="agendamentos.html">Agendamentos</a>
-        <a href="consulta_agendamentos.html">Consulta Agendamentos</a>
-    </nav>
-
-    <header class="banner">
-        <h1>Histórico de Agendamentos</h1>
-        <p>Consulte as Ordens de Serviço abertas e alocações de equipes</p>
-    </header>
-
-    <div class="container">
-        <div class="card">
-            <h2>Agendamentos Registrados (Mestre)</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">
-                Clique em "Ver Detalhes" para examinar os serviços específicos alocados a cada horário.
-            </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Data / Hora</th>
-                        <th>Cliente</th>
-                        <th>Responsável</th>
-                        <th>Total</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-agendamentos-consulta">
-                    </tbody>
-            </table>
-        </div>
-
-        <div id="card-detalhes" class="card" style="margin-top: 25px; display: none; border-left: 6px solid var(--accent-red);">
-            <h2>Detalhes da Ordem de Serviço #<span id="num-agendamento"></span></h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">
-                Serviços técnicos executados nesta reserva:
-            </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Serviço Técnico</th>
-                        <th>Tempo Estimado</th>
-                        <th>Preço (R$)</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-servicos-detalhe">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script {="" }="">
-        // Executa automaticamente ao carregar a página para preencher a tabela Mestre
-        window.onload = function() {
-            fetch('/listar-agendamentos')
-                .then(res => res.json())
-                .then(agendamentos => {
-                    const corpoTabela = document.getElementById('lista-agendamentos-consulta');
-                    corpoTabela.innerHTML = "";
-                    
-                    agendamentos.forEach(a => {
-                        // Formatação amigável para a data vinda do datetime-local
-                        const dataFormatada = new Date(a.data).toLocaleString('pt-BR', {
-                            dateStyle: 'short',
-                            timeStyle: 'short'
-                        });
-
-                        corpoTabela.innerHTML += `
-                            <tr>
-                                <td>${a.id}</td>
-                                <td>${dataFormatada}</td>
-                                <td><strong>${a.nome_cliente}</strong></td>
-                                <td>${a.responsavel}</td>
-                                <td>R$ ${a.total.toFixed(2)}</td>
-                                <td>
-                                    <button onclick="verDetalhes(${a.id})">Ver Detalhes</button>
-                                </td>
-                            </tr>`;
-                    });
-                })
-                .catch(err => console.error("Erro ao listar agendamentos:", err));
-        };
-
-        // Função para carregar e exibir os Detalhes do agendamento clicado
-        function verDetalhes(idAgendamento) {
-            fetch(`/detalhes-agendamento/${idAgendamento}`)
-                .then(res => res.json())
-                .then(servicos => {
-                    // Torna o card visível e atualiza o número da O.S.
-                    document.getElementById('card-detalhes').style.display = 'block';
-                    document.getElementById('num-agendamento').innerText = idAgendamento;
-                    
-                    const corpoDetalhe = document.getElementById('lista-servicos-detalhe');
-                    corpoDetalhe.innerHTML = "";
-                    
-                    servicos.forEach(item => {
-                        corpoDetalhe.innerHTML += `
-                            <tr>
-                                <td><strong>${item.descricao}</strong></td>
-                                <td>${item.tempo_estimado}h</td>
-                                <td>R$ ${item.preco_cobrado.toFixed(2)}</td>
-                            </tr>`;
-                    });
-                    
-                    // Rola a tela suavemente até o card de detalhes para melhorar a usabilidade
-                    window.scrollTo({
-                        top: document.getElementById('card-detalhes').offsetTop - 20,
-                        behavior: 'smooth'
-                    });
-                })
-                .catch(err => console.error("Erro ao carregar detalhes:", err));
-        }
-    </script>
+<nav>
+<a href="index.html">Home</a>
+<a href="clientes.html">Clientes</a>
+<a href="servicos.html">Serviços</a>
+<a href="agendamentos.html">Agendamentos</a>
+<a href="consulta_agendamentos.html">Consulta</a>
+<a href="inscricoes.html">Inscrições</a>
+</nav>
+<header class="banner">
+<h1>Histórico de Agendamentos</h1>
+<p>Consulte reservas e detalhes de cada atendimento</p>
+</header>
+<div class="container">
+<div class="card">
+<h2>Agendamentos registrados</h2>
+<p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:15px;">Clique em "Ver detalhes" para ver os serviços de cada reserva.</p>
+<table>
+<thead><tr><th>ID</th><th>Data / Hora</th><th>Cliente</th><th>Responsável</th><th>Total</th><th>Ação</th></tr></thead>
+<tbody id="lista-agendamentos-consulta"></tbody>
+</table>
+</div>
+<div id="card-detalhes" class="card" style="margin-top:25px;display:none;border-left:6px solid var(--accent-rose);">
+<h2>Detalhes do agendamento #<span id="num-agendamento"></span></h2>
+<table>
+<thead><tr><th>Serviço</th><th>Tempo</th><th>Preço (R$)</th></tr></thead>
+<tbody id="lista-servicos-detalhe"></tbody>
+</table>
+</div>
+</div>
+<footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
+<script>
+function escapeHtml(str){const d=document.createElement('div');d.textContent=str==null?'':String(str);return d.innerHTML;}
+function formatMoney(v){return Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+window.onload=function(){
+fetch('/listar-agendamentos').then(res=>{if(!res.ok)throw new Error('Falha');return res.json();})
+.then(agendamentos=>{
+const corpo=document.getElementById('lista-agendamentos-consulta');
+if(!agendamentos.length){corpo.innerHTML='<tr><td colspan="6">Nenhum agendamento encontrado.</td></tr>';return;}
+corpo.innerHTML='';
+agendamentos.forEach(a=>{
+let dataFormatada=a.data;
+try{dataFormatada=new Date(a.data).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});}catch(e){}
+corpo.innerHTML+=`<tr><td>${a.id}</td><td>${escapeHtml(dataFormatada)}</td><td><strong>${escapeHtml(a.nome_cliente)}</strong></td><td>${escapeHtml(a.responsavel)}</td><td>R$ ${formatMoney(a.total)}</td><td><button type="button" onclick="verDetalhes(${a.id})">Ver detalhes</button></td></tr>`;
+});
+}).catch(err=>{console.error(err);document.getElementById('lista-agendamentos-consulta').innerHTML='<tr><td colspan="6">Inicie o servidor (npm start) para consultar.</td></tr>';});
+};
+function verDetalhes(idAgendamento){
+fetch('/detalhes-agendamento/'+idAgendamento).then(res=>res.json()).then(servicos=>{
+document.getElementById('card-detalhes').style.display='block';
+document.getElementById('num-agendamento').textContent=idAgendamento;
+const corpo=document.getElementById('lista-servicos-detalhe');
+if(!servicos.length){corpo.innerHTML='<tr><td colspan="3">Sem itens.</td></tr>';return;}
+corpo.innerHTML=servicos.map(item=>`<tr><td><strong>${escapeHtml(item.descricao)}</strong></td><td>${item.tempo_estimado}h</td><td>R$ ${formatMoney(item.preco_cobrado)}</td></tr>`).join('');
+window.scrollTo({top:document.getElementById('card-detalhes').offsetTop-20,behavior:'smooth'});
+}).catch(err=>{console.error(err);alert('Erro ao carregar detalhes.');});
+}
+</script>
 </body>
-
-<footer class="rodape">
-    <div class="container-rodape">
-        <p>&copy; 2026 SisCristóvão - Sistema de Controle de Serviços</p>
-        <p>Desenvolvido para fins didáticos - Alunos do São Cristóvão</p>
-    </div>
-</footer>
 </html>

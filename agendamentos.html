@@ -1,107 +1,111 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="estilo.css">
-    <title>SisCristóvão - Lançar Agendamento</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>Harmonia Academy - Agendamentos</title>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="clientes.html">Clientes</a>
-        <a href="servicos.html">Serviços</a>
-        <a href="agendamentos.html">Agendamentos</a>
-        <a href="consulta_agendamentos.html">Consulta Agendamentos</a>
-    </nav>
-
-    <header class="banner">
-        <h1>Controle de Agendamentos</h1>
-        <p>Abra ordens de serviço e reserve horários para atendimento</p>
-    </header>
-
-    <div class="container">
-        <div style="margin-bottom: 20px;">
-            <button onclick="window.location.href='consulta_agendamentos.html'" style="background: #555; width: auto; padding: 10px 20px;">
-                🔍 Ver Histórico de Agendamentos
-            </button>
-        </div>
-
-        <div class="card">
-            <h2>Nova Ordem de Serviço / Agendamento</h2>
-
-            <label for="selCliente">Cliente / Solicitante:</label>
-            <select id="selCliente">
-                <option value="">Selecione o Cliente...</option>
-            </select>
-
-            <label for="data_agendamento">Data e Hora do Atendimento:</label>
-            <input type="datetime-local" id="data_agendamento" required>
-
-            <label for="responsavel">Aluno / Equipe Responsável:</label>
-            <input type="text" id="responsavel" placeholder="Ex: Grupo 2 (Ana e Pedro)" required>
-
-            <hr>
-
-            <h3>🛠️ Adicionar Serviços ao Agendamento</h3>
-            
-            <label for="selServico">Selecione o Serviço:</label>
-            <select id="selServico" onchange="atualizarDadosServico()">
-                <option value="">Selecione um serviço...</option>
-            </select>
-
-            <div style="display: flex; gap: 15px; margin-top: 5px;">
-                <div style="flex: 1;">
-                    <label>Preço Sugerido (R$):</label>
-                    <input type="number" id="txtPreco" readonly style="background: #eee;">
-                </div>
-                <div style="flex: 1;">
-                    <label>Tempo Est. (Horas):</label>
-                    <input type="number" id="txtTempo" readonly style="background: #eee;">
-                </div>
-            </div>
-
-            <button type="button" onclick="adicionarServicoNaLista()" style="background-color: var(--primary-blue); margin-top: 15px;">
-                ➕ Incluir Serviço no Agendamento
-            </button>
-        </div>
-
-        <div class="card" style="margin-top: 20px;">
-            <h2>Serviços Inclusos neste Agendamento</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Serviço</th>
-                        <th>Tempo Est.</th>
-                        <th>Preço (R$)</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-servicos-agendados">
-                    </tbody>
-            </table>
-
-            <div style="text-align: right; margin-top: 15px;">
-                <h3 id="txtTotal">Total Geral: R$ 0.00</h3>
-                <h4 id="txtTempoTotal" style="color: var(--accent-red);">Tempo Total Estimado: 0h</h4>
-            </div>
-
-            <button type="button" onclick="finalizarAgendamento()" style="margin-top: 15px; background-color: var(--accent-red);">
-                💾 Salvar e Confirmar Agendamento
-            </button>
-        </div>
-    </div>
-
-    <script>
-        let listaServicosDb = [];
-        let carrinhoServicos = [];
-        let totalGeral = 0;
-        let tempoTotalGeral = 0;
-
-        // Carrega os dados iniciais do banco ao abrir a página
-        window.onload = function() {
-            // Buscar clientes para o Select
-            fetch('/listar-clientes')
-                .then(res => res.json())
-                .then(clientes => {
-                    const sel = document.getElementById('selCliente');
-                    clientes.forEach(c => {
-                        sel.innerHTML += `<option value="${c.id}">${c.nome} (${c.cpf})
+<nav>
+<a href="index.html">Home</a>
+<a href="clientes.html">Clientes</a>
+<a href="servicos.html">Serviços</a>
+<a href="agendamentos.html">Agendamentos</a>
+<a href="consulta_agendamentos.html">Consulta</a>
+<a href="inscricoes.html">Inscrições</a>
+</nav>
+<header class="banner">
+<h1>Controle de Agendamentos</h1>
+<p>Reserve horários e monte a ordem de atendimento</p>
+</header>
+<div class="container">
+<div style="margin-bottom:20px;">
+<button type="button" onclick="window.location.href='consulta_agendamentos.html'" class="secondary">Ver histórico de agendamentos</button>
+</div>
+<div class="card">
+<h2>Novo Agendamento</h2>
+<label for="selCliente">Cliente / Aluno</label>
+<select id="selCliente"><option value="">Selecione o cliente...</option></select>
+<label for="data_agendamento">Data e hora</label>
+<input type="datetime-local" id="data_agendamento" required>
+<label for="responsavel">Responsável / Equipe</label>
+<input type="text" id="responsavel" placeholder="Ex: Prof. Ana" required>
+<hr>
+<h3>Adicionar serviços</h3>
+<label for="selServico">Serviço</label>
+<select id="selServico" onchange="atualizarDadosServico()"><option value="">Selecione um serviço...</option></select>
+<div style="display:flex;gap:15px;margin-top:5px;flex-wrap:wrap;">
+<div style="flex:1;min-width:120px;"><label>Preço (R$)</label><input type="number" id="txtPreco" readonly style="background:#eee;"></div>
+<div style="flex:1;min-width:120px;"><label>Tempo (h)</label><input type="number" id="txtTempo" readonly style="background:#eee;"></div>
+</div>
+<button type="button" onclick="adicionarServicoNaLista()" style="margin-top:15px;">Incluir serviço</button>
+</div>
+<div class="card" style="margin-top:20px;">
+<h2>Serviços neste agendamento</h2>
+<table>
+<thead><tr><th>Serviço</th><th>Tempo</th><th>Preço (R$)</th><th></th></tr></thead>
+<tbody id="lista-servicos-agendados"></tbody>
+</table>
+<div style="text-align:right;margin-top:15px;">
+<h3 id="txtTotal">Total: R$ 0,00</h3>
+<h4 id="txtTempoTotal" style="color:#e11d48;">Tempo total: 0h</h4>
+</div>
+<button type="button" onclick="finalizarAgendamento()" style="margin-top:15px;background:linear-gradient(135deg,#e11d48,#be123c);">Salvar e confirmar agendamento</button>
+</div>
+</div>
+<footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
+<script>
+let listaServicosDb=[],carrinhoServicos=[],totalGeral=0,tempoTotalGeral=0;
+function escapeHtml(str){const d=document.createElement('div');d.textContent=str==null?'':String(str);return d.innerHTML;}
+function formatMoney(v){return Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function carregarDados(){
+Promise.all([fetch('/listar-clientes').then(r=>r.json()),fetch('/listar-servicos').then(r=>r.json())])
+.then(([clientes,servicos])=>{
+const selCli=document.getElementById('selCliente');
+clientes.forEach(c=>{selCli.innerHTML+=`<option value="${c.id}">${escapeHtml(c.nome)} (${escapeHtml(c.cpf)})</option>`;});
+listaServicosDb=servicos;
+const selSrv=document.getElementById('selServico');
+servicos.forEach(s=>{selSrv.innerHTML+=`<option value="${s.id}">${escapeHtml(s.descricao)}</option>`;});
+}).catch(err=>{console.error(err);alert('Não foi possível carregar. Inicie o servidor: npm start');});
+}
+function atualizarDadosServico(){
+const id=document.getElementById('selServico').value;
+const s=listaServicosDb.find(x=>String(x.id)===String(id));
+if(!s){document.getElementById('txtPreco').value='';document.getElementById('txtTempo').value='';return;}
+document.getElementById('txtPreco').value=s.preco;
+document.getElementById('txtTempo').value=s.tempo_estimado;
+}
+function adicionarServicoNaLista(){
+const id=document.getElementById('selServico').value;
+if(!id){alert('Selecione um serviço.');return;}
+const s=listaServicosDb.find(x=>String(x.id)===String(id));
+if(!s)return;
+if(carrinhoServicos.some(item=>String(item.id)===String(s.id))){alert('Este serviço já foi adicionado.');return;}
+carrinhoServicos.push({id:s.id,descricao:s.descricao,preco:Number(s.preco),tempo:Number(s.tempo_estimado)});
+totalGeral+=Number(s.preco);tempoTotalGeral+=Number(s.tempo_estimado);renderCarrinho();
+}
+function removerServico(idx){const item=carrinhoServicos[idx];totalGeral-=item.preco;tempoTotalGeral-=item.tempo;carrinhoServicos.splice(idx,1);renderCarrinho();}
+function renderCarrinho(){
+const tbody=document.getElementById('lista-servicos-agendados');
+tbody.innerHTML=carrinhoServicos.map((item,idx)=>`<tr><td>${escapeHtml(item.descricao)}</td><td>${item.tempo}h</td><td>R$ ${formatMoney(item.preco)}</td><td><button type="button" class="secondary" onclick="removerServico(${idx})" style="padding:0.4rem 0.8rem;font-size:0.8rem;">Remover</button></td></tr>`).join('');
+document.getElementById('txtTotal').textContent='Total: R$ '+formatMoney(totalGeral);
+document.getElementById('txtTempoTotal').textContent='Tempo total: '+tempoTotalGeral+'h';
+}
+function finalizarAgendamento(){
+const cliente_id=document.getElementById('selCliente').value;
+const data=document.getElementById('data_agendamento').value;
+const responsavel=document.getElementById('responsavel').value.trim();
+if(!cliente_id)return alert('Selecione o cliente.');
+if(!data)return alert('Informe a data e hora.');
+if(!responsavel)return alert('Informe o responsável.');
+if(carrinhoServicos.length===0)return alert('Adicione ao menos um serviço.');
+const payload={cliente_id:Number(cliente_id),data,responsavel,total:totalGeral,tempo_total:tempoTotalGeral,servicos:carrinhoServicos.map(s=>({id:s.id,preco:s.preco}))};
+fetch('/finalizar-agendamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+.then(r=>r.json()).then(result=>{if(result.success){alert('Agendamento salvo!');window.location.href='consulta_agendamentos.html';}else alert(result.error||'Erro ao salvar.');})
+.catch(err=>{console.error(err);alert('Erro de conexão. Verifique se o servidor está rodando (npm start).');});
+}
+window.onload=carregarDados;
+</script>
+</body>
+</html>
