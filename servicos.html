@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="estilo.css">
-    <title>SisCristóvão - Cadastro de Serviços</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Harmonia Academy - Cadastro de Serviços</title>
 </head>
 <body>
     <nav>
@@ -11,72 +12,48 @@
         <a href="clientes.html">Clientes</a>
         <a href="servicos.html">Serviços</a>
         <a href="agendamentos.html">Agendamentos</a>
-        <a href="consulta_agendamentos.html">Consulta Agendamentos</a>
+        <a href="consulta_agendamentos.html">Consulta</a>
+        <a href="inscricoes.html">Inscrições</a>
     </nav>
-
     <header class="banner">
         <h1>Gestão de Serviços</h1>
-        <p>Cadastre e configure o catálogo de assistência técnica do laboratório</p>
+        <p>Catálogo de aulas e serviços oferecidos</p>
     </header>
-
     <div class="container">
         <div class="card">
             <h2>Novo Serviço</h2>
             <form action="/salvar-servico" method="POST">
-                <label for="descricao">Descrição do Serviço:</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Ex: Formatação e Instalação de Sistema Operacional" required>
-                
-                <label for="preco">Preço / Custo de Materiais (R$):</label>
-                <input type="number" step="0.01" id="preco" name="preco" placeholder="0.00" required>
-                
-                <label for="tempo_estimado">Tempo Estimado (em horas):</label>
-                <input type="number" id="tempo_estimado" name="tempo_estimado" placeholder="Ex: 2" min="1" required>
-                
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Ex: Aula individual de piano (1h)" required>
+                <label for="preco">Preço (R$)</label>
+                <input type="number" step="0.01" min="0" id="preco" name="preco" placeholder="0.00" required>
+                <label for="tempo_estimado">Tempo estimado (horas)</label>
+                <input type="number" id="tempo_estimado" name="tempo_estimado" placeholder="Ex: 1" min="1" required>
                 <button type="submit">Salvar Serviço</button>
             </form>
         </div>
-
         <div class="card" style="margin-top: 20px;">
             <h2>Serviços Disponíveis</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
-                Catálogo de atividades técnicas executadas pelos alunos no laboratório do São Cristóvão.
-            </p>
             <table>
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Preço (R$)</th>
-                        <th>Tempo Estimado</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-servicos">
-                    </tbody>
+                <thead><tr><th>Descrição</th><th>Preço (R$)</th><th>Tempo</th></tr></thead>
+                <tbody id="lista-servicos"></tbody>
             </table>
         </div>
     </div>
-
+    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
     <script>
         fetch('/listar-servicos')
-            .then(res => res.json())
+            .then(res => { if (!res.ok) throw new Error('Falha'); return res.json(); })
             .then(servicos => {
-                const corpoTabela = document.getElementById('lista-servicos');
-                servicos.forEach(s => {
-                    corpoTabela.innerHTML += `
-                        <tr>
-                            <td><strong>${s.descricao}</strong></td>
-                            <td>R$ ${s.preco.toFixed(2)}</td>
-                            <td>${s.tempo_estimado}h</td>
-                        </tr>`;
-                });
+                const corpo = document.getElementById('lista-servicos');
+                if (!servicos.length) { corpo.innerHTML = '<tr><td colspan="3">Nenhum serviço cadastrado ainda.</td></tr>'; return; }
+                corpo.innerHTML = servicos.map(s => `<tr><td><strong>${escapeHtml(s.descricao)}</strong></td><td>R$ ${Number(s.preco).toFixed(2)}</td><td>${s.tempo_estimado}h</td></tr>`).join('');
             })
-            .catch(err => console.error("Erro ao listar serviços:", err));
+            .catch(err => {
+                console.error(err);
+                document.getElementById('lista-servicos').innerHTML = '<tr><td colspan="3">Inicie o servidor (npm start) para listar os serviços.</td></tr>';
+            });
+        function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
     </script>
 </body>
-
-<footer class="rodape">
-    <div class="container-rodape">
-        <p>&copy; 2026 SisCristóvão - Sistema de Controle de Serviços</p>
-        <p>Desenvolvido para fins didáticos - Alunos do São Cristóvão</p>
-    </div>
-</footer>
 </html>
