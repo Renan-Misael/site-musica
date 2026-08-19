@@ -4,7 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Harmonia Academy - Inscrições nas Aulas</title>
+    <title>Admin — Inscrições | Harmonia Academy</title>
+    <style>
+        .admin-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4c1d95, #5b21b6);
+            color: #fbbf24;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.1rem 1.25rem;
+            box-shadow: 0 4px 16px rgba(76, 29, 149, 0.08);
+            border-top: 3px solid #4c1d95;
+            text-align: center;
+        }
+        .stat-card .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4c1d95;
+            line-height: 1.2;
+        }
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: flex-end;
+            margin-bottom: 1.25rem;
+        }
+        .filters label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4c1d95;
+            margin-bottom: 0.25rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .filters select,
+        .filters input {
+            min-width: 140px;
+            margin: 0;
+            padding: 0.55rem 0.75rem;
+            font-size: 0.9rem;
+        }
+        .filters .btn-filter {
+            padding: 0.55rem 1.1rem;
+            font-size: 0.85rem;
+        }
+        .badge-instrumento {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(76, 29, 149, 0.1);
+            color: #4c1d95;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .badge-nivel {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            text-transform: capitalize;
+        }
+        .badge-nivel.iniciante { background: #dcfce7; color: #166534; }
+        .badge-nivel.intermediario { background: #fef9c3; color: #854d0e; }
+        .badge-nivel.avancado { background: #ede9fe; color: #5b21b6; }
+        .badge-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .badge-status.pendente { background: #fef3c7; color: #92400e; }
+        .badge-status.confirmada { background: #d1fae5; color: #065f46; }
+        .badge-status.cancelada { background: #fee2e2; color: #991b1b; }
+        .msg-row td {
+            background: #faf7f2;
+            font-size: 0.85rem;
+            color: #6b7280;
+            padding-top: 0.4rem !important;
+            padding-bottom: 0.75rem !important;
+            border-bottom: 1px solid #e5e0d8;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: #6b7280;
+        }
+        .empty-state strong { color: #4c1d95; }
+        .server-warn {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .actions-cell button {
+            padding: 0.3rem 0.65rem !important;
+            font-size: 0.72rem !important;
+            margin: 2px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        @media (max-width: 700px) {
+            table { font-size: 0.85rem; }
+            th, td { padding: 10px 8px; }
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -13,75 +150,300 @@
         <a href="servicos.html">Serviços</a>
         <a href="agendamentos.html">Agendamentos</a>
         <a href="consulta_agendamentos.html">Consulta</a>
-        <a href="inscricoes.html">Inscrições</a>
+        <a href="inscricoes.html"><strong>Inscrições</strong></a>
     </nav>
+
     <header class="banner">
-        <h1>Inscrições nas Aulas</h1>
-        <p>Gerencie as inscrições recebidas pelo site</p>
+        <h1>Painel do Administrador <span class="admin-badge">Admin</span></h1>
+        <p>Inscrições · Instrumento · Nível de aprendizado</p>
     </header>
+
     <div class="container">
+        <div id="serverWarn" class="server-warn" style="display:none;">
+            Servidor offline. Rode <code>npm start</code> na pasta do projeto para carregar as inscrições do banco.
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="num" id="statTotal">0</div>
+                <div class="label">Total inscritas</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statPendentes">0</div>
+                <div class="label">Pendentes</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statConfirmadas">0</div>
+                <div class="label">Confirmadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statGuitarra">0</div>
+                <div class="label">Guitarra / Violão</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statPiano">0</div>
+                <div class="label">Piano</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="statCanto">0</div>
+                <div class="label">Canto</div>
+            </div>
+        </div>
+
         <div class="card">
-            <h2>Inscrições recebidas</h2>
-            <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:15px;">Alunos que se inscreveram pelo formulário da página principal.</p>
+            <h2>Pessoas inscritas</h2>
+            <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1rem;">
+                Veja quem se inscreveu, <strong>o que toca</strong> e o <strong>nível de aprendizado</strong>.
+            </p>
+
+            <div class="filters">
+                <div>
+                    <label for="filtroStatus">Status</label>
+                    <select id="filtroStatus">
+                        <option value="todos">Todos</option>
+                        <option value="pendente">Pendentes</option>
+                        <option value="confirmada">Confirmadas</option>
+                        <option value="cancelada">Canceladas</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filtroInstrumento">O que toca</label>
+                    <select id="filtroInstrumento">
+                        <option value="todos">Todos</option>
+                        <option value="guitarra">Guitarra / Violão</option>
+                        <option value="piano">Piano</option>
+                        <option value="canto">Canto</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filtroNivel">Nível</label>
+                    <select id="filtroNivel">
+                        <option value="todos">Todos</option>
+                        <option value="iniciante">Iniciante</option>
+                        <option value="intermediario">Intermediário</option>
+                        <option value="avancado">Avançado</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filtroBusca">Buscar nome / e-mail</label>
+                    <input type="search" id="filtroBusca" placeholder="Digite para filtrar...">
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn-filter" onclick="aplicarFiltros()">Filtrar</button>
+                </div>
+            </div>
+
             <div style="overflow-x:auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>#</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Instrumento</th><th>Nível</th><th>Data</th><th>Status</th><th>Ações</th>
+                            <th>#</th>
+                            <th>Pessoa</th>
+                            <th>Contato</th>
+                            <th>O que toca</th>
+                            <th>Nível</th>
+                            <th>Curso de interesse</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-inscricoes"></tbody>
+                    <tbody id="lista-inscricoes">
+                        <tr><td colspan="9" class="empty-state">Carregando...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
+
+    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;">
+        <p>&copy; 2026 Harmonia Academy — Painel administrativo</p>
+    </footer>
+
     <script>
-        function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
-        function formatDate(iso) { try { return new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }); } catch (e) { return iso; } }
-        function labelStatus(s) { return ({ pendente: 'Pendente', confirmada: 'Confirmada', cancelada: 'Cancelada' })[s] || s; }
+        let todasInscricoes = [];
+
+        const INSTRUMENTO_LABEL = {
+            guitarra: 'Guitarra / Violão',
+            piano: 'Piano',
+            canto: 'Canto',
+            outro: 'Outro'
+        };
+        const INSTRUMENTO_ICON = {
+            guitarra: '🎸',
+            piano: '🎹',
+            canto: '🎤',
+            outro: '🎵'
+        };
+        const NIVEL_LABEL = {
+            iniciante: 'Iniciante',
+            intermediario: 'Intermediário',
+            avancado: 'Avançado'
+        };
+        const CURSO_LABEL = {
+            'fundamentos-guitarra': 'Fundamentos da Guitarra',
+            'harmonia-piano': 'Harmonia no Piano',
+            'performance-vocal': 'Performance Vocal',
+            outro: 'Outro / Ainda não sei'
+        };
+
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str == null ? '' : String(str);
+            return d.innerHTML;
+        }
+
+        function formatDate(iso) {
+            try {
+                return new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+            } catch (e) {
+                return iso || '—';
+            }
+        }
+
+        function labelInstrumento(v) {
+            return INSTRUMENTO_LABEL[v] || v || '—';
+        }
+
+        function labelNivel(v) {
+            return NIVEL_LABEL[v] || v || '—';
+        }
+
+        function labelCurso(v) {
+            if (!v) return '—';
+            return CURSO_LABEL[v] || v;
+        }
+
+        function atualizarStats(rows) {
+            document.getElementById('statTotal').textContent = rows.length;
+            document.getElementById('statPendentes').textContent = rows.filter(r => r.status === 'pendente').length;
+            document.getElementById('statConfirmadas').textContent = rows.filter(r => r.status === 'confirmada').length;
+            document.getElementById('statGuitarra').textContent = rows.filter(r => r.instrumento === 'guitarra').length;
+            document.getElementById('statPiano').textContent = rows.filter(r => r.instrumento === 'piano').length;
+            document.getElementById('statCanto').textContent = rows.filter(r => r.instrumento === 'canto').length;
+        }
+
+        function renderTabela(rows) {
+            const tbody = document.getElementById('lista-inscricoes');
+            if (!rows.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-state">
+                                Nenhuma inscrição encontrada com esses filtros.<br>
+                                <strong>Peça aos alunos para se inscreverem em</strong>
+                                <a href="index.html#inscricao">index.html → Inscrição</a>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = rows.map(row => {
+                const inst = row.instrumento || '';
+                const nivel = (row.nivel || '').toLowerCase();
+                const status = (row.status || 'pendente').toLowerCase();
+                const icon = INSTRUMENTO_ICON[inst] || '🎵';
+
+                return `
+                <tr>
+                    <td>${row.id}</td>
+                    <td><strong>${escapeHtml(row.nome)}</strong></td>
+                    <td>
+                        ${escapeHtml(row.email)}<br>
+                        <span style="font-size:0.8rem;color:#6b7280;">${escapeHtml(row.telefone || 'Sem telefone')}</span>
+                    </td>
+                    <td>
+                        <span class="badge-instrumento">${icon} ${escapeHtml(labelInstrumento(inst))}</span>
+                    </td>
+                    <td>
+                        <span class="badge-nivel ${escapeHtml(nivel)}">${escapeHtml(labelNivel(nivel))}</span>
+                    </td>
+                    <td>${escapeHtml(labelCurso(row.curso))}</td>
+                    <td>${formatDate(row.data_inscricao)}</td>
+                    <td><span class="badge-status ${escapeHtml(status)}">${escapeHtml(status === 'pendente' ? 'Pendente' : status === 'confirmada' ? 'Confirmada' : 'Cancelada')}</span></td>
+                    <td class="actions-cell" style="white-space:nowrap;">
+                        ${status !== 'confirmada' ? `<button type="button" onclick="setStatus(${row.id},'confirmada')">Confirmar</button>` : ''}
+                        ${status !== 'cancelada' ? `<button type="button" class="secondary" onclick="setStatus(${row.id},'cancelada')">Cancelar</button>` : ''}
+                        ${status !== 'pendente' ? `<button type="button" class="secondary" onclick="setStatus(${row.id},'pendente')">Pendente</button>` : ''}
+                    </td>
+                </tr>
+                ${row.mensagem ? `
+                <tr class="msg-row">
+                    <td colspan="9">📝 Objetivos: ${escapeHtml(row.mensagem)}</td>
+                </tr>` : ''}`;
+            }).join('');
+        }
+
+        function aplicarFiltros() {
+            const status = document.getElementById('filtroStatus').value;
+            const instrumento = document.getElementById('filtroInstrumento').value;
+            const nivel = document.getElementById('filtroNivel').value;
+            const busca = (document.getElementById('filtroBusca').value || '').trim().toLowerCase();
+
+            let filtradas = todasInscricoes.slice();
+
+            if (status !== 'todos') {
+                filtradas = filtradas.filter(r => (r.status || '') === status);
+            }
+            if (instrumento !== 'todos') {
+                filtradas = filtradas.filter(r => (r.instrumento || '') === instrumento);
+            }
+            if (nivel !== 'todos') {
+                filtradas = filtradas.filter(r => (r.nivel || '') === nivel);
+            }
+            if (busca) {
+                filtradas = filtradas.filter(r =>
+                    (r.nome || '').toLowerCase().includes(busca) ||
+                    (r.email || '').toLowerCase().includes(busca) ||
+                    (r.telefone || '').toLowerCase().includes(busca)
+                );
+            }
+
+            renderTabela(filtradas);
+        }
+
         function carregar() {
             fetch('/api/inscricoes')
-                .then(r => { if (!r.ok) throw new Error('Falha'); return r.json(); })
+                .then(r => {
+                    if (!r.ok) throw new Error('Falha na API');
+                    return r.json();
+                })
                 .then(rows => {
-                    const tbody = document.getElementById('lista-inscricoes');
-                    if (!rows.length) {
-                        tbody.innerHTML = '<tr><td colspan="9">Nenhuma inscrição ainda. Peça aos alunos para se inscreverem em index.html#inscricao</td></tr>';
-                        return;
-                    }
-                    tbody.innerHTML = rows.map(row => `
-                        <tr>
-                            <td>${row.id}</td>
-                            <td><strong>${escapeHtml(row.nome)}</strong></td>
-                            <td>${escapeHtml(row.email)}</td>
-                            <td>${escapeHtml(row.telefone || '—')}</td>
-                            <td>${escapeHtml(row.instrumento)}</td>
-                            <td>${escapeHtml(row.nivel)}</td>
-                            <td>${formatDate(row.data_inscricao)}</td>
-                            <td><span class="note">${labelStatus(row.status)}</span></td>
-                            <td style="white-space:nowrap;">
-                                <button type="button" style="padding:0.35rem 0.7rem;font-size:0.75rem;margin:2px;" onclick="setStatus(${row.id},'confirmada')">Confirmar</button>
-                                <button type="button" class="secondary" style="padding:0.35rem 0.7rem;font-size:0.75rem;margin:2px;" onclick="setStatus(${row.id},'cancelada')">Cancelar</button>
-                            </td>
-                        </tr>
-                        ${row.mensagem ? `<tr><td colspan="9" style="font-size:0.85rem;color:#6b7280;">Objetivos: ${escapeHtml(row.mensagem)}</td></tr>` : ''}
-                    `).join('');
+                    document.getElementById('serverWarn').style.display = 'none';
+                    todasInscricoes = Array.isArray(rows) ? rows : [];
+                    atualizarStats(todasInscricoes);
+                    aplicarFiltros();
                 })
                 .catch(err => {
                     console.error(err);
-                    document.getElementById('lista-inscricoes').innerHTML = '<tr><td colspan="9">Inicie o servidor com <code>npm start</code> para ver as inscrições.</td></tr>';
+                    document.getElementById('serverWarn').style.display = 'block';
+                    document.getElementById('lista-inscricoes').innerHTML =
+                        '<tr><td colspan="9"><div class="empty-state">Não foi possível carregar. Inicie o servidor: <code>npm start</code></div></td></tr>';
                 });
         }
+
         function setStatus(id, status) {
             fetch('/api/inscricoes/' + id + '/status', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
-            }).then(r => r.json()).then(res => {
-                if (res.success) carregar();
-                else alert(res.error || 'Erro ao atualizar');
-            }).catch(() => alert('Erro de conexão com o servidor.'));
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) carregar();
+                    else alert(res.error || 'Erro ao atualizar status');
+                })
+                .catch(() => alert('Erro de conexão. Verifique se o servidor está rodando.'));
         }
+
+        document.getElementById('filtroBusca').addEventListener('input', aplicarFiltros);
+        document.getElementById('filtroStatus').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtroInstrumento').addEventListener('change', aplicarFiltros);
+        document.getElementById('filtroNivel').addEventListener('change', aplicarFiltros);
+
         carregar();
     </script>
 </body>
