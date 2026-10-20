@@ -2,7 +2,70 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const crypto = require('crypto');
+const fs = require('fs');
+const https = require('https');
 const app = express();
+
+const INDEX_PATH = path.join(__dirname, 'index.html');
+const GOOD_INDEX_URL = 'https://raw.githubusercontent.com/Renan-Misael/site-musica/5ce715361f160dffad6279f1d30e479ab60d328f/index.html';
+
+function ensureIndexHtml() {
+  let needsRestore = false;
+  try {
+    const cur = fs.readFileSync(INDEX_PATH, 'utf8');
+    if (cur.includes('PLACEHOLDER') || cur.length < 5000 || !cur.includes('enrollForm')) {
+      needsRestore = true;
+    }
+  } catch {
+    needsRestore = true;
+  }
+  if (!needsRestore) return;
+  console.log('index.html incompleto — restaurando versao completa...');
+  https.get(GOOD_INDEX_URL, (res) => {
+    if (res.statusCode !== 200) {
+      console.error('Falha ao restaurar index.html:', res.statusCode);
+      return;
+    }
+    const chunks = [];
+    res.on('data', (c) => chunks.push(c));
+    res.on('end', () => {
+      let html = Buffer.concat(chunks).toString('utf8');
+      if (!html.includes('login.html')) {
+        html = html.replace(
+          '<li><a href="#inscricao">Inscrição</a></li>',
+          '<li><a href="#inscricao">Inscrição</a></li>\n        <li><a href="login.html">Login</a></li>'
+        );
+      }
+      const oldBlock = "if (valid) {\n        document.getElementById('enrollForm').style.display = 'none';\n        document.getElementById('formSuccess').classList.add('show');\n        playSuccess();\n    }";
+      if (html.includes(oldBlock) && !html.includes('/api/inscricoes')) {
+        html = html.replace(oldBlock, `if (valid) {
+        const payload = {
+          nome: document.getElementById('nome').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          telefone: '',
+          instrumento: document.getElementById('instrumento').value,
+          nivel: document.getElementById('nivel').value,
+          curso: '',
+          mensagem: (document.getElementById('mensagem') || {}).value || ''
+        };
+        fetch('/api/inscricoes', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).finally(() => {
+          document.getElementById('enrollForm').style.display = 'none';
+          document.getElementById('formSuccess').classList.add('show');
+          playSuccess();
+        });
+    }`);
+      }
+      fs.writeFileSync(INDEX_PATH, html, 'utf8');
+      console.log('index.html restaurado (' + html.length + ' bytes)');
+    });
+  }).on('error', (err) => console.error('Erro ao baixar index.html:', err.message));
+}
+ensureIndexHtml();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -52,9 +115,7 @@ function wantsHtml(req) {
   if (accept.includes('application/json')) return false;
   if (req.path.startsWith('/api/') || req.path.startsWith('/listar-') ||
       req.path.startsWith('/salvar-') || req.path.startsWith('/finalizar-') ||
-      req.path.startsWith('/detalhes-')) {
-    return false;
-  }
+      req.path.startsWith('/detalhes-')) return false;
   return accept.includes('text/html');
 }
 
@@ -71,10 +132,7 @@ function requireAdmin(req, res, next) {
 }
 
 function setSessionCookie(res, token) {
-  res.setHeader(
-    'Set-Cookie',
-    `harmonia_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}`
-  );
+  res.setHeader('Set-Cookie', `harmonia_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}`);
 }
 
 function clearSessionCookie(res) {
@@ -105,15 +163,7 @@ app.get('/api/me', (req, res) => {
   res.json({ loggedIn: true, user: session.user, role: 'admin' });
 });
 
-const adminPages = [
-  '/inscricoes.html',
-  '/clientes.html',
-  '/servicos.html',
-  '/agendamentos.html',
-  '/consulta_agendamentos.html'
-];
-
-adminPages.forEach(page => {
+['/inscricoes.html','/clientes.html','/servicos.html','/agendamentos.html','/consulta_agendamentos.html'].forEach(page => {
   app.get(page, requireAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, page.replace(/^\//, '')));
   });
@@ -125,46 +175,20 @@ const db = new sqlite3.Database(path.join(__dirname, 'harmonia.db'));
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS inscricoes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    email TEXT NOT NULL,
-    telefone TEXT,
-    instrumento TEXT NOT NULL,
-    nivel TEXT NOT NULL,
-    curso TEXT,
-    mensagem TEXT,
-    data_inscricao TEXT NOT NULL,
-    status TEXT DEFAULT 'pendente'
-  )`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, email TEXT NOT NULL, telefone TEXT,
+    instrumento TEXT NOT NULL, nivel TEXT NOT NULL, curso TEXT, mensagem TEXT,
+    data_inscricao TEXT NOT NULL, status TEXT DEFAULT 'pendente')`);
   db.run(`CREATE TABLE IF NOT EXISTS clientes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    cpf TEXT NOT NULL,
-    telefone TEXT NOT NULL
-  )`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, cpf TEXT NOT NULL, telefone TEXT NOT NULL)`);
   db.run(`CREATE TABLE IF NOT EXISTS servicos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    descricao TEXT NOT NULL,
-    preco REAL NOT NULL,
-    tempo_estimado INTEGER NOT NULL
-  )`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT NOT NULL, preco REAL NOT NULL, tempo_estimado INTEGER NOT NULL)`);
   db.run(`CREATE TABLE IF NOT EXISTS agendamentos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cliente_id INTEGER NOT NULL,
-    data TEXT NOT NULL,
-    responsavel TEXT NOT NULL,
-    total REAL NOT NULL,
-    tempo_total INTEGER NOT NULL,
-    FOREIGN KEY (cliente_id) REFERENCES clientes (id)
-  )`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT, cliente_id INTEGER NOT NULL, data TEXT NOT NULL,
+    responsavel TEXT NOT NULL, total REAL NOT NULL, tempo_total INTEGER NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes (id))`);
   db.run(`CREATE TABLE IF NOT EXISTS itens_agendamento (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    agendamento_id INTEGER NOT NULL,
-    servico_id INTEGER NOT NULL,
-    preco_cobrado REAL NOT NULL,
-    FOREIGN KEY (agendamento_id) REFERENCES agendamentos (id),
-    FOREIGN KEY (servico_id) REFERENCES servicos (id)
-  )`);
+    id INTEGER PRIMARY KEY AUTOINCREMENT, agendamento_id INTEGER NOT NULL, servico_id INTEGER NOT NULL, preco_cobrado REAL NOT NULL,
+    FOREIGN KEY (agendamento_id) REFERENCES agendamentos (id), FOREIGN KEY (servico_id) REFERENCES servicos (id))`);
 });
 
 app.post('/api/inscricoes', (req, res) => {
@@ -172,30 +196,18 @@ app.post('/api/inscricoes', (req, res) => {
   if (!nome || !email || !instrumento || !nivel) {
     return res.status(400).json({ success: false, error: 'Preencha os campos obrigatórios.' });
   }
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
-  if (!emailOk) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
     return res.status(400).json({ success: false, error: 'E-mail inválido.' });
   }
   const data = new Date().toISOString();
-  const sql = `INSERT INTO inscricoes
-    (nome, email, telefone, instrumento, nivel, curso, mensagem, data_inscricao, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pendente')`;
-  db.run(sql, [
-    String(nome).trim(),
-    String(email).trim().toLowerCase(),
-    String(telefone || '').trim(),
-    String(instrumento).trim(),
-    String(nivel).trim(),
-    String(curso || '').trim(),
-    String(mensagem || '').trim(),
-    data
-  ], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ success: false, error: 'Erro ao salvar inscrição.' });
-    }
-    res.json({ success: true, id: this.lastID, message: 'Inscrição realizada com sucesso!' });
-  });
+  db.run(`INSERT INTO inscricoes (nome,email,telefone,instrumento,nivel,curso,mensagem,data_inscricao,status)
+    VALUES (?,?,?,?,?,?,?,?,'pendente')`,
+    [String(nome).trim(), String(email).trim().toLowerCase(), String(telefone||'').trim(),
+     String(instrumento).trim(), String(nivel).trim(), String(curso||'').trim(), String(mensagem||'').trim(), data],
+    function (err) {
+      if (err) { console.error(err); return res.status(500).json({ success: false, error: 'Erro ao salvar inscrição.' }); }
+      res.json({ success: true, id: this.lastID, message: 'Inscrição realizada com sucesso!' });
+    });
 });
 
 app.get('/api/inscricoes', requireAdmin, (req, res) => {
@@ -207,14 +219,11 @@ app.get('/api/inscricoes', requireAdmin, (req, res) => {
 
 app.patch('/api/inscricoes/:id/status', requireAdmin, (req, res) => {
   const { status } = req.body || {};
-  const allowed = ['pendente', 'confirmada', 'cancelada'];
-  if (!allowed.includes(status)) {
+  if (!['pendente','confirmada','cancelada'].includes(status)) {
     return res.status(400).json({ success: false, error: 'Status inválido.' });
   }
   const id = parseInt(req.params.id, 10);
-  if (!Number.isFinite(id)) {
-    return res.status(400).json({ success: false, error: 'ID inválido.' });
-  }
+  if (!Number.isFinite(id)) return res.status(400).json({ success: false, error: 'ID inválido.' });
   db.run(`UPDATE inscricoes SET status = ? WHERE id = ?`, [status, id], function (err) {
     if (err) return res.status(500).json({ success: false, error: err.message });
     res.json({ success: true, changes: this.changes });
@@ -224,7 +233,7 @@ app.patch('/api/inscricoes/:id/status', requireAdmin, (req, res) => {
 app.post('/salvar-cliente', requireAdmin, (req, res) => {
   const { nome, cpf, telefone } = req.body || {};
   if (!nome || !cpf || !telefone) return res.status(400).send('Preencha todos os campos.');
-  db.run(`INSERT INTO clientes (nome, cpf, telefone) VALUES (?, ?, ?)`, [String(nome).trim(), String(cpf).trim(), String(telefone).trim()], (err) => {
+  db.run(`INSERT INTO clientes (nome,cpf,telefone) VALUES (?,?,?)`, [String(nome).trim(), String(cpf).trim(), String(telefone).trim()], (err) => {
     if (err) return res.status(500).send('Erro ao salvar cliente: ' + err.message);
     res.redirect('/clientes.html');
   });
@@ -239,10 +248,8 @@ app.get('/listar-clientes', requireAdmin, (req, res) => {
 
 app.post('/salvar-servico', requireAdmin, (req, res) => {
   const { descricao, preco, tempo_estimado } = req.body || {};
-  if (!descricao || preco === undefined || preco === '' || !tempo_estimado) {
-    return res.status(400).send('Preencha todos os campos.');
-  }
-  db.run(`INSERT INTO servicos (descricao, preco, tempo_estimado) VALUES (?, ?, ?)`, [String(descricao).trim(), parseFloat(preco), parseInt(tempo_estimado, 10)], (err) => {
+  if (!descricao || preco === undefined || preco === '' || !tempo_estimado) return res.status(400).send('Preencha todos os campos.');
+  db.run(`INSERT INTO servicos (descricao,preco,tempo_estimado) VALUES (?,?,?)`, [String(descricao).trim(), parseFloat(preco), parseInt(tempo_estimado,10)], (err) => {
     if (err) return res.status(500).send('Erro ao salvar serviço: ' + err.message);
     res.redirect('/servicos.html');
   });
@@ -260,15 +267,13 @@ app.post('/finalizar-agendamento', requireAdmin, (req, res) => {
   if (!cliente_id || !data || !responsavel || !Array.isArray(servicos) || servicos.length === 0) {
     return res.status(400).json({ success: false, error: 'Dados incompletos do agendamento.' });
   }
-  db.run(
-    `INSERT INTO agendamentos (cliente_id, data, responsavel, total, tempo_total) VALUES (?, ?, ?, ?, ?)`,
-    [Number(cliente_id), String(data), String(responsavel).trim(), Number(total) || 0, Number(tempo_total) || 0],
+  db.run(`INSERT INTO agendamentos (cliente_id,data,responsavel,total,tempo_total) VALUES (?,?,?,?,?)`,
+    [Number(cliente_id), String(data), String(responsavel).trim(), Number(total)||0, Number(tempo_total)||0],
     function (err) {
       if (err) return res.status(500).json({ success: false, error: err.message });
       const agendamentoId = this.lastID;
-      const stmt = db.prepare(`INSERT INTO itens_agendamento (agendamento_id, servico_id, preco_cobrado) VALUES (?, ?, ?)`);
-      let pending = servicos.length;
-      let failed = null;
+      const stmt = db.prepare(`INSERT INTO itens_agendamento (agendamento_id,servico_id,preco_cobrado) VALUES (?,?,?)`);
+      let pending = servicos.length, failed = null;
       servicos.forEach(item => {
         stmt.run(agendamentoId, item.id, item.preco, function (runErr) {
           if (runErr && !failed) failed = runErr;
@@ -281,14 +286,12 @@ app.post('/finalizar-agendamento', requireAdmin, (req, res) => {
           }
         });
       });
-    }
-  );
+    });
 });
 
 app.get('/listar-agendamentos', requireAdmin, (req, res) => {
-  const sql = `SELECT a.id, a.data, a.responsavel, a.total, a.tempo_total, c.nome AS nome_cliente
-    FROM agendamentos a INNER JOIN clientes c ON a.cliente_id = c.id ORDER BY a.id DESC`;
-  db.all(sql, [], (err, rows) => {
+  db.all(`SELECT a.id,a.data,a.responsavel,a.total,a.tempo_total,c.nome AS nome_cliente
+    FROM agendamentos a INNER JOIN clientes c ON a.cliente_id=c.id ORDER BY a.id DESC`, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
@@ -297,9 +300,8 @@ app.get('/listar-agendamentos', requireAdmin, (req, res) => {
 app.get('/detalhes-agendamento/:id', requireAdmin, (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (!Number.isFinite(id)) return res.status(400).json({ error: 'ID inválido.' });
-  const sql = `SELECT i.preco_cobrado, s.descricao, s.tempo_estimado
-    FROM itens_agendamento i INNER JOIN servicos s ON i.servico_id = s.id WHERE i.agendamento_id = ?`;
-  db.all(sql, [id], (err, rows) => {
+  db.all(`SELECT i.preco_cobrado,s.descricao,s.tempo_estimado FROM itens_agendamento i
+    INNER JOIN servicos s ON i.servico_id=s.id WHERE i.agendamento_id=?`, [id], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
@@ -307,9 +309,6 @@ app.get('/detalhes-agendamento/:id', requireAdmin, (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log('====================================================');
-  console.log('  Harmonia Academy + Gestão  |  Porta ' + PORT);
-  console.log('  Site:   http://localhost:' + PORT);
-  console.log('  Login:  http://localhost:' + PORT + '/login.html');
-  console.log('====================================================');
+  console.log('Harmonia Academy | porta ' + PORT);
+  console.log('Login: http://localhost:' + PORT + '/login.html');
 });
