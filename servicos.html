@@ -4,56 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Harmonia Academy - Cadastro de Serviços</title>
+    <title>Serviços | Harmonia Academy</title>
 </head>
 <body>
     <nav>
         <a href="index.html">Home</a>
         <a href="clientes.html">Clientes</a>
-        <a href="servicos.html">Serviços</a>
+        <a href="servicos.html"><strong>Serviços</strong></a>
         <a href="agendamentos.html">Agendamentos</a>
         <a href="consulta_agendamentos.html">Consulta</a>
         <a href="inscricoes.html">Inscrições</a>
+        <a href="login.html">Login</a>
     </nav>
     <header class="banner">
-        <h1>Gestão de Serviços</h1>
-        <p>Catálogo de aulas e serviços oferecidos</p>
+        <h1>Cadastro de Serviços</h1>
+        <p>Catálogo de aulas e serviços</p>
     </header>
     <div class="container">
         <div class="card">
-            <h2>Novo Serviço</h2>
+            <h2>Novo serviço</h2>
             <form action="/salvar-servico" method="POST">
                 <label for="descricao">Descrição</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Ex: Aula individual de piano (1h)" required>
+                <input type="text" id="descricao" name="descricao" required>
                 <label for="preco">Preço (R$)</label>
-                <input type="number" step="0.01" min="0" id="preco" name="preco" placeholder="0.00" required>
-                <label for="tempo_estimado">Tempo estimado (horas)</label>
-                <input type="number" id="tempo_estimado" name="tempo_estimado" placeholder="Ex: 1" min="1" required>
-                <button type="submit">Salvar Serviço</button>
+                <input type="number" id="preco" name="preco" step="0.01" min="0" required>
+                <label for="tempo_estimado">Tempo estimado (min)</label>
+                <input type="number" id="tempo_estimado" name="tempo_estimado" min="1" required>
+                <button type="submit">Salvar</button>
             </form>
         </div>
-        <div class="card" style="margin-top: 20px;">
-            <h2>Serviços Disponíveis</h2>
-            <table>
-                <thead><tr><th>Descrição</th><th>Preço (R$)</th><th>Tempo</th></tr></thead>
-                <tbody id="lista-servicos"></tbody>
-            </table>
+        <div class="card">
+            <h2>Lista de serviços</h2>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Descrição</th><th>Preço</th><th>Tempo (min)</th></tr>
+                    </thead>
+                    <tbody id="lista-servicos"></tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
     <script>
-        fetch('/listar-servicos')
-            .then(res => { if (!res.ok) throw new Error('Falha'); return res.json(); })
-            .then(servicos => {
-                const corpo = document.getElementById('lista-servicos');
-                if (!servicos.length) { corpo.innerHTML = '<tr><td colspan="3">Nenhum serviço cadastrado ainda.</td></tr>'; return; }
-                corpo.innerHTML = servicos.map(s => `<tr><td><strong>${escapeHtml(s.descricao)}</strong></td><td>R$ ${Number(s.preco).toFixed(2)}</td><td>${s.tempo_estimado}h</td></tr>`).join('');
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s == null ? '' : String(s);
+            return d.innerHTML;
+        }
+        fetch('/listar-servicos', { credentials: 'same-origin' })
+            .then(r => {
+                if (r.status === 401) { window.location.href = '/login.html?next=/servicos.html'; return null; }
+                return r.json();
             })
-            .catch(err => {
-                console.error(err);
-                document.getElementById('lista-servicos').innerHTML = '<tr><td colspan="3">Inicie o servidor (npm start) para listar os serviços.</td></tr>';
+            .then(rows => {
+                if (!rows) return;
+                const tbody = document.getElementById('lista-servicos');
+                if (!rows.length) {
+                    tbody.innerHTML = '<tr><td colspan="4">Nenhum serviço cadastrado.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = rows.map(s =>
+                    `<tr><td>${s.id}</td><td>${escapeHtml(s.descricao)}</td><td>R$ ${Number(s.preco).toFixed(2)}</td><td>${s.tempo_estimado}</td></tr>`
+                ).join('');
+            })
+            .catch(() => {
+                document.getElementById('lista-servicos').innerHTML =
+                    '<tr><td colspan="4">Inicie o servidor (npm start) e faça login.</td></tr>';
             });
-        function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
     </script>
 </body>
 </html>

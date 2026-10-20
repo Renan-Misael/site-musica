@@ -4,56 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Harmonia Academy - Cadastro de Clientes</title>
+    <title>Clientes | Harmonia Academy</title>
 </head>
 <body>
     <nav>
         <a href="index.html">Home</a>
-        <a href="clientes.html">Clientes</a>
+        <a href="clientes.html"><strong>Clientes</strong></a>
         <a href="servicos.html">Serviços</a>
         <a href="agendamentos.html">Agendamentos</a>
         <a href="consulta_agendamentos.html">Consulta</a>
         <a href="inscricoes.html">Inscrições</a>
+        <a href="login.html">Login</a>
     </nav>
     <header class="banner">
-        <h1>Gestão de Clientes</h1>
-        <p>Cadastre alunos e solicitantes de atendimento</p>
+        <h1>Cadastro de Clientes</h1>
+        <p>Gerencie os clientes da Harmonia Academy</p>
     </header>
     <div class="container">
         <div class="card">
-            <h2>Novo Cadastro</h2>
+            <h2>Novo cliente</h2>
             <form action="/salvar-cliente" method="POST">
-                <label for="nome">Nome completo</label>
-                <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required minlength="3">
-                <label for="cpf">CPF / Documento</label>
-                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
-                <label for="telefone">Telefone / WhatsApp</label>
-                <input type="tel" id="telefone" name="telefone" placeholder="(00) 99999-9999" required>
-                <button type="submit">Salvar Cliente</button>
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" required>
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" name="cpf" required>
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone" required>
+                <button type="submit">Salvar</button>
             </form>
         </div>
-        <div class="card" style="margin-top: 20px;">
-            <h2>Clientes Cadastrados</h2>
-            <table>
-                <thead><tr><th>Nome</th><th>CPF/Documento</th><th>Telefone</th></tr></thead>
-                <tbody id="lista-clientes"></tbody>
-            </table>
+        <div class="card">
+            <h2>Lista de clientes</h2>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Nome</th><th>CPF</th><th>Telefone</th></tr>
+                    </thead>
+                    <tbody id="lista-clientes"></tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <footer style="text-align:center;padding:1.5rem;color:#6b7280;font-size:0.9rem;"><p>&copy; 2026 Harmonia Academy</p></footer>
     <script>
-        fetch('/listar-clientes')
-            .then(res => { if (!res.ok) throw new Error('Falha'); return res.json(); })
-            .then(clientes => {
-                const corpo = document.getElementById('lista-clientes');
-                if (!clientes.length) { corpo.innerHTML = '<tr><td colspan="3">Nenhum cliente cadastrado ainda.</td></tr>'; return; }
-                corpo.innerHTML = clientes.map(c => `<tr><td><strong>${escapeHtml(c.nome)}</strong></td><td>${escapeHtml(c.cpf)}</td><td>${escapeHtml(c.telefone)}</td></tr>`).join('');
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s == null ? '' : String(s);
+            return d.innerHTML;
+        }
+        fetch('/listar-clientes', { credentials: 'same-origin' })
+            .then(r => {
+                if (r.status === 401) { window.location.href = '/login.html?next=/clientes.html'; return null; }
+                return r.json();
             })
-            .catch(err => {
-                console.error(err);
-                document.getElementById('lista-clientes').innerHTML = '<tr><td colspan="3">Inicie o servidor (npm start) para listar os clientes.</td></tr>';
+            .then(rows => {
+                if (!rows) return;
+                const tbody = document.getElementById('lista-clientes');
+                if (!rows.length) {
+                    tbody.innerHTML = '<tr><td colspan="4">Nenhum cliente cadastrado.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = rows.map(c =>
+                    `<tr><td>${c.id}</td><td>${escapeHtml(c.nome)}</td><td>${escapeHtml(c.cpf)}</td><td>${escapeHtml(c.telefone)}</td></tr>`
+                ).join('');
+            })
+            .catch(() => {
+                document.getElementById('lista-clientes').innerHTML =
+                    '<tr><td colspan="4">Inicie o servidor (npm start) e faça login.</td></tr>';
             });
-        function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str == null ? '' : String(str); return d.innerHTML; }
     </script>
 </body>
 </html>
