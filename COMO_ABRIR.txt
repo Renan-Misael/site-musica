@@ -1,0 +1,19 @@
+COMO ABRIR O SITE (sem terminal)
+
+OPÇÃO 1 — Mais fácil (1 arquivo só):
+  Abra o arquivo: index-completo.html
+  (tudo já está dentro: visual + funções)
+
+OPÇÃO 2 — Arquivos separados:
+  Mantenha na MESMA pasta:
+    - index.html
+    - site.css
+    - app.js
+  Depois abra index.html no navegador.
+
+LOGIN ADMIN:
+  Usuário: Renan
+  Senha: 1408
+  Página: login.html
+
+Inscrições ficam salvas no navegador.
