@@ -32,7 +32,6 @@
         <a href="index.html#inscricao">Inscrição (alunos)</a>
         <a href="login.html"><strong>Login</strong></a>
     </nav>
-
     <div class="login-wrap">
         <div class="login-card">
             <h1>Entrar <span class="badge-admin">Admin</span></h1>
@@ -52,14 +51,16 @@
             <div class="login-links"><a href="index.html">← Voltar ao site</a></div>
         </div>
     </div>
-
     <script>
-        fetch('/api/me').then(r => r.json()).then(data => {
-            if (data.loggedIn) {
-                const params = new URLSearchParams(window.location.search);
-                window.location.href = params.get('next') || '/inscricoes.html';
-            }
-        }).catch(() => {});
+        fetch('/api/me', { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    const params = new URLSearchParams(window.location.search);
+                    window.location.href = params.get('next') || '/inscricoes.html';
+                }
+            })
+            .catch(() => {});
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -73,6 +74,7 @@
             try {
                 const res = await fetch('/api/login', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ usuario, senha })
                 });
