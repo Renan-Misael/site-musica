@@ -1,12 +1,298 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harmonia Academy | Plataforma de Educação Musical</title>
-<script>window.location.replace('/');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonia Academy | Plataforma de Educação Musical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="site.css">
 </head>
 <body>
-<p>Carregando site… Se não redirecionar, use o arquivo local em artifacts/index.html</p>
+
+<nav id="navbar">
+    <a href="#" class="logo">Harmonia <span>Academy</span></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio" class="active">Início</a></li>
+        <li><a href="#recursos">Recursos</a></li>
+        <li><a href="#cursos">Cursos</a></li>
+        <li><a href="#teoria">Teoria</a></li>
+        <li><a href="#biblioteca">Partituras</a></li>
+        <li><a href="#pratica">Prática</a></li>
+        <li><a href="#inscricao">Inscrição</a></li>
+        <li><a href="login.html">Login</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+</nav>
+
+<section class="hero" id="inicio">
+    <div class="hero-content">
+        <div class="hero-badge">PLATAFORMA DE EDUCAÇÃO MUSICAL</div>
+        <h1>Domine a música com<br><span>excelência e método</span></h1>
+        <p>Teoria, ritmo, partituras com transposição e download em PDF — tudo em um só lugar.</p>
+        <div class="hero-buttons">
+            <a href="#biblioteca" class="btn btn-primary">Biblioteca & PDF</a>
+            <a href="#teoria" class="btn btn-outline">Praticar Teoria</a>
+        </div>
+    </div>
+</section>
+
+<section id="recursos">
+    <div class="container">
+        <div class="section-header">
+            <h2>Por que escolher a Harmonia</h2>
+            <p>Ferramentas pensadas para o estudo real do músico.</p>
+            <div class="line"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎼</div>
+                <h3>Teoria com Explicação</h3>
+                <p>Cada resposta traz a explicação logo abaixo da pergunta.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📜</div>
+                <h3>Partituras + Transposição</h3>
+                <p>Transponha estudos e baixe em PDF para praticar offline.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🥁</div>
+                <h3>Ritmo e Leitura</h3>
+                <p>Exercícios de duração, compassos e leitura rítmica.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎹</div>
+                <h3>Metrônomo Integrado</h3>
+                <p>Ajuste BPM e pratique com precisão.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="courses" id="cursos">
+    <div class="container">
+        <div class="section-header">
+            <h2>Cursos em destaque</h2>
+            <p>Trilhas do iniciante ao avançado.</p>
+            <div class="line"></div>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-image">🎸<span class="course-level">Iniciante</span></div>
+                <div class="course-body">
+                    <h3>Fundamentos da Guitarra</h3>
+                    <p>Postura, acordes básicos e primeiras músicas.</p>
+                    <div class="course-meta"><span>12 aulas</span><span>R$ 149</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image">🎹<span class="course-level">Intermediário</span></div>
+                <div class="course-body">
+                    <h3>Harmonia no Piano</h3>
+                    <p>Progressões, inversões e acompanhamento.</p>
+                    <div class="course-meta"><span>16 aulas</span><span>R$ 189</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image">🎤<span class="course-level">Todos</span></div>
+                <div class="course-body">
+                    <h3>Performance Vocal</h3>
+                    <p>Técnica, respiração e interpretação.</p>
+                    <div class="course-meta"><span>10 aulas</span><span>R$ 169</span></div>
+                    <a href="#inscricao" class="btn btn-primary" style="width:100%;justify-content:center;">Inscrever-se</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="theory" id="teoria">
+    <div class="container">
+        <div class="section-header">
+            <h2>Teoria Musical</h2>
+            <p>Quizzes com feedback imediato.</p>
+            <div class="line"></div>
+        </div>
+        <div class="exercise-menu" id="exerciseMenu">
+            <div class="exercise-card" data-quiz="notas"><div class="icon">🎵</div><h3>Notas e Claves</h3><p>Identifique notas no pentagrama</p><span class="count">8 questões</span></div>
+            <div class="exercise-card" data-quiz="intervalos"><div class="icon">📐</div><h3>Intervalos</h3><p>Distâncias entre notas</p><span class="count">8 questões</span></div>
+            <div class="exercise-card" data-quiz="acordes"><div class="icon">🎸</div><h3>Acordes</h3><p>Tríades e tétrades</p><span class="count">8 questões</span></div>
+            <div class="exercise-card" data-quiz="ritmo"><div class="icon">🥁</div><h3>Ritmo</h3><p>Figuras e compassos</p><span class="count">8 questões</span></div>
+            <div class="exercise-card" data-quiz="misto"><div class="icon">✨</div><h3>Quiz Misto</h3><p>Todas as categorias</p><span class="count">12 questões</span></div>
+        </div>
+        <div class="quiz-wrapper" id="quizWrapper">
+            <div class="back-to-menu"><button class="btn btn-ghost btn-sm" id="btnBackMenu">← Voltar ao menu</button></div>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h3 id="quizTitle">Quiz</h3>
+                    <span class="quiz-progress" id="quizProgress">1 / 8</span>
+                </div>
+                <div class="quiz-body" id="quizBody"></div>
+                <div class="quiz-result" id="quizResult">
+                    <h3>Resultado</h3>
+                    <div class="score" id="quizScore">0%</div>
+                    <p id="quizScoreText"></p>
+                    <button class="btn btn-primary" id="btnRestartQuiz">Refazer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="library" id="biblioteca">
+    <div class="container">
+        <div class="section-header">
+            <h2>Biblioteca de Partituras</h2>
+            <p>Estudos com transposição e download em PDF.</p>
+            <div class="line"></div>
+        </div>
+        <div class="library-filters" id="libraryFilters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="classico">Clássico</button>
+            <button class="filter-btn" data-filter="popular">Popular</button>
+            <button class="filter-btn" data-filter="estudo">Estudos</button>
+        </div>
+        <div class="scores-grid" id="scoresGrid"></div>
+    </div>
+</section>
+
+<section id="pratica">
+    <div class="container">
+        <div class="section-header">
+            <h2>Prática com Metrônomo</h2>
+            <p>Ajuste o andamento e treine com precisão.</p>
+            <div class="line"></div>
+        </div>
+        <div class="metronome-box" style="max-width:420px;margin:0 auto;text-align:center;background:#fff;padding:2rem;border-radius:16px;box-shadow:0 10px 40px rgba(59,7,100,0.08);">
+            <div id="bpmDisplay" style="font-size:3rem;font-weight:700;color:#3b0764;">100</div>
+            <p style="color:#78716c;margin-bottom:1rem;">BPM</p>
+            <input type="range" id="bpmRange" min="40" max="220" value="100" style="width:100%;margin-bottom:1rem;">
+            <div style="display:flex;gap:0.75rem;justify-content:center;">
+                <button class="btn btn-primary" id="btnMetroStart">Iniciar</button>
+                <button class="btn btn-ghost" id="btnMetroStop">Parar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="enroll" id="inscricao">
+    <div class="container">
+        <div class="section-header">
+            <h2>Inscrição nas aulas</h2>
+            <p>Preencha o formulário. Nossa equipe entrará em contato.</p>
+            <div class="line"></div>
+        </div>
+        <div class="enroll-form-wrap" style="max-width:640px;margin:0 auto;">
+            <form id="enrollForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome completo *</label>
+                        <input type="text" id="nome" name="nome" required minlength="3" autocomplete="name">
+                        <div class="form-error" id="errorNome">Informe seu nome completo</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                        <div class="form-error" id="errorEmail">E-mail inválido</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Telefone / WhatsApp</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 99999-9999" autocomplete="tel">
+                    </div>
+                    <div class="form-group">
+                        <label for="curso">Curso de interesse</label>
+                        <select id="curso" name="curso">
+                            <option value="">Selecione (opcional)...</option>
+                            <option value="fundamentos-guitarra">Fundamentos da Guitarra</option>
+                            <option value="harmonia-piano">Harmonia no Piano</option>
+                            <option value="performance-vocal">Performance Vocal</option>
+                            <option value="outro">Outro / Ainda não sei</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="instrumento">Instrumento *</label>
+                        <select id="instrumento" name="instrumento" required>
+                            <option value="">Selecione...</option>
+                            <option value="guitarra">Guitarra / Violão</option>
+                            <option value="piano">Piano</option>
+                            <option value="canto">Canto</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                        <div class="form-error" id="errorInstrumento">Selecione o instrumento</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nivel">Nível *</label>
+                        <select id="nivel" name="nivel" required>
+                            <option value="">Selecione...</option>
+                            <option value="iniciante">Iniciante</option>
+                            <option value="intermediario">Intermediário</option>
+                            <option value="avancado">Avançado</option>
+                        </select>
+                        <div class="form-error" id="errorNivel">Selecione o nível</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mensagem">Objetivos e observações</label>
+                    <textarea id="mensagem" name="mensagem" placeholder="Conte um pouco sobre o que você quer aprender..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnEnviarInscricao" style="width:100%;justify-content:center;">Enviar Inscrição</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+                <div class="icon">✅</div>
+                <h3>Inscrição realizada!</h3>
+                <p id="successMsg">Recebemos seus dados. Nossa equipe entrará em contato em breve.</p>
+                <button class="btn btn-secondary" id="resetForm" style="margin-top:1.2rem;">Nova inscrição</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Pronto para elevar sua música?</h2>
+    <p>Teoria, partituras com transposição e PDF em uma só plataforma.</p>
+    <a href="#inscricao" class="btn btn-primary">Começar minha jornada</a>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="#" class="logo">Harmonia <span>Academy</span></a>
+            <p>Educação musical com teoria, ritmo, partituras e ferramentas de estudo.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a href="#teoria">Teoria</a></li>
+                <li><a href="#biblioteca">Partituras</a></li>
+                <li><a href="#pratica">Prática</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Suporte</h4>
+            <ul>
+                <li><a href="#inscricao">Contato</a></li>
+                <li><a href="login.html">Área admin</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="#">Privacidade</a></li>
+                <li><a href="#">Termos</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 Harmonia Academy.</div>
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>
